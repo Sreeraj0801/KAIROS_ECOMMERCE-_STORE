@@ -7,8 +7,6 @@ const check = {
   let error;
 
 
-
-
 /* <----------------- get login  page-------------------> */
 module.exports.adminLoginPage = async function (req, res, next) {
     if (req.session.adminLoggedIn) {

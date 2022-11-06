@@ -1,5 +1,5 @@
 const session = require('express-session');
-const userHelpers = require('../helpers/userHelpers')
+const userHelpers = require('../services/userHelpers')
 
 let sessionVar
 module.exports = {

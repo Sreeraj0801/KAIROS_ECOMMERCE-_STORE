@@ -2,17 +2,15 @@ const express = require('express');
 const session = require('express-session');
 const { resolve } = require('promise');
 const router = express.Router();
-const userHelpers = require('../helpers/userHelpers')
-
+const userHelpers = require('../services/userHelpers')
 
 const paypal = require('paypal-rest-sdk');
 const { log } = require("console")
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id': 'Ad0XoLK1_euJ-_F65Jax4KAyZThwyMoa4-EnXGSto0nXgxO787VyLufUMftl25dJh6d_u-wVJXUV3W3r',
-  'client_secret': 'EIUYea5KzzD-mQCG-5jf0VPweEf7Uk4jfUH1qX87j4KxvzLBDvyf4eXv4B05cA7TVcPOPwKf-4nv3aT1'
+  'client_id':process.env.PAYPAL_CLIENT_ID,
+  'client_secret': process.env.PAYPAL_CLIENT_SECRET
 });
-
 
 /* <----------------- Requiring Controllers -------------------> */
 
@@ -28,7 +26,7 @@ const { checkoutPage, placeOrder } = require('../controller/checkoutController')
 const { profilePage, viewOrderProducts, cancelOrder, addAddressPage,              //...start
   addAddress,userChangePassword, updateUserDetails, updateAdressPage, 
   updateAddress,deleteUserAddress} = require('../controller/profileController')   //....end
-const productHelpers = require('../helpers/productHelpers');
+const productHelpers = require('../services/productHelpers');
 const { response } = require('express');
 
 

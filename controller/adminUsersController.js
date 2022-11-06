@@ -1,8 +1,8 @@
 var blockButton ;
 
 /* <----------------- #Requiring Helpers -------------------> */
-const userHelpers = require('../helpers/userHelpers');
-var productHelpers = require('../helpers/productHelpers');
+const userHelpers = require('../services/userHelpers');
+var productHelpers = require('../services/productHelpers');
 
 
 

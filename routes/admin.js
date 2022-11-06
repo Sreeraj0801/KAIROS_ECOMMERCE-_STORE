@@ -18,9 +18,9 @@ const {viewProdutsPage,addProductsPage ,addProducts ,editProductsPage , editProd
 const {viewBannerPage,addBannerPage ,addBanner ,editBannerPage 
 ,editBanner ,deleteBanner} = require("../controller/bannerController"); //-----end
 const {adminViewOrdersPage,UpdateTrackOrder} = require('../controller/orderController.js')
-const productHelpers = require('../helpers/productHelpers');
+const productHelpers = require('../services/productHelpers');
 const { Db, Admin } = require('mongodb');
-const userHelpers = require('../helpers/userHelpers');
+const userHelpers = require('../services/userHelpers');
 
 
 

@@ -2,7 +2,7 @@
 const dotenv = require('dotenv').config();
 
 //Helpers
-const userHelpers = require('../helpers/userHelpers')
+const userHelpers = require('../services/userHelpers')
 //otp twelio
 const client = require('twilio')(process.env.TWELIO_SID_KEY,process.env.TWELIO_SECRET_KEY)
 

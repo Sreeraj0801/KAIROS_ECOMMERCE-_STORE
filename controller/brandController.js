@@ -1,4 +1,4 @@
-var productHelpers = require('../helpers/productHelpers');
+var productHelpers = require('../services/productHelpers');
 
 
 // <--------------------------- Get Brand page ----------------->

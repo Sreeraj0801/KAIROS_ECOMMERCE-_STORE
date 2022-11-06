@@ -1,4 +1,4 @@
-const productHelpers = require('../helpers/productHelpers')
+const productHelpers = require('../services/productHelpers')
 
 
  /* <---------------------- Get Category Page -----------------------> */

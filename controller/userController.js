@@ -2,8 +2,8 @@ const express = require('express');
 const session = require('express-session');
 const { resolve } = require('promise');
 const router = express.Router();
-const productHelpers = require('../helpers/productHelpers')
-const userHelpers = require('../helpers/userHelpers')
+const productHelpers = require('../services/productHelpers')
+const userHelpers = require('../services/userHelpers')
 
 //________________________Declaration______________________________________________________
 

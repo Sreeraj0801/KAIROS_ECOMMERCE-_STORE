@@ -1,5 +1,5 @@
-const productHelpers = require('../helpers/productHelpers')
-const userHelpers = require('../helpers/userHelpers')
+const productHelpers = require('../services/productHelpers')
+const userHelpers = require('../services/userHelpers')
 
 
  /* <---------------------- Get User HomePage -----------------------> */
