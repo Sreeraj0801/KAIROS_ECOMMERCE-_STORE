@@ -45,7 +45,8 @@ module.exports = {
                 db.get().collection('users').insertOne(users)
                     .then((data) => {
                         response.status = true;
-                        response.message = ""
+                        response.message = "";
+                        response.id = data.insertedId;
                         resolve(response) 
                     })
             }
@@ -626,5 +627,14 @@ module.exports = {
 
         })
 
+    },
+    addWallet : (userId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.WALLET).insertOne({
+                userId:userId,
+                balance:parseInt(0)
+            })
+            
+        })
     }
 }

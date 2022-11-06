@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const { Db } = require('mongodb');
 const { resolve } = require('promise');
 const router = express.Router();
 const productHelpers = require('../services/productHelpers')
@@ -61,7 +62,8 @@ module.exports.userLogin =  async (req, res) => {
   module.exports.signUp = async (req, res) => {
     userHelpers.addUser(req.body)
       .then((result) => {
-        if (result.status) {    
+        if (result.status) { 
+          userHelpers.addWallet(result.id)
           req.session.message = "Account Registerd Sucessfully"
           req.session.message1 = "please Login"
           res.redirect("/login")
