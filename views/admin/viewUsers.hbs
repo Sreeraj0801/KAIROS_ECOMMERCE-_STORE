@@ -1,0 +1,37 @@
+<main class="main" id="main">
+  <section>
+    <div class="container">
+      <h3 class="text-primary mt-5 mb-5 fw-bold">View Users</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">SI NO</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Option</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {{#each userDetails}}
+          <tr>
+            <th scope="row">{{plusOne @index}}</th>
+            <td>{{this.Rname}}</td>
+            <td>{{this.Remail}}</td>
+            {{!-- <td><img style="height:50px ;width:50px ;" src="/productImages/{{this._id}}.jpg" alt=""></td> --}}
+
+            {{#if this.status}}
+            <td><a href="/admin/userBlock/{{this._id}}" class="btn btn-outline-danger"
+                onclick="return confirm('Are you sure you want to block {{this.Rname}}?')">Block</a></td>
+
+            {{else}}
+            <td><a href="/admin/userUnblock/{{this._id}}" class="btn btn-outline-success"
+                onclick="return confirm('Are you sure you want to Unblock {{this.Rname}}?')">Unblock</a></td>
+            {{/if}}
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>

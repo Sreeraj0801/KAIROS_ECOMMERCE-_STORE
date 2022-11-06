@@ -1,0 +1,99 @@
+<main class="main" id="main">
+  <h4>View Orders</h4>
+  <hr>
+  <table class="table table-striped mt-5">
+    <thead>
+      <tr>
+        <th scope="col">Si.No</th>
+        <th scope="col">Customer Name</th>
+        <th scope="col">Date</th>
+        <th scope="col">Order Id</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Payment</th>
+        <th scope="col">Status</th>
+        <th scope="col">Track Order</th>
+        <th scope="col">Update Status </th>
+
+      </tr>
+    </thead>
+    <tbody>
+
+      {{#each orders}}
+      <tr>
+        <th scope="row">{{plusOne @index}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.date}}</td>
+        <td>{{this._id}}</td>
+        <td>₹{{this.totalAmount}}</td>
+        <td>{{this.paymentMethod}}</td>
+        <td>{{this.status}}</td>
+        {{!-- <td>
+          <select class="form-select" aria-label="Default select example" onchange="">
+            <option value="ordered" selected>Ordered</option>
+            <option value="">Dispached</option>
+            <option value="2">Deliverd</option>
+            <option value="3" class="text-danger">Cancel</option>
+          </select>
+        </td> --}}
+        {{#if (cancel this.trackOrder)}}
+        <td class="text-danger">{{this.trackOrder}}</td>
+        {{else if (delivered this.trackOrder)}}
+        <td class="text-success">{{this.trackOrder}}</td>
+        {{else}}
+        <td>{{this.trackOrder}}</td>
+        {{/if}}
+        <td>
+          {{#if (cancel this.trackOrder)}}
+          <select class="form-select" aria-label="Default select example" id="{{this._id}}">
+            <option selected name="status" value="Orderd" class="text-danger" disabled>{{this.trackOrder}}</option>
+            <option name="status" value="Dispached" disabled>Dispached</option>
+            <option name="Shipped" value="Shipped" disabled>Shipped</option>
+            <option name="Delivered" value="Deliverd" disabled>Deliverd</option>
+            <option name="canceled" value="canceled" disabled>Canceled</option>
+          </select>
+          {{else if (delivered this.trackOrder)}}
+           <select class="form-select" aria-label="Default select example" id="{{this._id}}" onchange="changeStatus(event,'{{this._id}}')">
+            <option selected name="status" value="Orderd" disabled>{{this.trackOrder}}</option>
+            <option name="status" value="Dispached" disabled>Dispached</option>
+            <option name="Shipped" value="Shipped" disabled>Shipped</option>
+            <option name="Delivered" value="Deliverd" disabled>Deliverd</option>
+            <option name="canceled" value="canceled" disabled>Canceled</option>
+          </select>
+        {{else}}
+          <select class="form-select" aria-label="Default select example" id="{{this._id}}" onchange="changeStatus(event,'{{this._id}}')">
+            <option selected name="status" value="Orderd" disabled>{{this.trackOrder}}</option>
+            <option name="status" value="Dispached">Dispached</option>
+            <option name="Shipped" value="Shipped">Shipped</option>
+            <option name="Delivered" value="Deliverd">Deliverd</option>
+            <option name="canceled" value="canceled">Canceled</option>
+          </select>
+          {{/if}}
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</main>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  function changeStatus(e,id) {
+    let status = e.target.value;
+    console.log(status)
+    $.ajax({
+      url:'/admin/updateTrackOrder',
+      data:{
+        id:id,
+        status:status
+      },
+      method :'put',
+      success : (response)=>{
+        if(response.status){
+          swal("Status Changed!").then(()=>{
+            location.reload();
+          })
+        }
+      }
+    })
+  }
+</script>

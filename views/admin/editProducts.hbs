@@ -1,0 +1,142 @@
+<main id="main" class="main">
+  <section>
+    <h3 class="text-primary  mb-5 fw-bold">EditProducts</h3>
+    <hr>
+    <div class="container">
+      <form action="/admin/editProducts/{{product._id}}" enctype="multipart/form-data" method="post">
+        <div class="row mb-3">
+          <label for="inputText" class="col-sm-2  col-form-label">Model</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="model" value="{{product.model}}">
+          </div>
+
+        </div>
+        <div class="row mb-3">
+          <label for="inputEmail" class="col-sm-2 col-form-label">title</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="title" value="{{product.title}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Brand</label>
+          <div class="col-sm-10">
+            <select class="form-select" aria-label="Default select example" name="brand">
+              {{#if brand}}
+              <option value="{{brand._id}}">{{brand.brand}}</option>
+              {{/if}}
+              {{#each data.brand}}
+              <option value="{{this._id}}">{{this.brand}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+
+        {{!-- <div class="row mb-3">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Brand</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="brand">
+          </div>
+        </div> --}}
+
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Category</label>
+          <div class="col-sm-10">
+            <select class="form-select" aria-label="Default select example" name="category">
+              {{#if category}}
+              <option selected value="{{category._id}}">{{category.category}}</option>
+              {{/if}}
+              {{#if data}}
+              {{#each data.category}}
+              <option value="{{this._id}}">{{this.category}}</option>
+              {{/each}}
+              {{/if}}
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label"></label>
+          <div class="col-sm-10">
+            <select class="form-select" aria-label="Default select example" name="price">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
+          <div class="col-sm-5">
+            <input type="number" class="form-control" name="price" value="{{product.price}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="inputNumber" class="col-sm-2 col-form-label">Stock</label>
+          <div class="col-sm-3">
+            <input type="number" class="form-control" name="stock" value="{{product.stock}}">
+          </div>
+        </div>
+
+
+        <div class="row mb-3">
+          <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+          <div class="col-sm-8 d-flex">
+            <img id="imageView" src="/productImages/{{product._id}}.jpg" alt="" style="width:200px; height: 200px;">
+            <input class="form-control p-5 m-5 text-warning" type="file" id="formFile" name="image"
+              value="{{product.image}}" accept="image/gif, image/jpeg, image/png" onchange="viewImage(event)">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="inputDiscription" class="col-sm-2 col-form-label">Discription</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" style="height: 100px" value="{{product.discription}}"
+              name="discription">{{product.discription}}</textarea>
+          </div>
+        </div>
+        <fieldset class="row mb-3">
+          <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" id="gridRadios1" value="{{product.gender}}"
+                checked>
+              <label class="form-check-label" for="gridRadios1">
+                {{product.gender}}
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" id="gridRadios1" value="Unisex" checked>
+              <label class="form-check-label" for="gridRadios1">
+                Unisex
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" id="gridRadios2" value="Male">
+              <label class="form-check-label" for="gridRadios2">
+                Male
+              </label>
+            </div>
+            <div class="form-check ">
+              <input class="form-check-input" type="radio" name="gender" id="gridRadios" value="Female">
+              <label class="form-check-label" for="gridRadios3">
+                Female
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="col-sm-10 text-center">
+          <button type="submit" class="btn btn-primary">Edit Product</button>
+        </div>
+    </div>
+
+    </form>
+    </div>
+  </section>
+</main>
+
+<script>
+  function viewImage(event) {
+    document.getElementById('imageView').src = URL.createObjectURL(event.target.files[0])
+  }
+</script>

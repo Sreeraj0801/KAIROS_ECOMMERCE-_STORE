@@ -1,0 +1,44 @@
+
+<main id="main" class="main">
+  <section>
+    <h3 class="text-primary  mb-5 fw-bold">Add Banner</h3>
+    <hr>
+    <div class="container">
+      <form action="/admin/addBanner" enctype="multipart/form-data" method="post">
+        <div class="row mb-3">
+          <label for="inputText" class="col-sm-2  col-form-label">Banner Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="bannerName">
+          </div>
+
+        </div>
+        <div class="row mb-3">
+          <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+          <div class="col-sm-8 ">
+            <div style="display: none;" id="imageShow" class="col"><img id="blah" src="#" alt="your image" /></div>
+            <div class="col">
+              <input class="form-control p-5" type="file" id="formFile" name="image"
+                accept="image/gif, image/jpeg, image/png">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-10 text-center">
+          <button type="submit" class="btn btn-primary">Submit Form</button>
+        </div>
+    </div>
+
+    </form>
+
+    </div>
+  </section>
+</main>
+<script>
+  formFile.onchange = evt => {
+    const [file] = formFile.files
+    if (file) {
+      imageShow.style.display = 'block';
+      blah.src = URL.createObjectURL(file)
+    }
+  }
+</script>

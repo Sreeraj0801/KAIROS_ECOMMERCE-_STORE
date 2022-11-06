@@ -1,0 +1,49 @@
+
+    <main id="main" class="main">
+  <section>
+    <h3 class="text-primary  mb-5 fw-bold">Edit Banner</h3>
+    <hr>
+    <div class="container">
+
+      <form action="/admin/editBanner/{{banner._id}}" enctype="multipart/form-data" method="post">
+        <div class="row mb-3">
+          <label for="inputText" class="col-sm-2  col-form-label">Banner Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="bannerName" value="{{banner.bannerName}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+          <div class="col-sm-8 d-flex">
+            <img id="imageView" src="/bannerImages/{{banner._id}}.jpg" alt="" style="width:200px; height: 200px;">
+            <input class="form-control p-5 m-5 text-warning" type="file" id="formFile" name="bannerImage"
+              value="{{banner.image}}" accept="image/gif, image/jpeg, image/png" onchange="viewImage(event)">
+          </div>
+        </div>
+
+        <div class="col-sm-10 text-center">
+          <button type="submit" class="btn btn-primary">Submit Form</button>
+        </div>
+    </div>
+    </form>
+
+
+    </div>
+  </section>
+</main>
+
+<script>
+  function viewImage(event) {
+    document.getElementById('imageView').src = URL.createObjectURL(event.target.files[0])
+  }
+</script>
+
+    </div>
+  </section>
+</main>
+<script>
+  function viewImage(event) {
+    document.getElementById('imageView').src = URL.createObjectURL(event.target.files[0])
+  }
+</script>

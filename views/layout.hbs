@@ -1,0 +1,149 @@
+  <head>
+    <title>{{title}}</title>
+   {{!-- css,bootstrap linking files  --}}
+
+   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Kairos</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/KairosLogo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/user/userAssets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/user/userAssets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/user/userAssets/images/icons/site.html">
+    <link rel="mask-icon" href="/user/userAssets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/user/userAssets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/userAssets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="/user/userAssets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/user/userAssets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/user/userAssets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/user/userAssets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="/user/userAssets/css/plugins/jquery.countdown.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/user/userAssets/css/skins/skin-demo-3.css">
+    {{!-- <link rel="stylesheet" href="/user/userAssets/css/demos/demo-3.css"> --}}
+  </head>
+    {{!-- end of linking --}}
+  
+  <body>
+   {{#if admin}}
+    {{> adminHeader}}
+
+    {{else if user}}
+    {{> userHeader}}
+    {{else}}
+    
+  {{/if}}
+    
+    {{{body}}}
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    {{!-- <script src="/userAssets/js/jquery.min.js"></script>
+    <script src="/userAssets/js/bootstrap.bundle.min.js"></script>
+    <script src="/userAssets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/userAssets/js/jquery.waypoints.min.js"></script>
+    <script src="/userAssets/js/superfish.min.js"></script>
+    <script src="/userAssets/js/owl.carousel.min.js"></script>
+    <script src="/userAssets/js/wNumb.js"></script>
+    <script src="/userAssets/js/bootstrap-input-spinner.js"></script>
+    <script src="/userAssets/js/jquery.magnific-popup.min.js"></script>
+    <script src="/userAssets/js/nouislider.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/userAssets/js/main.js"></script> --}}
+    <script src="/javascripts/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </body>
+   {{#if admin}}
+
+    {{else if user}}
+    <footer class="footer">
+            <div class="footer-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget widget-about">
+                                <h3 class="text-primary">KAIROS</h4>
+                                <p>The precious moment .Make time more valuable <br><span class="text-success">"Everyone looks at your watch and it represents who you are, your values and your personal style"</span>  </p>
+
+                                <div class="social-icons">
+                                    <a href="#" class="social-icon" target="_blank" title="Facebook"><i
+                                            class="icon-facebook-f"></i></a>
+                                    <a href="#" class="social-icon" target="_blank" title="Twitter"><i
+                                            class="icon-twitter"></i></a>
+                                    <a href="#" class="social-icon" target="_blank" title="Instagram"><i
+                                            class="icon-instagram"></i></a>
+                                    <a href="#" class="social-icon" target="_blank" title="Youtube"><i
+                                            class="icon-youtube"></i></a>
+                                    <a href="#" class="social-icon" target="_blank" title="Pinterest"><i
+                                            class="icon-pinterest"></i></a>
+                                </div><!-- End .soial-icons -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="/">About Kairos</a></li>
+                                    <li><a href="#">How to shop on Kairos</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="/login">Sign In</a></li>
+                                    <li><a href="/cart">View Cart</a></li>
+                                    <li><a href="/whishlist">My Wishlist</a></li>
+                                    <li><a href="/profile">Track My Order</a></li>
+                                    <li><a href="/">Help</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2019 Kairos Store. All Rights Reserved.</p>
+                    <!-- End .footer-copyright -->
+                    <figure class="footer-payments">
+                        <img src="/userAssets/images/payments.png" alt="Payment methods" width="272" height="20">
+                    </figure><!-- End .footer-payments -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    {{else}}
+    
+  {{/if}}

@@ -1,0 +1,116 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div>
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/userAssets/css/style.css">
+    <div class="page-wrapper">
+        <div class="page-header text-center" style="background-image: url('/userAssets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">Edit Address<span>Kairos</span></h1>
+            </div><!-- End .container -->
+        </div>
+    </div>
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('/userAssets/images/page-header-bg.jpg')">
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="">
+                <div class="container col-md-8 float-right">
+                    <div class="checkout-discount">
+
+                    </div><!-- End .checkout-discount -->
+                    <form id="updateAddress">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <h2 class="checkout-title"></h2><!-- End .checkout-title -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>First Name *</label>
+                                        <input type="text" class="form-control" name="Fname"  value="{{address.Fname}}" required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Last Name *</label>
+                                        <input type="text" class="form-control" name="Lname"  value="{{address.Lname}}" required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                {{!-- <label>Company Name (Optional)</label>
+                                <input type="text" class="form-control" name="country"> --}}
+
+                                <label>Country *</label>
+                                <input type="text" class="form-control" name="country"  value="{{address.country}}" required>
+
+                                <label>Street address *</label>
+                                <input type="text" class="form-control" placeholder="House number and Street name"
+                                    name="houseName" value="{{address.houseName}}" required >
+                                <input type="text" class="form-control" placeholder="Appartments, suite, unit etc ..."
+                                    name="appartmentName" value="{{address.appartmentName}}" required>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Town / City *</label>
+                                        <input type="text" class="form-control" name="city" value="{{address.city}}" required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>State / County *</label>
+                                        <input type="text" class="form-control" name="state" value="{{address.state}}" required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Postcode / ZIP *</label>
+                                        <input type="text" class="form-control" name="zip"  value="{{address.zip}}" required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Phone *</label>
+                                        <input type="tel" class="form-control" name="phone" value="{{address.phone}}" required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <label>Email address *</label>
+                                <input type="email" class="form-control" name="email" value="{{address.email}}" required>
+
+                                <input type="text" class="form-control" name="Id" value="{{address._id}}" hidden>
+                                <div class="text-center">
+                                    <button class="btn btn-success" type="submit">Submit</button>
+                                </div>
+                                {{!-- <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
+                                    <label class="custom-control-label" for="checkout-create-acc">Create an
+                                        account?</label>
+                                </div><!-- End .custom-checkbox --> --}}
+                            </div><!-- End .row -->
+                    </form>
+                </div><!-- End .container -->
+            </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+				$('#updateAddress').submit((e)=>{
+					e.preventDefault()
+					$.ajax({
+						url:'/updateAddress',
+						type:'put',
+						data:$('#updateAddress').serialize(),
+						success:(response)=>{
+                            if(response.status)
+                            {
+                                swal("WOW!", "Address Updated succesfully!", "success").then(()=>{
+                                    window.history.back()
+                                })
+                            }
+							
+						}
+					})
+				})	
+		</script>

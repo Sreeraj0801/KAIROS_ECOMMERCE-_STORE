@@ -1,0 +1,124 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div>
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/userAssets/css/style.css">
+    <div class="page-wrapper">
+        <div class="page-header text-center" style="background-image: url('/userAssets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">Return Form<span>Kairos</span></h1>
+            </div><!-- End .container -->
+        </div>
+    </div>
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('/userAssets/images/page-header-bg.jpg')">
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="">
+                <div class="container col-md-8 float-right">
+                    <div class="checkout-discount">
+
+                    </div><!-- End .checkout-discount -->
+                    <form id="returnOrder">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <h2 class="checkout-title"></h2><!-- End .checkout-title -->
+                                <!-- End .row -->
+
+                                {{!-- <label>Company Name (Optional)</label>
+                                <input type="text" class="form-control" name="country"> --}}
+
+                                <label>Reason For Returning*</label>
+                                <input type="text" class="form-control" name="reason"  value="" style="border: 2px solid orange;border-radius: 4px;" required>
+
+                                <label>Notes *</label>
+                                <input type="text" class="form-control"  style="height:100px; "
+                                    name="note"  required >
+                                      <input type="text" 
+                                    name="id" value="{{this.id}}" hidden >
+                                <hr>
+                                {{!-- <h4>Account Details</h4>
+                                <p>Please fill Your Account Details For Refund</p>
+                                <br>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Bank Name *</label>
+                                        <input type="text" class="form-control" name="bankName"  required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Branch *</label>
+                                        <input type="text" class="form-control" name="branch"  required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>IFSC Code*</label>
+                                        <input type="text" class="form-control" name="IFSC"   required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Phone *</label>
+                                        <input type="tel" class="form-control" name="phone" value="{{address.phone}}" required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <label>Email address *</label>
+                                <input type="email" class="form-control" name="email" value="{{address.email}}" required>
+
+                                <input type="text" class="form-control" name="Id" value="{{address._id}}" hidden> --}}
+                                <div class="text-center">
+                                    <button class="btn btn-success" type="submit">Submit</button>
+                                </div>
+                                {{!-- <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
+                                    <label class="custom-control-label" for="checkout-create-acc">Create an
+                                        account?</label>
+                                </div><!-- End .custom-checkbox --> --}}
+                            </div><!-- End .row -->
+                    </form>
+                </div><!-- End .container -->
+            </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+				$('#updateAddress').submit((e)=>{
+					e.preventDefault()
+					$.ajax({
+						url:'/updateAddress',
+						type:'put',
+						data:$('#updateAddress').serialize(),
+						success:(response)=>{
+                            if(response.status)
+                            {
+                                swal("WOW!", "Address Updated succesfully!", "success").then(()=>{
+                                    window.history.back()
+                                })
+                            }
+							
+						}
+					})
+				})	
+		</script>
+
+        <script>
+             $('#returnOrder').submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/returnOrder',
+            method: 'post',
+            data: $('#returnOrder').serialize(),
+            success: (response) => {
+                
+            }
+        })
+    })
+        </script>

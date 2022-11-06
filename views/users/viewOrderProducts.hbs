@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
+<!-- Main CSS File -->
+<!-- CSS only -->
+<link rel="stylesheet" href="/userAssets/css/style.css">
+
+<body>
+    <div class="page-header text-center" style="background-image: url('/userAssets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title"> Ordered Products<span>Kairos</span></h1>
+        </div><!-- End .container -->
+    </div>
+    <div class="container">
+        <div class="row">
+            {{#each products}}
+            <div class="col-lg-4 bg-light">
+                <div class="card card-dashboard shadow-lg p-3 mb-5  rounded" style="height: 90%;">
+                    <div class="card-body">
+                        <div class="col-md-12 mt-4">
+                            <img src="/productImages/{{product._id}}.jpg" alt="">
+                        </div>
+                        <div class="text-center mt-2">
+                            <h5>{{this.product.title}}</h5>
+                            <p><span class="text-danger">proId:</span> {{this.product.category}}</p><br>
+                            <p class="" style="font-size: 20px; color: cadetblue;">₹ {{this.product.price}}</p>
+                            <p>{{this.product.discription}}</p>
+                            <p>{{this.product.gender}}</p>
+                            <p>Qty : <span style="color: darkblue;">{{this.quantity}}</span></p>
+                        </div>
+                    </div><!-- End .card-dashboard -->
+                </div><!-- End .card-body -->
+
+            </div><!-- End .col-lg-6 -->
+            {{/each}}
+
+        </div>
+    </div>
+
+
+</body>
+<!-- JavaScript Bundle with Popper -->

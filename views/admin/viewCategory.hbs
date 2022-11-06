@@ -1,0 +1,40 @@
+<main id="main" class="main">
+  <section>
+    <div class="container">
+      <h3 class="text-primary mt-5 mb-5 fw-bold">View Category</h3>
+
+      <head></head>
+      <div class="text-end m-5">
+        <a class="btn btn-success" href="/admin/addCategory">Add categories</a>
+
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">SI NO</th>
+            <th scope="col">Category</th>
+            <th scope="col">Image</th>
+            <th scope="col">Options</th>
+
+          </tr>
+        </thead>
+        <tbody>
+
+          {{#each category}}
+          <tr>
+            <th scope="row">{{plusOne @index}}</th>
+            <td>{{category}}</td>
+            <td><img style="height:50px ;width:50px ;" src="/categoryImages/{{this._id}}.jpg" alt=""></td>
+            {{!-- <td><img style="height:50px ;width:50px ;" src="/productImages/{{this._id}}.jpg" alt=""></td> --}}
+            <td><a class="btn btn-primary" href="/admin/editCategory/{{this._id}}">Edit</a>
+              <a href="/admin/deleteCategory/{{this._id}}" class="btn btn-outline-danger"
+                onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>

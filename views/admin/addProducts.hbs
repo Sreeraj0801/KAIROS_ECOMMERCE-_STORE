@@ -1,0 +1,115 @@
+<main id="main" class="main">
+  <section>
+    <h3 class="text-primary  mb-5 fw-bold">Add Products</h3>
+    <hr>
+    <div class="container">
+      <form action="/admin/addProduct" enctype="multipart/form-data" method="post">
+        <div class="row mb-3">
+          <label for="inputText" class="col-sm-2  col-form-label">Model</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="model">
+          </div>
+
+        </div>
+        <div class="row mb-3">
+          <label for="inputEmail" class="col-sm-2 col-form-label">title</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="title">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Category</label>
+          <div class="col-sm-10">
+            <select class="form-select" aria-label="Default select example" name="category">
+              {{#each response.category}}
+              <option value="{{this._id}}">{{this.category}}</option>
+              {{/each}}
+
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Brand</label>
+          <div class="col-sm-10">
+            <select class="form-select" aria-label="Default select example" name="brand">
+              {{#each response.brand}}
+              <option value="{{this._id}}">{{this.brand}}</option>
+              {{/each}}
+
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
+          <div class="col-sm-2">
+            <input type="number" class="form-control" name="price">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="inputNumber" class="col-sm-2 col-form-label">Stock</label>
+          <div class="col-sm-2">
+            <input type="number" class="form-control" name="stock">
+          </div>
+        </div>
+        <div class="row mb-5 ">
+          <label for="inputNumber" class="col-sm-2 col-form-label">File Upload </label>
+          <div class="col-sm-8 d-flex">
+            <div style="display: none;" id="imageShow" class="col"><img id="blah" src="#" alt="your image" style="height: 50px;" /></div>
+            <div class="col">
+              <input class="form-control " type="file" id="formFile" name="image"
+                accept="image/gif, image/jpeg, image/png" multiple>
+            </div>
+          </div>
+        </div>
+            
+
+        <div class="row mb-3">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Discription</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" style="height: 50px" name="discription"></textarea>
+          </div>
+        </div>
+        <fieldset class="row mb-3">
+          <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" id="gridRadios1" value="Unisex" checked>
+              <label class="form-check-label" for="gridRadios1">
+                Unisex
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" id="gridRadios2" value="Male">
+              <label class="form-check-label" for="gridRadios2">
+                Male
+              </label>
+            </div>
+            <div class="form-check ">
+              <input class="form-check-input" type="radio" name="gender" id="gridRadios" value="Female">
+              <label class="form-check-label" for="gridRadios3">
+                Female
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="col-sm-10 text-center">
+          <button type="submit" class="btn btn-primary">Submit Form</button>
+        </div>
+    </div>
+
+    </form>
+
+    </div>
+  </section>
+</main>
+<script>
+  formFile.onchange = evt => {
+    const [file] = formFile.files
+    if (file) {
+      imageShow.style.display = 'block';
+      blah.src = URL.createObjectURL(file)
+    }
+  }
+</script>

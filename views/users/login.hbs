@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- molla/login.html  22 Nov 2019 10:04:03 GMT -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/userAssets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/userAssets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/userAssets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/userAssets/images/icons/site.html">
+    <link rel="mask-icon" href="/userAssets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/userAssets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/userAssets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="/userAssets/css/style.css">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/userAssets/css/style.css">
+</head>
+
+<body>
+    <main class="main">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17 "
+            style="background-image: url('/userAssets/images/backgrounds/login-bg.jpg');height:100% ">
+            <div class="container">
+                <div class="form-box">
+                    <div class="form-tab">
+                        <h4 class="text-success text-center">{{message}}</h4>
+                        <h5 class="text-success text-center">{{message1}}</h5>
+                        <ul class="nav nav-pills nav-fill" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link " id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab"
+                                    aria-controls="signin-2" aria-selected="false">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active " id="register-tab-2" data-toggle="tab" href="#register-2"
+                                    role="tab" aria-controls="register-2" aria-selected="true">Sign In</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
+                                <form action="/signup" method="post" autocomplete="off">
+                                    <div class="form-group">
+                                        <label for="register-email-2">Your name *</label>
+                                        <input type="text" class="form-control" id="name" name="Rname" required
+                                            onkeyup="nameCheck()" onclick="nameCheck()">
+                                        <p id="error-name" style="color: red;"> </p>
+                                    </div><!-- End .form-group -->
+                                    <div class="form-group">
+                                        <label for="register-email-2">Your email *</label>
+                                        <input type="email" name="Remail" class="form-control" id="email"
+                                            onkeyup="emailCheck()" onclick="emailCheck()">
+                                        <p id="ermail" style="color: red"></p>
+                                    </div><!-- End .form-group -->
+                                    <div class="form-group">
+                                        <label for="phonenumber">Your Mobile Number *</label>
+                                        <input type="tel" class="form-control" id="phonenumber" name="Rmobile" required
+                                            onkeyup="phoneCheck()" onclick="phoneCheck()">
+                                        <p id="errphone" class="text-danger"></p>
+                                    </div><!-- End .form-group -->
+
+                                    <div class="form-group">
+                                        <label for="register-password-2">Password *</label>
+                                        <input type="password" class="form-control" id="register-password-2"
+                                            name="Rpassword" required onkeyup="phoneCheck()" onclick="passwordCheck()">
+                                    </div><!-- End .form-group -->
+
+                                    {{#if errorMail}}
+                                    <p style="color: red;">{{errorMail}}</p>
+                                    {{/if}}
+
+                                    <div class="form-footer">
+                                        <button type="submit" class="btn btn-outline-primary-2">
+                                            <span>REGISTER</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="register-policy-2"
+                                                required>
+                                            <label class="custom-control-label" for="register-policy-2">I agree to the
+                                                <a href="#">privacy policy</a> *</label>
+                                        </div><!-- End .custom-checkbox -->
+                                    </div><!-- End .form-footer -->
+
+                                </form>
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade show active" id="register-2" role="tabpanel"
+                                aria-labelledby="register-tab-2">
+                                <form action="/login" method="post">
+                                    <div class="form-group">
+                                        <label for="singin-email-2"> email address *</label>
+                                        <input type="email" class="form-control" id="singin-email-2" name="Lemail"
+                                            required>
+                                    </div><!-- End .form-group -->
+
+                                    <div class="form-group">
+                                        <label for="singin-password-2">Password *</label>
+                                        <input type="password" class="form-control" id="Lpassword" name="Lpassword"
+                                            required>
+                                    </div><!-- End .form-group -->
+
+                                    <div class="form-footer">
+                                        <button type="submit" class="btn btn-outline-primary-2">
+                                            <span>LOG IN</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+
+                                        {{!-- <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="signin-remember-2">
+                                            <label class="custom-control-label" for="signin-remember-2">Remember
+                                                Me</label>
+                                        </div><!-- End .custom-checkbox --> --}}
+                                        <a href="/phoneLogin" class="forgot-link"></a>
+                                        <a href="#phone-modal" data-toggle="modal" class="forgot-link">Forgot Your
+                                            Password?</a>
+                                    </div><!-- End .form-footer -->
+                                    {{#if err}}
+                                    <p class="text-center" style="color: red;">{{err}}</p>
+                                    {{/if}}
+                                </form>
+                                <div class="form-choice">
+                                    <p class="text-center">or sign in with</p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <a href="#" class="btn btn-login btn-g">
+                                                <i class="icon-google"></i>
+                                                Login With Google
+                                            </a>
+                                        </div><!-- End .col-6 -->
+                                        <div class="col-sm-6">
+                                            <a href="/phoneLogin" class="btn btn-login btn-f">
+                                                <i class="icon-phone"></i>
+                                                Login Via OTP
+                                            </a>
+                                        </div> <br><br><br><!-- End .col-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .form-choice -->
+                                {{!-- <div class="form-choice">
+                                    <p class="text-center">or sign in with</p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <a href="#" class="btn btn-login btn-g">
+                                                <i class="icon-google"></i>
+                                                Login With Google
+                                            </a>
+                                        </div><!-- End .col-6 -->
+                                        <div class="col-sm-6">
+                                            <a href="#" class="btn btn-login  btn-f">
+                                                <i class="icon-phone"></i>
+                                                Login Via OTP
+                                            </a>
+                                        </div><!-- End .col-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .form-choice --> --}}
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .form-tab -->
+                </div><!-- End .form-box -->
+            </div><!-- End .container -->
+        </div><!-- End .login-page section-bg -->
+    </main><!-- End .main -->
+
+
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                    placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+
+
+    <div class="modal fade" id="phone-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active " href="/phoneLogin">Forget Password ?</a>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                    aria-labelledby="signin-tab">
+                                    <form id="passForm">
+                                        <div class="form-group">
+                                            <label for="singin-email">Please Enter Your Registered Mobile Number
+                                                *</label>
+                                            <input type="number" class="form-control" id="mobNum" name="mobile" required
+                                                onclick="remove()">
+                                        </div><!-- End .form-group -->
+                                        <!-- End .form-group -->
+                                        <p id="passTrue"></p>
+                                        <p id="message" class="text-danger text-center"></p>
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2"
+                                                onclick="mobileNumber()">
+                                                <span>SUBMIT</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                </div><!-- End .row -->
+                            </div><!-- End .form-choice -->
+                        </div><!-- .End .tab-pane -->
+                    </div><!-- End .tab-content -->
+                </div><!-- End .form-tab -->
+            </div><!-- End .form-box -->
+        </div><!-- End .modal-body -->
+    </div>
+
+    <div class="modal fade" id="otpModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active " href="/phoneLogin">Forget Password ?</a>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                    aria-labelledby="signin-tab">
+                                    <form id="passForm">
+                                        <div class="form-group">
+                                            <label for="singin-email">Enter OTP you have recieved *</label>
+                                            <input type="text" class="form-control" id="otp" name="otp" required>
+                                        </div><!-- End .form-group -->
+                                        <!-- End .form-group -->
+                                        <p id="passTrue"></p>
+                                        <p id="message" class="text-danger text-center"></p>
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2"
+                                                onclick="mobileNumber()">
+                                                <span>SUBMIT</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                </div><!-- End .row -->
+                            </div><!-- End .form-choice -->
+                        </div><!-- .End .tab-pane -->
+                    </div><!-- End .tab-content -->
+                </div><!-- End .form-tab -->
+            </div><!-- End .form-box -->
+        </div><!-- End .modal-body -->
+    </div>
+    <!-- Sign in / Register Modal -->
+    <!--modal for forget Password-->
+    <!-- Plugins JS File -->
+    <script src="/userAssets/js/jquery.min.js"></script>
+    <script src="/userAssets/js/bootstrap.bundle.min.js"></script>
+    <script src="/userAssets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/userAssets/js/jquery.waypoints.min.js"></script>
+    <script src="/userAssets/js/superfish.min.js"></script>
+    <script src="/userAssets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/userAssets/js/main.js"></script>
+</body>
+<!-- molla/login.html  22 Nov 2019 10:04:03 GMT -->
+
+</html>
+
+<script>
+    function mobileNumber() {
+        document.getElementById('message').innerHTML = "";
+        mobile = document.getElementById('mobNum').value;
+        $.ajax({
+            url: '/mobileNumber',
+            data: {
+                mobile: mobile
+            },
+            method: 'put',
+            success: (response) => {
+                if (response.status) {
+
+                    document.getElementById('otpModal').modal('show');
+                    $('#otpModal').modal('show')
+                }
+                else {
+                    alert("hai")
+                    document.getElementById('message').innerHTML = "Mobile Number not registered";
+                }
+
+            }
+        })
+    }
+    function remove() {
+        document.getElementById('message').innerHTML = "";
+    }
+</script>
