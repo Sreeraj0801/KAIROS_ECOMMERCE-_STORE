@@ -16,8 +16,16 @@ module.exports.userLoginPage = async function (req, res, next) {
     else {
       req.session.userDetails
       message = req.session.message
-      message1 = req.session.message1
-      res.render("users/login", { err: req.session.err , message , message1})
+      userExist = req.session.userExist;
+      if(userExist)
+      {
+        res.render("users/login", { err: req.session.err , message,userExist});
+        req.session.userExist = null;
+      }
+      else{
+        res.render("users/login", { err: req.session.err , message})
+      }
+      res.render("users/login", { err: req.session.err , message,userExist})
       req.session.message = ""
       req.session.message1 = ""
       req.session.loginErr = false
@@ -33,8 +41,6 @@ module.exports.userLogin =  async (req, res) => {
       if (response.loginStatus && response.user.status) {
         req.session.user = response.user
         req.session.userLoggedIn = response.loginStatus
-        console.log("LLLLLLLLLLLLLLLLLLL");
-        console.log(req.session.userLoggedIn);
         res.redirect("/");
         error = " "
       }
@@ -63,12 +69,13 @@ module.exports.userLogin =  async (req, res) => {
     userHelpers.addUser(req.body)
       .then((result) => {
         if (result.status) { 
+          req.session.userExist = false
           userHelpers.addWallet(result.id)
-          req.session.message = "Account Registerd Sucessfully"
-          req.session.message1 = "please Login"
+          req.session.message = true;
           res.redirect("/login")
         }
          else {
+          req.session.userExist = true;
           errorMail = result.message
           res.redirect('/login')
         }

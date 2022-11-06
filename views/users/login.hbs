@@ -38,12 +38,23 @@
         </nav><!-- End .breadcrumb-nav -->
 
         <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17 "
-            style="background-image: url('/userAssets/images/backgrounds/login-bg.jpg');height:100% ">
+            style="background-image: url('/userAssets/images/backgrounds/login-bg.jpg');height:120% ;">
+            <h1 class="text-center text-light">KAIROS</h1>
+            <h3 class="text-center text-warning">The precious moment</h3>
             <div class="container">
                 <div class="form-box">
                     <div class="form-tab">
-                        <h4 class="text-success text-center">{{message}}</h4>
-                        <h5 class="text-success text-center">{{message1}}</h5>
+                      {{#if message}}
+                      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                      <script>
+                        swal("Good job!", "Account Registered! PLEASE LOGIN", "success").then(()=>{
+                            location.reload();
+                        })
+                      </script>
+                      {{else if userExist}}
+                      <h6 class="text-danger">User Exist</h6>
+                      {{/if}}  
+                        <h4 id="msg"></h4>
                         <ul class="nav nav-pills nav-fill" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link " id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab"

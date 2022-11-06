@@ -220,5 +220,11 @@ router.get('/returnOrder/:id',(req,res)=>{
 router.post('/returnOrder',(req,res)=>{
   userHelpers.returnOrder(req.body)
 })
+
+router.post("/searchProduct",(req,res)=>{
+  userHelpers.productSearch(req.body).then((products)=>{
+    res.render('users/searchProduct',{products,user:true})
+  })
+})
 module.exports = router;
 

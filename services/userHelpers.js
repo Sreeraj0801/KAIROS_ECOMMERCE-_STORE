@@ -16,6 +16,8 @@ var instance = new Razorpay({
 //<---------------requiring Paypal ----------------->
 const paypal = require('paypal-rest-sdk');
 const { log } = require("console")
+const { request } = require("http")
+const { getProductDetails } = require("./productHelpers")
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id':process.env.PAYPAL_CLIENT_ID,
@@ -34,10 +36,10 @@ module.exports = {
             let response = {
             }
             let count = await db.get().collection(collection.USER_COLLECTION).count({ Remail: users.Remail });
-            console.log(count);
-            if (count != 0) {
+            let mobileCount = await db.get().collection(collection.USER_COLLECTION).count({Rmobile: users.Rmobile });
+            if (count != 0 || mobileCount !=0) {
                 response.status = false;
-                response.message = "Emaill Already Exist"
+                response.userExist = true;
                 resolve(response)
             } else {
                 users.status = true
@@ -636,5 +638,16 @@ module.exports = {
             })
             
         })
+    },
+    productSearch :(detail) =>{
+        return new Promise((resolve,reject)=>{
+        let value = "";
+        value = detail.search;
+        let getProductDetails = db.get().collection(collections.PRODUCT).find({$or:[{
+            title : {$regex:'.*'+value+'.*',$options:'i'}
+        }]}).toArray()
+        resolve(getProductDetails)
+        })
+        
     }
 }
