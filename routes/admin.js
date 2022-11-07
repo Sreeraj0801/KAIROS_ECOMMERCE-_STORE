@@ -21,6 +21,7 @@ const {adminViewOrdersPage,UpdateTrackOrder} = require('../controller/orderContr
 const productHelpers = require('../services/productHelpers');
 const { Db, Admin } = require('mongodb');
 const userHelpers = require('../services/userHelpers');
+const { upload } = require('../public/javascripts/fileUpload');
 
 
 
@@ -92,7 +93,7 @@ router.get('/addProducts', sessionCheck,addProductsPage)
 
 
 /* <---------------- Post Add Products page --------------> */
-  router.post('/addProduct', addProducts)
+  router.post('/addProduct',sessionCheck,upload.array('image'), addProducts)
 
 /* <------------------ Edit Products page ----------------> */
 router.get('/editProducts/:id', sessionCheck,editProductsPage);

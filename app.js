@@ -6,7 +6,7 @@ const logger = require('morgan');
 const hbs = require('hbs')
 const adminRouter = require('./routes/admin');
 const usersRouter = require('./routes/users');
-const fileUpload = require('express-fileupload')
+
 const app = express();
 const multer = require('multer');            
 const db = require('./config/connection')
@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload())
+
 app.use(session({ secret: "key", saveUninitialized :true , resave : false , cookie: { maxAge:9000000 } }))
 hbs.registerHelper('plusOne',(number)=>{
   return parseInt(number)+1
@@ -46,7 +46,6 @@ hbs.registerHelper('multiply',(value,value2)=>{
   return  (parseInt(value) * parseInt(value2))
 })
 
-const upload = multer({});
 
 /*Monog Db connect*/
 db.connect((err)=>{

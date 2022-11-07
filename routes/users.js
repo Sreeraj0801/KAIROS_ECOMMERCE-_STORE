@@ -57,7 +57,6 @@ router.post("/sendcode", phoneLogin);
 // <------------------------ Get OTP Login Page  ------------------> */
 router.get('/otpLogin', otpLoginPage);
 
-router.get('/otpForgetLogin', otpForgetLoginPage);
 // <------------------------ Post Resend OTP code  ----------------> */
 router.post("/resendcode", resendOtp);
 

@@ -22,12 +22,12 @@ let OTPphonenumber
 
  /* <---------------------- Post PhoneLogin Page - SendCode  -----------------------> */
  module.exports.phoneLogin = async (req,res) => {
-    OTPphonenumber = req.body.phonenumber
+    phonenumber = req.body.phonenumber
     userHelpers.checkPhoneNumber(req.body).then((response)=>{
       if(response.status)
       {  
         client.verify 
-        .services ('VAd08ba15b3ae1b5181db10e108cbb03f2') // Change Service ID
+        .services (process.env.TWELIO_SERVICE_ID) // Change Service ID
         .verifications.create({
         to: `+91${req.body.phonenumber}`,
         channel:"sms",
@@ -54,18 +54,11 @@ let OTPphonenumber
     OTPmessage = ""
   }
 
-  module.exports.otpForgetLoginPage = async (req,res)=>{
-    if (req.session.userLoggedIn)
-    {res.redirect('/')}
-    else
-    res.render('users/otpLogin',{OTPmessage})
-    OTPmessage = ""
-  }
   
  /* <---------------------- Post Resend Otp -----------------------> */
   module.exports.resendOtp = async (req,res) => {
     client.verify 
-    .services ('VAd08ba15b3ae1b5181db10e108cbb03f2') // Change Service ID
+    .services (process.env.TWELIO_SERVICE_ID) // Change Service ID
     .verifications.create({
     to: `+91${OTPphonenumber}`,
     channel:"sms",
@@ -78,8 +71,9 @@ let OTPphonenumber
 
 // <------------------------ Post Otp Login - Verify  ----------------->
 module.exports.otpLogin = async  (req, res) => {
+  console.log(phonenumber);
     client.verify
-      .services('VAd08ba15b3ae1b5181db10e108cbb03f2') // Change service ID
+      .services(process.env.TWELIO_SERVICE_ID) // Change service ID
       .verificationChecks.create({
         to: `+91${phonenumber}`,
         code: req.body.code,
@@ -106,7 +100,7 @@ module.exports.otpLogin = async  (req, res) => {
 
   module.exports.forgetOtp = async  (req, res) => {
     client.verify
-      .services('VAd08ba15b3ae1b5181db10e108cbb03f2') // Change service ID
+      .services(process.env.TWELIO_SERVICE_ID) // Change service ID
       .verificationChecks.create({
         to: `+91${phonenumber}`,
         code: req.body.code,
