@@ -180,27 +180,9 @@ router.get('/sample', userCheck,async (req, res) => {
 })
 const client = require('twilio')(process.env.TWELIO_SID_KEY,process.env.TWELIO_SECRET_KEY)
 
-router.put('/mobileNumber',(req,res)=>{
-  userHelpers.findMobile(req.body.mobile).then((response)=>{
-    if(response)
-    {  
-      console.log(response.Rmobile);
-      let phonenumber = response.Rmobile;
-      req.session.phonenumber = response.Rmobile;
-      client.verify 
-      .services (process.env.TWELIO_SERVICE_ID) // Change Service ID
-      .verifications.create({
-      to: `+91${phonenumber}`,
-      channel:"sms",
-      })
-      .then((data) => {
-        res.json({status:true})
-    });
-    }
-    else{
-      res.json({status:false})
-    }
-  })
+
+router.post('/mobileNumber',(req,res)=>{
+  res.json({status:true});
 })
 
 router.post('/changePword',async(req,res)=>{

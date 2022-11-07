@@ -140,7 +140,7 @@
                                                 Me</label>
                                         </div><!-- End .custom-checkbox --> --}}
                                         <a href="/phoneLogin" class="forgot-link"></a>
-                                        <a href="#phone-modal" data-toggle="modal" class="forgot-link">Forgot Your
+                                        <a data-toggle="modal" data-target = "#abi" class="forgot-link">Forgot Your
                                             Password?</a>
                                     </div><!-- End .form-footer -->
                                     {{#if err}}
@@ -219,38 +219,35 @@
 
 
 
-    <div class="modal fade" id="phone-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="abi" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="icon-close"></i></span>
                     </button>
-
                     <div class="form-box">
                         <div class="form-tab">
                             <ul class="nav nav-pills nav-fill" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active " href="/phoneLogin">Forget Password ?</a>
                                 </li>
-
                             </ul>
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="signin" role="tabpanel"
                                     aria-labelledby="signin-tab">
-                                    <form id="passForm">
+                                    <form id="forgetMobile">
                                         <div class="form-group">
                                             <label for="singin-email">Please Enter Your Registered Mobile Number
                                                 *</label>
-                                            <input type="number" class="form-control" id="mobNum" name="mobile" required
+                                            <input type="tel" class="form-control" id="mobNum" name="mobile" required
                                                 onclick="remove()">
                                         </div><!-- End .form-group -->
                                         <!-- End .form-group -->
                                         <p id="passTrue"></p>
                                         <p id="message" class="text-danger text-center"></p>
                                         <div class="form-footer">
-                                            <button type="submit" class="btn btn-outline-primary-2"
-                                                onclick="mobileNumber()">
+                                            <button type="submit" class="btn btn-outline-primary-2">
                                                 <span>SUBMIT</span>
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
@@ -327,29 +324,25 @@
 </html>
 
 <script>
-    function mobileNumber() {
-        document.getElementById('message').innerHTML = "";
-        mobile = document.getElementById('mobNum').value;
+
+
+
+    $('#forgetMobile').submit((e)=>{
+        e.preventDefault()
         $.ajax({
             url: '/mobileNumber',
-            data: {
-                mobile: mobile
-            },
-            method: 'put',
-            success: (response) => {
-                if (response.status) {
-
-                    document.getElementById('otpModal').modal('show');
+            data: $('#forgetMobile').serialize(),
+            method: 'post',
+            success:(response)=>{
+                if(response.status)
+                {
+                    $('#phone-modal').modal('hide')
                     $('#otpModal').modal('show')
                 }
-                else {
-                    alert("hai")
-                    document.getElementById('message').innerHTML = "Mobile Number not registered";
-                }
-
             }
         })
-    }
+    })
+    
     function remove() {
         document.getElementById('message').innerHTML = "";
     }
