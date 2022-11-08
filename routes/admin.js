@@ -23,6 +23,7 @@ const { Db, Admin } = require('mongodb');
 const userHelpers = require('../services/userHelpers');
 const { upload } = require('../public/javascripts/fileUpload');
 const { logOut } = require('../controller/userController');
+const { response } = require('express');
 
 
 
@@ -144,4 +145,24 @@ router.get('/salesReport',async (req,res)=>{
   let YearlySalesforDownload = await productHelpers.getYearlySales(); 
   res.render('admin/salesReport',{admin:true,DailySalesforDownload,MonthlySalesforDownload,YearlySalesforDownload})
 })
+
+router.get('/productOffers',async (req,res)=>{
+  products = await productHelpers.getAllProduct();
+  res.render('admin/productOffers',{admin:true,products})})
+
+  router.post('/addProductOffer',(req,res)=>{
+    productHelpers.addproductOffer(req.body).then((response)=>{
+      res.json(response)
+    }).catch((err)=>{
+      console.log(err);
+    })
+  })
+
+  router.delete('/removeProductOffer',async (req,res)=>{
+    console.log(req.body.id);
+    productHelpers.removeProductOffer(req.body.id).then((response)=>{
+      res.json(response)
+    })
+
+  })
 module.exports = router;

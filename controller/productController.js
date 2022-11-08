@@ -35,7 +35,7 @@ module.exports.userSingleProductsPage = async function (req, res, next) {
 // <------------------------- Admin Get View Product page ---------------->
 module.exports.viewProdutsPage = async function (req, res, next) {
   productHelpers.getAllProduct().then((products) => {
-    res.render('admin/viewProducts', { admin: true, products });
+    res.render('admin/viewProducts', { admin: true, products});
   })
 }
 

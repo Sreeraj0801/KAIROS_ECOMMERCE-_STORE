@@ -1,0 +1,127 @@
+<main id="main" class="main">
+    <div>
+        <h3 class="text-primary">Add Product Offer</h3>
+        <hr>
+    </div>
+    <div class="container">
+        <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">offer  (%)</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">offer option</th>
+                  </tr>
+                  
+                </thead>
+                <tbody>
+                     {{#each products}}
+                  <tr>
+                    <th scope="row">{{plusOne @index}}</th>
+                    <td><img src="/pictures/productImages/{{this.image.[0]}}" alt="" style="height:80px;"></td>
+                    <td>{{this.title}}</td>
+                    {{#if offerPercentage}}
+                    <td>{{this.offerPercentage}} %</td>
+                    {{else}}
+                    <td>-</td>
+                    {{/if}}
+                    <td>{{this.price}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="addOfferModal('{{this._id}}')">
+                        Add Offer
+                     </button>
+                         <button type="button" class="btn btn-danger" onclick="removeOffer('{{this._id}}')">
+                       Remove Offer
+                     </button>
+                    </td>
+                  </tr>
+                  {{/each}} 
+                </tbody>
+              </table>
+    </div>
+
+
+
+    <div class="modal fade" id="verticalycentered" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Add Offer (%)</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="offerForm">
+                    <div class="modal-body">
+                            <input type="number" name="offerPrice" id="offerPrice" class="form-control">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="subm" class="btn btn-primary" >Save changes</button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div><!-- End Vertically centered Modal-->
+</main>
+
+<script>
+
+    function addOfferModal(id){
+    $('#verticalycentered').modal('show'); 
+    $('#offerForm').submit((e)=>{
+        e.preventDefault()
+        offerPercentage = document.getElementById('offerPrice').value;
+        $.ajax({
+            url : '/admin/addProductOffer',
+            method :'post',
+            data : {offerPercentage, id},
+            success :(response)=>{
+                if(response.status)
+                {
+                    $('#verticalycentered').modal('hide'); 
+                    location.reload();
+                }
+                
+            }
+        })
+    })
+    }
+
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    function removeOffer (id){
+
+
+
+        swal({
+  title: "Are you sure?",
+  text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+      $.ajax({
+            url : '/admin/removeProductOffer',
+            method :'delete',
+            data : {id},
+            success :(response)=>{
+                if(response.status)
+                {
+                     swal("Poof! Your imaginary file has been deleted!", {
+                     icon: "success",
+                     }).then(()=>{
+                        location.reload()
+                     })
+                }
+            }
+        })
+  } else {
+    swal("Your  file is safe!");
+  }
+});       
+    }
+</script>

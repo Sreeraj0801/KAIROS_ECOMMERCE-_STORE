@@ -58,6 +58,8 @@ module.exports={
                             discription:1,
                             gender:1,
                             image:1,
+                            offerPercentage:1,
+                            oldPrice:1,
                             categoryDetails:{$arrayElemAt:['$categoryDetails',0]},
                             brandDetails:{$arrayElemAt:['$brandDetails',0]},
                            
@@ -433,5 +435,59 @@ deleteCategory : (categoryId)=>{
             resolve(yearlySales)
         })
        })
+  },
+  addproductOffer : (details)=>{
+    let err
+    inputPrice = parseInt(details.offerPercentage)
+    details.id = objectId(details.id)
+    return new Promise(async(resolve,reject)=>{
+       products = await db.get().collection(collections.PRODUCT).findOne({_id:objectId(details.id)})
+       if(products.offerPercentage)
+       {
+        oldPrice = products.oldPrice;
+        priceCal = (oldPrice * inputPrice)/100;
+        offerPrice = oldPrice - priceCal ;
+        offerPrice = Math.ceil(offerPrice);
+        console.log("hai");
+        await db.get().collection(collections.PRODUCT).updateMany({_id:details.id},{$set:{
+            oldPrice:oldPrice,
+            price:offerPrice,
+            offerPercentage : inputPrice
+           }})
+           resolve({status:true})
+       }else{
+        oldPrice = products.price;
+       priceCal = (oldPrice * inputPrice)/100;
+       offerPrice = oldPrice - priceCal ;
+       offerPrice = Math.ceil(offerPrice);
+
+       await db.get().collection(collections.PRODUCT).updateMany({_id:details.id},{$set:{
+        oldPrice:oldPrice,
+        price:offerPrice,
+        offerPercentage : inputPrice
+       }})
+       resolve({status:true})
+       reject(err)
+       }
+       
+      })
+  },
+  
+  removeProductOffer:(id)=>{
+    return new Promise(async(resolve,reject)=>{
+        product = await db.get().collection(collections.PRODUCT).findOne({_id:objectId(id)});
+        oldPrice = product.oldPrice;
+        if(product.oldPrice){
+            await db.get().collection(collections.PRODUCT).updateOne({_id:objectId(id)},{$set:{price:oldPrice}})
+            await db.get().collection(collections.PRODUCT).updateOne({_id:objectId(id)},{$unset:{
+                offerPercentage : 1,
+                oldPrice :1
+                }})
+                resolve({status:true})
+        }
+       
+
+        
+    })
   }
 }
