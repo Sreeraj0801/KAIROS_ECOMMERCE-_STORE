@@ -47,16 +47,15 @@ module.exports.addProductsPage =  async function (req, res, next) {
 }
 // <------------------ Admin Add Products  --------------------------------> 
 module.exports.addProducts =async (req, res, next) => {
-  productHelpers.addProduct(req.body).then((id) => {
-    let image = req.files.image
-    image.mv('./public/productImages/' + id + '.jpg', (err, done) => {
-      if (!err) {
-        res.redirect("/admin/viewProducts")
-      }
-      else {
-        console.log(err);
-      }
-    })
+  const files = req.files;
+  console.log(files);
+  const fileName = files.map((file)=>{
+    return file.filename;
+  })
+  const product = req.body;
+  product.image = fileName;
+  productHelpers.addProduct(product).then((id) => {
+    res.redirect("/admin/viewProducts");
   })
 }
 

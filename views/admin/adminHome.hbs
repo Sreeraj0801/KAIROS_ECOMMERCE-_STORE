@@ -138,9 +138,9 @@
                     <h6>Filter</h6>
                   </li>
 
-                  <li><a class="dropdown-item" onclick="weeklyReport()"  style="cursor: pointer;">Today</a></li>
+                  <li><a class="dropdown-item" onclick="weeklyReport()" style="cursor: pointer;">Today</a></li>
                   <li><a class="dropdown-item" onclick="monthlyReport()" style="cursor: pointer;">This Month</a></li>
-                  <li><a class="dropdown-item" onclick="yearlyReport()"  style="cursor: pointer;">This Year</a></li>
+                  <li><a class="dropdown-item" onclick="yearlyReport()" style="cursor: pointer;">This Year</a></li>
                 </ul>
               </div>
 
@@ -150,7 +150,7 @@
                 <!-- Line Chart -->
                 <canvas id="line-chart"></canvas>
 
-                
+
                 <!-- End Line Chart -->
 
               </div>
@@ -616,6 +616,7 @@
 
 <!-- Template Main JS File -->
 
+<!--SCRIPT FOR CHART-->
 <script>
   var myChart;
   var myChart2;
@@ -698,7 +699,7 @@ const data = {
   };
   
   const config = {
-    type: 'line',
+    type: 'bar',
     data: data,
     options: {
       aspectRatio:3,
@@ -739,7 +740,7 @@ const data = {
   };
   
   const config = {
-    type: 'line',
+    type: 'bar',
     data: data,
     options: {
       aspectRatio:3,
@@ -752,9 +753,6 @@ const data = {
   if(chart1){
     myChart.destroy()
   }  
-myChart3 = new Chart(document.getElementById('line-chart'), config)
-
-                      
+myChart3 = new Chart(document.getElementById('line-chart'), config)                      
 }
-
 </script>

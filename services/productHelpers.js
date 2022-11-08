@@ -56,6 +56,7 @@ module.exports={
                             stock:1,
                             discription:1,
                             gender:1,
+                            image:1,
                             categoryDetails:{$arrayElemAt:['$categoryDetails',0]},
                             brandDetails:{$arrayElemAt:['$brandDetails',0]},
                            
@@ -142,6 +143,7 @@ module.exports={
                             stock:1,
                             discription:1,
                             gender:1,
+                            image:1,
                             categoryDetails:{$arrayElemAt:['$categoryDetails',0]},
                             brandDetails:{$arrayElemAt:['$brandDetails',0]},
                            
