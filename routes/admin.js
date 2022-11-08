@@ -22,6 +22,7 @@ const productHelpers = require('../services/productHelpers');
 const { Db, Admin } = require('mongodb');
 const userHelpers = require('../services/userHelpers');
 const { upload } = require('../public/javascripts/fileUpload');
+const { logOut } = require('../controller/userController');
 
 
 
@@ -137,4 +138,10 @@ router.get('/returnOrder',(req,res)=>{
 res.render('admin/returnOrders',{admin:true})
 })
 
+router.get('/salesReport',async (req,res)=>{
+  let DailySalesforDownload = await productHelpers.getDailysSales();
+  let MonthlySalesforDownload = await productHelpers.getMonthlySales(); 
+  let YearlySalesforDownload = await productHelpers.getYearlySales(); 
+  res.render('admin/salesReport',{admin:true,DailySalesforDownload,MonthlySalesforDownload,YearlySalesforDownload})
+})
 module.exports = router;

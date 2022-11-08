@@ -1,3 +1,4 @@
+const { response } = require('express');
 const { Collection } = require('mongo');
 const { Db, Timestamp } = require('mongodb');
 const { resolve, reject } = require('promise');
@@ -365,8 +366,14 @@ deleteCategory : (categoryId)=>{
                 _id:-1
             }
         }
-    ]).toArray()
-    resolve(details)
+    ]).toArray().then((dailySales)=>{
+        let totalAmount = 0;
+        dailySales.forEach(element => {
+            totalAmount =+ element.dailySales;
+        })
+        dailySales.totalAmount = totalAmount
+        resolve(dailySales)
+    })
    })
   },
   getMonthlySales :()=>{
@@ -388,8 +395,14 @@ deleteCategory : (categoryId)=>{
                     _id:-1
                 }
             }
-        ]).toArray()
-        resolve(details)
+        ]).toArray().then((monthlySales)=>{
+            let totalAmount = 0;
+            monthlySales.forEach(element => {
+                totalAmount =+ element.monthlySales;
+            })
+            monthlySales.totalAmount = totalAmount
+            resolve(monthlySales)
+        })
        })
   },
   getYearlySales :()=>{
@@ -402,7 +415,7 @@ deleteCategory : (categoryId)=>{
                 }
             },{
                 $group:{
-                    _id:'$month',
+                    _id:'$year',
                     yearlySales:{$sum:'$totalAmount'},
                     count:{$sum:1}
                 }
@@ -411,8 +424,14 @@ deleteCategory : (categoryId)=>{
                     _id:-1
                 }
             }
-        ]).toArray()
-        resolve(details)
+        ]).toArray().then((yearlySales)=>{
+            let totalAmount = 0;
+            yearlySales.forEach(element => {
+                totalAmount =+ element.yearlySales;
+            })
+            yearlySales.totalAmount = totalAmount
+            resolve(yearlySales)
+        })
        })
   }
 }
