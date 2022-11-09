@@ -23,9 +23,9 @@
                     <td><img src="/pictures/productImages/{{this.image.[0]}}" alt="" style="height:80px;"></td>
                     <td>{{this.title}}</td>
                     {{#if offerPercentage}}
-                    <td>{{this.offerPercentage}} %</td>
+                    <td id="id{{this._id}}">{{this.offerPercentage}} %</td>
                     {{else}}
-                    <td>-</td>
+                    <td id="id{{this._id}}">-</td>
                     {{/if}}
                     <td>{{this.price}}</td>
                     <td>
@@ -53,7 +53,7 @@
                     </div>
                     <form id="offerForm">
                     <div class="modal-body">
-                            <input type="number" name="offerPrice" id="offerPrice" class="form-control">
+                            <input type="number" name="offerPrice" id="offerPrice" class="form-control" min="1" max="100">
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -80,7 +80,8 @@
                 if(response.status)
                 {
                     $('#verticalycentered').modal('hide'); 
-                    location.reload();
+                    location.reload()
+                    
                 }
                 
             }
@@ -92,10 +93,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     function removeOffer (id){
-
-
-
-        swal({
+     swal({
   title: "Are you sure?",
   text: "Once deleted, you will not be able to recover this imaginary file!",
   icon: "warning",
@@ -114,7 +112,9 @@
                      swal("Poof! Your imaginary file has been deleted!", {
                      icon: "success",
                      }).then(()=>{
+                        {{!-- document.getElementById('id'+id).innerHTML = "-"; --}}
                         location.reload()
+                        
                      })
                 }
             }

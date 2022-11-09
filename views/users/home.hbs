@@ -214,9 +214,9 @@
                             </a>
 
                             <div class="product-action-vertical">
-                                <a onclick="addToWish('{{this._id}}')"
+                                <a onclick="addToWishlist('{{this._id}}')"
                                     class="btn-product-icon btn-wishlist btn-expandable"><span>add to
-                                        wishlist</span></a>
+                                        wishlist </span></a>
                                 <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
                                     title="Quick view"><span>Quick view</span></a>
                                 <a href="#" class="btn-product-icon btn-compare"
@@ -242,7 +242,14 @@
                             <h3 class="product-title"><a href="product.html">{{this.title}}</a></h3>
                             <!-- End .product-title -->
                             <div class="product-price">
+                                
+                                {{#if this.offerPercentage}}
+                                <span>was <strike> ₹{{this.oldPrice}}</strike></span>
+                                <span>now <p class="text-success">₹{{this.price}}</h3></span>
+                                <p>{{this.offerPercentage}}% Off</p>
+                                {{else}}
                                 ₹{{this.price}}
+                                {{/if}}
                             </div><!-- End .product-price -->
                             <div class="product-nav product-nav-dots">
                                 <a href="#" class="active" style="background: #e5dcb1;"><span class="sr-only">Color
@@ -726,6 +733,7 @@
     <script src="/userAssets/js/main.js"></script>
     <script src="/userAssets/js/demos/demo-17.js"></script>
     <script src="/javascripts/script.js"></script>
+     <script src="/javascripts/wishlist.js"></script>
 </body>
 
 

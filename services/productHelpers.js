@@ -448,7 +448,7 @@ deleteCategory : (categoryId)=>{
         priceCal = (oldPrice * inputPrice)/100;
         offerPrice = oldPrice - priceCal ;
         offerPrice = Math.ceil(offerPrice);
-        console.log("hai");
+
         await db.get().collection(collections.PRODUCT).updateMany({_id:details.id},{$set:{
             oldPrice:oldPrice,
             price:offerPrice,

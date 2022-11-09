@@ -8,5 +8,6 @@ module.exports={
     ORDER : 'order',
     ADDRESS: 'address',
     RETURN_ORDER:'return',
-    WALLET : 'wallet'
+    WALLET : 'wallet',
+    WISHLIST:'wishlist'
 }

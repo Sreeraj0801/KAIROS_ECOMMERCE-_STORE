@@ -8,7 +8,7 @@ const paypal = require('paypal-rest-sdk');
 const { log } = require("console")
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id':process.env.PAYPAL_CLIENT_ID,
+  'client_id': process.env.PAYPAL_CLIENT_ID,
   'client_secret': process.env.PAYPAL_CLIENT_SECRET
 });
 
@@ -16,7 +16,7 @@ paypal.configure({
 
 const { userLoginPage, userLogin, signUp, logOut } = require("../controller/userController");
 const { userCheck } = require("../controller/sessionController");
-const { phoneLoginPage, phoneLogin,otpForgetLoginPage ,otpLoginPage, resendOtp, otpLogin ,forgetOtp } = require("../controller/otpController");
+const { phoneLoginPage, phoneLogin, otpForgetLoginPage, otpLoginPage, resendOtp, otpLogin, forgetOtp } = require("../controller/otpController");
 const { userHomePage } = require("../controller/userHomeController");
 const { userCategory, userCategoryProducts } = require("../controller/categoryController");
 const { userBrand } = require('../controller/brandController');
@@ -24,8 +24,8 @@ const { userSingleProductsPage, userAllProducts } = require('../controller/produ
 const { userCartPage, userCart, cartProductsQty, removeProducts } = require('../controller/cartController');
 const { checkoutPage, placeOrder } = require('../controller/checkoutController')
 const { profilePage, viewOrderProducts, cancelOrder, addAddressPage,              //...start
-  addAddress,userChangePassword, updateUserDetails, updateAdressPage, 
-  updateAddress,deleteUserAddress} = require('../controller/profileController')   //....end
+  addAddress, userChangePassword, updateUserDetails, updateAdressPage,
+  updateAddress, deleteUserAddress } = require('../controller/profileController')   //....end
 const productHelpers = require('../services/productHelpers');
 const { response } = require('express');
 
@@ -88,15 +88,15 @@ router.get('/cart', userCheck, userCartPage);
 
 // <------------------------Post Cart Page ------------------------> */
 router.get('/addToCart/:id', userCheck, userCart);
-
+ 
 // <-------------------- Get Cart Products ------------------------> */
 router.get('/categoryProducts/:id', userCheck, userCategoryProducts);
 
 // <------------- Post change product Quantity -------------------> */
-router.post('/changeProductQuantity', userCheck,cartProductsQty)
+router.post('/changeProductQuantity', userCheck, cartProductsQty)
 
 // <----------------- Post Remove Products ------------------------> */
-router.post('/removeProduct', userCheck,removeProducts)
+router.post('/removeProduct', userCheck, removeProducts)
 
 // <-------------------- Get checkout Page -------------------------> */
 router.get('/checkout', userCheck, checkoutPage)
@@ -129,21 +129,21 @@ router.put('/updateUserDetails', userCheck, updateUserDetails)
 router.get('/updateAddress/:id', userCheck, updateAdressPage)
 
 // <-------------------------- Update User Address  ----------------> */
-router.put('/updateAddress',userCheck, updateAddress)
+router.put('/updateAddress', userCheck, updateAddress)
 
 // <-------------------------- Delete User Address  ----------------> */
-router.delete('/deleteAddress',userCheck,deleteUserAddress)
+router.delete('/deleteAddress', userCheck, deleteUserAddress)
 
 
-router.post('/verifyPayment',(req,res)=>{
-  userHelpers.verifyPayment(req.body).then((response)=>{
+router.post('/verifyPayment', (req, res) => {
+  userHelpers.verifyPayment(req.body).then((response) => {
     transaction = req.body
-    userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
-      res.json({status:true})
+    userHelpers.changePaymentStatus(req.body['order[receipt]']).then(() => {
+      res.json({ status: true })
     })
-  }).catch((err)=>{
+  }).catch((err) => {
     console.log(err);
-    res.json({staus:false})
+    res.json({ staus: false })
   })
 })
 
@@ -153,59 +153,92 @@ router.get('/success', (req, res) => {
   const execute_payment_json = {
     "payer_id": payerId,
     "transactions": [{
-        "amount": {
-            "currency": "USD",
-            "total": "25.00"
-        }
+      "amount": {
+        "currency": "USD",
+        "total": "25.00"
+      }
     }]
   };
 
   paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
     if (error) {
-        console.log(error.response);
-        throw error;
+      console.log(error.response);
+      throw error;
     } else {
-        console.log(JSON.stringify(payment));
-       res.redirect('/sample')
+      console.log(JSON.stringify(payment));
+      res.redirect('/sample')
     }
-});
+  });
 })
 
 router.get('/cancel', (req, res) => res.send('Cancelled'));
 
 
 // <-------------------- Sample for trial  ----------------------> */
-router.get('/sample', userCheck,async (req, res) => {
-  res.render('users/sample',{user:true,loggedIn: req.session.userLoggedIn})
+router.get('/sample', userCheck, async (req, res) => {
+  res.render('users/sample', { user: true, loggedIn: req.session.userLoggedIn })
 })
-const client = require('twilio')(process.env.TWELIO_SID_KEY,process.env.TWELIO_SECRET_KEY)
+const client = require('twilio')(process.env.TWELIO_SID_KEY, process.env.TWELIO_SECRET_KEY)
 
 
-router.post('/mobileNumber',(req,res)=>{
-  res.json({status:true});
+router.post('/mobileNumber', (req, res) => {
+  res.json({ status: true });
 })
 
-router.post('/changePword',async(req,res)=>{
-  userHelpers.changeForgetPword(req.session.phonenumber,req.body).then((status)=>{
+router.post('/changePword', async (req, res) => {
+  userHelpers.changeForgetPword(req.session.phonenumber, req.body).then((status) => {
     req.session.phonenumber = null;
     res.json(status)
   })
 })
 
-router.get('/returnOrder/:id',(req,res)=>{
+router.get('/returnOrder/:id', (req, res) => {
   // userHelpers.returnProducts(req.params.id)
   let id = req.params.id;
-  res.render('users/returnForm',{user:true,id})
+  res.render('users/returnForm', { user: true, id })
 })
 
-router.post('/returnOrder',(req,res)=>{
+router.post('/returnOrder', (req, res) => {
   userHelpers.returnOrder(req.body)
 })
 
-router.post("/searchProduct",(req,res)=>{
-  userHelpers.productSearch(req.body).then((products)=>{
-    res.render('users/searchProduct',{products,user:true})
+router.post("/searchProduct", (req, res) => {
+  userHelpers.productSearch(req.body).then((products) => {
+    res.render('users/searchProduct', { products, user: true })
   })
+})
+  
+
+router.get('/wishlist', userCheck, async (req, res) => {
+  {
+    let products = await userHelpers.getWishlistProducts(req.session.user._id);
+    console.log(products);
+    let total = 0;
+    userDetails = req.session;
+    cartCount = req.session.cartCount;
+    res.render('users/wishlist', { user: true, userDetails, cartCount, 'userId': req.session.user._id, products, total: total[0] })
+  }
+})
+
+
+
+router.get('/addToWishlist/:id', userCheck, (req,res) => {
+  if (req.session.userLoggedIn) {
+    userHelpers.addToWishlist(req.params.id, req.session.user._id).then((response) => {
+      res.json(response)
+    })
+  }
+  else {
+    const response = false;
+    res.json(response)
+  }
+})
+
+
+router.post('/removeWishlistProduct', userCheck, (req,res)=>{
+  userHelpers.removeWishlistProduct(req.body).then((response) => {
+    res.json(response)
+})
 })
 module.exports = router;
 
