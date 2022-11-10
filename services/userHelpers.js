@@ -135,10 +135,7 @@ module.exports = {
     }),
 
     addToCart: async (prodId, userId) => {
-        console.log(prodId);
         let Cproduct = await db.get().collection(collections.PRODUCT).findOne({ _id: objectId(prodId) })
-        console.log("kkkkkkkkkkkkkkkkk");
-        console.log(Cproduct);
         let productObj = {
             item: objectId(prodId),
             price: parseInt(Cproduct.price),
@@ -723,6 +720,8 @@ module.exports = {
         })
     },
     removeWishlistProduct: (details) => {
+        console.log("{{{{{{{{{");
+        console.log(details);
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collections.WISHLIST)
                 .updateOne({ _id: objectId(details.wishlist) },
@@ -733,5 +732,9 @@ module.exports = {
                     resolve({ removeProduct: true })
                 })
         })
-    }
-}       
+    },
+    deleteWishlistProduct:(id)=>{
+        return new Promise((resolve,reject)=>{
+
+        })
+    }}       

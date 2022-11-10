@@ -63,23 +63,18 @@
 									</div><!-- End .product -->
 								</td>
 								<td class="price-col">{{this.product.price}}</td>
-                                
-								<td class="stock-col"><span class="in-stock">In stock</span></td>
+                                {{#if (stockOut this.product.stock)}}
+								<td class="stock-col"><span class="text-danger">stock out</span></td>
+                                {{else}}
+                                <td class="stock-col"><span class="in-stock">In stock</span></td>
+                                {{/if}}
                                 {{#if (stockOut this.product.stock)}}
 								<td class="action-col">
 									<button class="btn btn-block btn-outline-danger-2"><i class="icon-cart-plus"></i>Stock Out</button>
 								</td>
                                 {{else}}
                                 <td class="action-col">
-                                    {{#if this.product}}
-                    
-                                    {{#each this.user}}
-                                    hai
-                                    <h6>{{this.item}}</h6>
-                                    {{/each}}
-                                    {{/if}}
-                                    
-									<button class="btn btn-block btn-outline-primary-2" onclick="addToCart('{{this.products.item}}')" ><i class="icon-cart-plus"></i>Add to Cart</button>
+									<button class="btn btn-block btn-outline-primary-2" onclick="moveToCart('{{this.item}}','{{this._id}}')" ><i class="icon-cart-plus"></i>Add to Cart</button>
 								</td>
                                 {{/if}}
 								<td class="remove-col"><button class="btn-remove" onclick="removeProduct('{{this._id}}','{{this.product._id}}')"><i class="icon-close"></i></button></td>

@@ -16,11 +16,7 @@ function addToWishlist(prodId) {
             }
             
             else if (response.status) {
-                let count = $("#cart-count").html()
-                count = parseInt(count) + 1
-                $("#cart-count").html(count)
-                swal("wow!", "The Product Added to Whishlist!", "success");
-
+                swal("wow!", "The Product Added to Whishlist!", "success")
             }
         }
     })

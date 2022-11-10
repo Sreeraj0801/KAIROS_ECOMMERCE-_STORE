@@ -22,6 +22,7 @@ module.exports.userCart = async (req, res) => {
     try {
         if (req.session.userLoggedIn) {
             userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
+                userHelpers.deleteWishlistProduct(req.params.id)
                 res.json({ status: true })
             })
         }

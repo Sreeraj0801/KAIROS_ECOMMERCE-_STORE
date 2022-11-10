@@ -240,5 +240,6 @@ router.post('/removeWishlistProduct', userCheck, (req,res)=>{
     res.json(response)
 })
 })
+
 module.exports = router;
 
