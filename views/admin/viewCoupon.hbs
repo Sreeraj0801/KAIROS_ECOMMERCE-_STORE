@@ -1,3 +1,97 @@
-<main>
-    <h5>hai i am here</h5>
+<main id="main" class="main">
+    <div>
+        <h3 class="text-primary">Add Product Offer</h3>
+        <hr>
+    </div>
+    <div class="conatainer text-end me-5">
+        <a href="/admin/addCoupoun"><i class="bi bi-file-earmark-plus"></i> Add coupon</a>
+    </div>
+    <div class="container">
+        <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Offer Text</th>
+                    <th scope="col">offer  (%)</th>
+                    <th scope="col">offer option</th>
+                  </tr>
+                  
+                </thead>
+                <tbody>
+                     {{#each coupons}}
+                  <tr>
+                    <th scope="row">{{plusOne @index}}</th>
+                    <td>{{this.details.offertext}}</td>
+                    <td>{{this.details.offerPercentage}} %</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="addOfferModal('{{this._id}}')">
+                        Edit
+                     </button>
+                         <button type="button" class="btn btn-danger" onclick="removeCoupon('{{this._id}}')">
+                       Delete 
+                     </button>
+                    </td>
+                  </tr>
+                  {{/each}} 
+                </tbody>
+              </table>
+    </div>
+
+
+
+    <div class="modal fade" id="verticalycentered" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Add Offer (%)</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="offerForm">
+                    <div class="modal-body">
+                            <input type="number" name="offerPrice" id="offerPrice" class="form-control" min="1" max="100">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="subm" class="btn btn-primary" >Save changes</button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div><!-- End Vertically centered Modal-->
 </main>
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    function removeCoupon (id){
+     swal({
+  title: "Are you sure?",
+  text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+      $.ajax({
+            url : '/admin/removeCoupon',
+            method :'delete',
+            data : {id},
+            success :(response)=>{
+                if(response.status)
+                {
+                     swal("Poof! Your  Coupon has been deleted!", {
+                     icon: "success",
+                     }).then(()=>{
+                        location.reload()
+                        
+                     })
+                }
+            }
+        })
+  } else {
+    swal("Your  file is safe!");
+  }
+});       
+    }
+</script>

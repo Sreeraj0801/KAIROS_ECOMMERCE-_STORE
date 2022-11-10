@@ -1,4 +1,5 @@
 const { response } = require('express');
+const async = require('hbs/lib/async');
 const { Collection } = require('mongo');
 const { Db, Timestamp } = require('mongodb');
 const { resolve, reject } = require('promise');
@@ -484,10 +485,31 @@ deleteCategory : (categoryId)=>{
                 oldPrice :1
                 }})
                 resolve({status:true})
-        }
-       
+        }    
+    })
+  },
+  addCoupon :(details)=>{
+    return new Promise(async(resolve,reject)=>{
+        console.log(details);
+        details.offerPercentage = parseInt(details.offerPercentage);
+        await db.get().collection(collections.COUPON).insertOne({details}).then(()=>{
+            resolve()
+        })
 
-        
+    })
+  },
+  getAllCoupons :()=>{
+    return new Promise(async(resolve,reject)=>{
+       coupons =  await db.get().collection(collections.COUPON).find({}).toArray()
+            resolve(coupons)
+
+    })
+  },
+  removeCoupon:(id)=>{
+    return new Promise(async(resolve,reject)=>{
+        await db.get().collection(collections.COUPON).deleteOne({_id:objectId(id)}).then(()=>{
+            resolve({status:true})
+        })
     })
   }
 }

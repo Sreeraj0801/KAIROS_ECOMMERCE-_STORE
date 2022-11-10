@@ -24,6 +24,7 @@ const userHelpers = require('../services/userHelpers');
 const { upload } = require('../public/javascripts/fileUpload');
 const { logOut } = require('../controller/userController');
 const { response } = require('express');
+const async = require('hbs/lib/async');
 
 
 
@@ -163,6 +164,28 @@ router.get('/productOffers',async (req,res)=>{
     productHelpers.removeProductOffer(req.body.id).then((response)=>{
       res.json(response)
     })
-
   })
+
+  router.get('/coupon',sessionCheck, async(req,res)=>{
+    coupons =  await productHelpers.getAllCoupons();
+    console.log(coupons);
+    res.render('admin/viewCoupon',{admin:true,coupons})
+  })
+
+  router.get('/addCoupoun',(req,res)=>{
+    res.render('admin/addCoupoun',{admin:true});
+  })
+  router.post('/addCoupon',(req,res)=>{
+    console.log(req.body);
+    productHelpers.addCoupon(req.body).then(()=>{
+      res.redirect('/admin/coupon')
+    })
+  })
+
+  router.delete('/removeCoupon',async (req,res)=>{
+    productHelpers.removeCoupon(req.body.id).then((response)=>{
+      res.json(response)
+    })
+  })
+  
 module.exports = router;

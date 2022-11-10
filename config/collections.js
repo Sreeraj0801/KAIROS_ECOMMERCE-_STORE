@@ -9,5 +9,6 @@ module.exports={
     ADDRESS: 'address',
     RETURN_ORDER:'return',
     WALLET : 'wallet',
-    WISHLIST:'wishlist'
+    WISHLIST:'wishlist',
+    COUPON : 'coupon'
 }
