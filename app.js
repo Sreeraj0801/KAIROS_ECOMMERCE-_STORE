@@ -6,6 +6,7 @@ const logger = require('morgan');
 const hbs = require('hbs')
 const adminRouter = require('./routes/admin');
 const usersRouter = require('./routes/users');
+const Cropper = require('cropperjs')
 
 const app = express();
 const multer = require('multer');            
