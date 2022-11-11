@@ -13,6 +13,8 @@
                     <th scope="col">#</th>
                     <th scope="col">Offer Text</th>
                     <th scope="col">offer  (%)</th>
+                    <th scope="col">Expiry Date</th>
+                     <th scope="col">Status</th>
                     <th scope="col">offer option</th>
                   </tr>
                   
@@ -23,6 +25,8 @@
                     <th scope="row">{{plusOne @index}}</th>
                     <td>{{this.details.offertext}}</td>
                     <td>{{this.details.offerPercentage}} %</td>
+                    <td>{{this.details.expiryDate}}</td>
+                    <td>{{this.details.status}}</td>
                     <td>
                         <button type="button" class="btn btn-primary" onclick="addOfferModal('{{this._id}}')">
                         Edit
@@ -36,9 +40,6 @@
                 </tbody>
               </table>
     </div>
-
-
-
     <div class="modal fade" id="verticalycentered" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">

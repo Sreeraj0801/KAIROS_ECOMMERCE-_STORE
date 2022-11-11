@@ -490,12 +490,38 @@ deleteCategory : (categoryId)=>{
   },
   addCoupon :(details)=>{
     return new Promise(async(resolve,reject)=>{
-        console.log(details);
+        let date = new Date();
+        let Day = date.getDate();
+        let Month = date.getMonth() + 1;
+        let Year = date.getFullYear();
+        let finaldate = `${Year}-${Month}-${Day}`
+        details.createdDate = finaldate
         details.offerPercentage = parseInt(details.offerPercentage);
-        await db.get().collection(collections.COUPON).insertOne({details}).then(()=>{
-            resolve()
-        })
-
+        details.status = "valid"
+        let coupon = await db.get().collection(collections.COUPON).findOne({'details.offertext':details.offertext})
+        console.log(coupon);
+        console.log(details.offertext);
+        if(coupon)
+        {
+            if(details.createdDate > details.expiryDate ){
+                resolve({date:true})
+            }
+            else{
+                resolve({coupon:true})
+            }
+            
+        }
+        else{
+            if(details.createdDate > details.expiryDate ){
+                resolve({date:true})
+            }
+            else{
+               
+                await db.get().collection(collections.COUPON).insertOne({details}).then(()=>{
+                    resolve({status:true})
+                })
+            }
+        }
     })
   },
   getAllCoupons :()=>{
@@ -511,5 +537,42 @@ deleteCategory : (categoryId)=>{
             resolve({status:true})
         })
     })
+  },
+  checkCoupon :()=>{
+    return new Promise((resolve,reject)=>{
+        let date = new Date();
+        let Day = date.getDate();
+        let Month = date.getMonth() + 1;
+        let Year = date.getFullYear();
+        let finaldate = `${Year}-${Month}-${Day}`
+        db.get().collection(collections.COUPON).update({'details.expiryDate':finaldate},{$set:{
+            'details.status' :'expired'
+        }})
+    })
+  },
+  findCoupon:(detail)=>{
+    return new Promise(async(resolve,reject)=>{
+    coupon = await db.get().collection(collections.COUPON).findOne({'details.offertext':detail.coupon})
+    if(coupon){
+        if(coupon.details.status == 'expired'){
+            resolve({expire:true})
+        }
+        else{
+            couponName = coupon.details.offertext
+            percentage = coupon.details.offerPercentage
+            couponDetails ={
+                coupon:couponName,
+                offerPercentage:percentage,
+                couponStatus:true
+            }
+            resolve(couponDetails)
+        }
+    }
+    else{
+        resolve({couponNoExist:true})
+    }
+    })
+    
+
   }
 }

@@ -241,5 +241,11 @@ router.post('/removeWishlistProduct', userCheck, (req,res)=>{
 })
 })
 
+router.post('/applycoupon',(req,res)=>{
+  productHelpers.findCoupon(req.body).then((response)=>{
+    res.json(response)
+  })
+})
+
 module.exports = router;
 

@@ -25,6 +25,7 @@ const { upload } = require('../public/javascripts/fileUpload');
 const { logOut } = require('../controller/userController');
 const { response } = require('express');
 const async = require('hbs/lib/async');
+const { resolve } = require('promise');
 
 
 
@@ -65,7 +66,6 @@ router.get('/editCategory/:id', sessionCheck,editCategory)
 
 /* <---------------  Post Edit Category Page -------------> */
 router.post('/editCategory/:id',postEditCategory)
-
 
 /* <---------------  Post Delete Category Page -----------> */
 router.get('/deleteCategory/:id',deleteCategory)
@@ -167,8 +167,8 @@ router.get('/productOffers',async (req,res)=>{
   })
 
   router.get('/coupon',sessionCheck, async(req,res)=>{
+    productHelpers.checkCoupon();
     coupons =  await productHelpers.getAllCoupons();
-    console.log(coupons);
     res.render('admin/viewCoupon',{admin:true,coupons})
   })
 
@@ -176,9 +176,8 @@ router.get('/productOffers',async (req,res)=>{
     res.render('admin/addCoupoun',{admin:true});
   })
   router.post('/addCoupon',(req,res)=>{
-    console.log(req.body);
-    productHelpers.addCoupon(req.body).then(()=>{
-      res.redirect('/admin/coupon')
+    productHelpers.addCoupon(req.body).then((response)=>{
+      res.json(response)
     })
   })
 
@@ -187,5 +186,7 @@ router.get('/productOffers',async (req,res)=>{
       res.json(response)
     })
   })
+
+ 
   
 module.exports = router;

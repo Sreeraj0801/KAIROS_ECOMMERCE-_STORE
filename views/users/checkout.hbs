@@ -4,7 +4,7 @@
     <!-- Main CSS File -->
     <link rel="stylesheet" href="/userAssets/css/style.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -28,14 +28,46 @@
             <div class="page-content">
                 <div class="checkout">
                     <div class="container">
-                        <div class="checkout-discount">
-                            <form action="#">
-                                <input type="text" class="form-control" required id="checkout-discount-input">
-                                <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>
-                                        Click here to enter your code</span></label>
-
+                        <div class="cart-discount mt-5">
+                            <form action="" id="applycoupon">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="couponInput" name="coupon"
+                                        placeholder="coupon code"><span><input type="submit"
+                                            class="btn btn-secondary "></span>
+                                </div><!-- End .input-group -->
+                                <p class="text-danger" id="couponMsg"></p>
+                                <p class="text-success" id="couponMsgSucess"></p>
+                                <a data-toggle="modal" data-target="#couponmodal"
+                                    style="cursor: pointer; color: darkblue;">Need to find a coupon?</a>
                             </form>
-                        </div><!-- End .checkout-discount -->
+                        </div>
+                        <div class="modal fade" id="couponmodal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                 <div class="modal-body">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="modalclose()">
+                                          <span aria-hidden="true"><i class="icon-close"></i></span>
+                                    </button>
+                                    <h3 class="text-center fw-5 text-success">COUPONS</h3>
+                                    {{#each coupons}}
+                                 <div class="col-md-12 float-left me-5 mb-4">                       
+                                 <label class="card">
+                                    <input name="deliverydetails" class="radio" type="radio" checked id="couponvalues{{this._id}}" value="{{this.details.offertext}}" data-dismiss="modal">
+                                    <span class="plan-details" onclick="selectcoupon('{{this._id}}')">
+                                       <span class="plan-type"></span>
+                                       <span class="text-success font-weight-bold" >{{this.details.offertext}}<span class="slash"></span><abbr class="plan-cycle" title="month"></abbr></span>
+                                       <span class="text-danger font-weight-bold">GET {{this.details.offerPercentage}} % on the Cart Product</span>
+                                       <span>Claim It Before Expiring</span>
+                                    </span>
+                                 </label>
+                                 </div>
+                                 {{/each}}
+
+                                 </div><!-- End .modal-body -->
+                              </div><!-- End .modal-content -->
+                        </div><!-- End .modal-dialog -->
+                     </div><!-- End .modal -->
+                        <br><br>
                         <form id="checkoutForm">
                             <div class="row">
                                 <div class="col-lg-8">
@@ -89,15 +121,27 @@
 
                                                 <tr class="summary-subtotal">
                                                     <td>Subtotal:</td>
-                                                    <td>₹ &nbsp; {{total.total}}</td>
+                                                    <td id="totalPrice">₹ &nbsp; {{total.total}}</td>
                                                 </tr><!-- End .summary-subtotal -->
                                                 <tr>
                                                     <td>Shipping:</td>
                                                     <td>Free shipping</td>
                                                 </tr>
+                                                <tr>
+                                                    <td>Coupon Applied</td>
+                                                    <td id="appliedCoupon"></td>
+                                                    <input type="text" name="offerPrice" id="offerPricew" value="" hidden>
+                                                    <input type="text" name="coupon" id="couponName" hidden>
+                                                    <input type="text" name="offerPercentage" id="offerPercentage" hidden>
+                                                </tr>
+                                                <tr class="summary-total">
+                                                    <td>Discount:</td>
+                                                    <td id="discountPercentage">0%</td>
+                                                </tr>
                                                 <tr class="summary-total">
                                                     <td>Total:</td>
-                                                    <td>₹ &nbsp; {{total.total}}</td>
+                                                    <td id="totalAmountand">₹ &nbsp; {{total.total}}</td>
+                                                    <input type="text" name="" id="totalAmount" value="{{total.total}}" hidden>
                                                 </tr><!-- End .summary-total -->
                                             </tbody>
                                         </table><!-- End .table table-summary -->
@@ -530,7 +574,6 @@
     </div><!-- End .modal -->
 
     <!-- Plugins JS File -->
-
 </body>
 <script src="/userAssets/js/jquery.min.js"></script>
 <script src="/userAssets/js/bootstrap.bundle.min.js"></script>
@@ -546,16 +589,15 @@
             data: $('#checkoutForm').serialize(),
             success: (response) => {
                 if (response.paymentMethod == 'COD') {
-                    swal("Good job!", "Cash On Delivery!","success").then(() => {
+                    swal("Good job!", "Cash On Delivery!", "success").then(() => {
                         location.href = '/profile'
                     })
                 }
-                else if(response.paymentMethod == 'Razorpay') {
+                else if (response.paymentMethod == 'Razorpay') {
                     razorpayPayment(response)
                 }
-                else
-                {
-                    location.href=response;
+                else {
+                    location.href = response;
                 }
             }
         })
@@ -572,7 +614,7 @@
             "image": "https://example.com/your_logo",
             "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
-                verifyPayment(response,order)
+                verifyPayment(response, order)
             },
             "prefill": {
                 "name": order.name,
@@ -590,7 +632,7 @@
         rzp1.open();
     }
 
-    function verifyPayment(payment,order) {
+    function verifyPayment(payment, order) {
         $.ajax({
             url: '/verifyPayment',
             data: {
@@ -598,28 +640,71 @@
                 order
             },
             method: 'post',
-            success : (response)=>{
-                if(response.status)
-                {
+            success: (response) => {
+                if (response.status) {
                     alert("payment succesfull")
                     location.href = '/sample'
 
                 }
-                else
-                {
+                else {
                     alert('payment failed')
                 }
             }
         })
     }
 </script>
-
-
-
 <script>
     function addAddress(userId) {
         location.href = '/addAddress'
     }
 </script>
+<script>
+
+function selectcoupon(couponId)
+{
+    let coupon = document.getElementById('couponvalues'+couponId).value;
+    document.getElementById('couponInput').value = coupon
+}
+
+				$('#applycoupon').submit((e)=>{
+					e.preventDefault()
+                    total = document.getElementById('totalAmount').value;
+                    document.getElementById('totalAmountand').innerHTML ="₹"+ total;
+                    document.getElementById('couponMsgSucess').innerHTML = "  "
+                    document.getElementById('couponMsg').innerHTML = " "
+					$.ajax({
+						url:'/applycoupon',
+						type:'post',
+						data:$('#applycoupon').serialize(),
+						success:(response)=>{
+							if(response.expire)
+                            {
+                                document.getElementById('couponMsg').innerHTML = "coupon Expired"
+                            }
+                            else if(response.couponNoExist)
+                            {
+                                document.getElementById('couponMsg').innerHTML = "not a valid coupon "
+                            }
+                            else if(response.couponStatus)
+                            {
+                                document.getElementById('couponMsgSucess').innerHTML = " coupon Applied "
+                                
+                                amount = (total*40)/100;
+                                couponPercentage = response.offerPercentage;
+                                couponName = response.coupon;
+                                d = (amount*couponPercentage)/100;
+                                finalAmount = total-d ;
+                                finalAmount = Math.ceil(finalAmount);
+                                document.getElementById('totalAmountand').innerHTML ="₹"+ finalAmount;
+                                document.getElementById('discountPercentage').innerHTML = couponPercentage +"%"
+                                document.getElementById('offerPricew').value = finalAmount
+                                document.getElementById('couponName').value = couponName
+                                document.getElementById('offerPercentage').value = couponPercentage
+                            }
+						}
+                        
+					})
+				})		
+		</script>
 
 </html>
