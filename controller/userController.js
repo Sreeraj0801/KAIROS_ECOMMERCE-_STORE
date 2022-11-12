@@ -1,3 +1,4 @@
+const { log } = require('debug/src/browser');
 const express = require('express');
 const session = require('express-session');
 const { Db } = require('mongodb');
@@ -17,10 +18,16 @@ module.exports.userLoginPage = async function (req, res, next) {
       req.session.userDetails
       message = req.session.message
       userExist = req.session.userExist;
+      invalidReferal = req.session.invalidReferal;
       if(userExist)
       {
         res.render("users/login", { err: req.session.err , message,userExist});
         req.session.userExist = null;
+      }
+      else if(invalidReferal)
+      {
+        res.render("users/login", { err: req.session.err , message,invalidReferal});
+        req.session.invalidReferal = null;
       }
       else{
         res.render("users/login", { err: req.session.err , message})
@@ -66,7 +73,38 @@ module.exports.userLogin =  async (req, res) => {
 
  /* <---------------------- Post User SignUp -----------------------> */
   module.exports.signUp = async (req, res) => {
-    userHelpers.addUser(req.body)
+    if(req.body.refferal)
+    {
+      let amount = parseInt(50);
+      let refferalCode = await userHelpers.findRefferal(req.body.refferal,amount)
+      if(refferalCode)
+      {
+        userHelpers.addUser(req.body)
+        .then((result) => {
+        if (result.status) { 
+          req.session.userExist = false
+          userHelpers.addWallet(result.id)
+          userHelpers.addReferalMoney(result.id)
+          req.session.message = true;
+          res.redirect("/login")
+        }
+         else {
+          req.session.userExist = true;
+          req.session.a = true
+          errorMail = result.message
+          res.redirect('/login')
+        }
+     })
+      }
+      else{
+        req.session.invalidReferal = true;
+        res.redirect('/login')
+      }
+    }
+
+
+    else{
+      userHelpers.addUser(req.body)
       .then((result) => {
         if (result.status) { 
           req.session.userExist = false
@@ -80,13 +118,12 @@ module.exports.userLogin =  async (req, res) => {
           res.redirect('/login')
         }
      })
+    }
   }
 
    /* <---------------------- Get Log Out -----------------------> */
   module.exports.logOut = async function (req, res) {
     req.session.user = null;
-    console.log("{{{{{{{{{{{");
-    console.log(req.session.userLoggedIn);
     req.session.userLoggedIn = false ;
     req.session.cartCount = null;
     res.redirect('/')

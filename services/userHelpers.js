@@ -5,6 +5,8 @@ const collections = require("../config/collections")
 const { resolve, reject } = require("promise")
 const { response } = require("express")
 var objectId = require('mongodb').ObjectId
+const voucher_codes = require('voucher-code-generator');
+
 //requirong env files
 const dotenv = require('dotenv').config();
 //<---------------requiring Razorpay----------------->
@@ -18,6 +20,7 @@ const paypal = require('paypal-rest-sdk');
 const { log } = require("console")
 const { request } = require("http")
 const { getProductDetails } = require("./productHelpers")
+const { Timestamp } = require("mongodb")
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id':process.env.PAYPAL_CLIENT_ID,
@@ -42,7 +45,13 @@ module.exports = {
                 response.userExist = true;
                 resolve(response)
             } else {
+               let refferal =  voucher_codes.generate({
+                    prefix: "ref-",
+                    length:10,
+                    postfix: "-"+users.Rname
+                });
                 users.status = true
+                users.refferal = refferal[0] ;
                 users.Rpassword = await bcrypt.hash(users.Rpassword, 10)
                 db.get().collection('users').insertOne(users)
                     .then((data) => {
@@ -737,12 +746,57 @@ module.exports = {
     },
     addUserToCoupon :(coupon,userId)=>{
         return new Promise(async(resolve,reject)=>{
-            console.log("[[[[[[[[[[[[[[[[[[");
-            console.log(coupon,userId);
             await db.get().collection(collections.COUPON).updateOne({'details.offertext':coupon},{$set:{
                 users:[userId]
             }})
             resolve()
         })
+    },
+    findRefferal :(refferal,amount) =>{
+        return new Promise(async(resolve,reject)=>{
+            refferalUser = await db.get().collection(collections.USER_COLLECTION).findOne({refferal:refferal});
+            resolve(refferalUser);
+            if(refferalUser)
+            {
+                refferalData = {
+                    Amount : parseInt(amount),
+                    Date:new Date().toDateString(),
+                    Timestamp:new Date(),
+                    status:"credited",
+                    message:"Refferal Amount"
+                }
+                db.get().collection(collections.WALLET).updateOne({userId:refferalUser._id},{
+                    $inc:{
+                        Total:amount
+                    },
+                    $push:{
+                        Transaction :refferalData
+                    }
+                })
+            }
+            else{
+
+            }
+        })
+    },
+    addReferalMoney :(userId)=>{
+        return new Promise((resolve,reject)=>{
+            refferalData = {
+                Amount : parseInt(50),
+                Date:new Date().toDateString(),
+                Timestamp:new Date(),
+                status:"credited",
+                message:"Refferal Amount"
+            }
+            db.get().collection(collections.WALLET).updateOne({userId:userId},{
+                $inc:{
+                    Total:50
+                },
+                $push:{
+                    Transaction :refferalData
+                }
+            })
+        })
+
     }
 }       

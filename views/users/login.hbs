@@ -53,6 +53,8 @@
                       </script>
                       {{else if userExist}}
                       <h6 class="text-danger">User Exist</h6>
+                      {{else if invalidReferal}}
+                      <h6 class="text-danger">Invalid Refferal Link</h6>
                       {{/if}}  
                         <h4 id="msg"></h4>
                         <ul class="nav nav-pills nav-fill" role="tablist">
@@ -91,6 +93,12 @@
                                         <label for="register-password-2">Password *</label>
                                         <input type="password" class="form-control" id="register-password-2"
                                             name="Rpassword" required onkeyup="phoneCheck()" onclick="passwordCheck()">
+                                    </div><!-- End .form-group -->
+
+                                    <div class="form-group">
+                                        <label for="register-password-2">Refferal code *</label>
+                                        <input type="text" class="form-control" id="register-password-2"
+                                            name="refferal">
                                     </div><!-- End .form-group -->
 
                                     {{#if errorMail}}
