@@ -309,8 +309,8 @@ module.exports = {
         })
     },
     placeOrder: (order, products, total, paymentMethod) => {
+    
         return new Promise((resolve, reject) => {
-            total = total[0].total;
             let date = new Date();
             let Day = date.getDate();
             let Month = date.getMonth();
@@ -470,7 +470,7 @@ module.exports = {
             resolve(address)
         })
     },
-
+    
     editAddress: (details) => {
         details.Id = objectId(details.Id)
         return new Promise((resolve, reject) => {
@@ -497,7 +497,6 @@ module.exports = {
             resolve({ status: true })
         })
     },
-
     generateRazorpay: (orderId, total) => {
         total  = (total[0].total);
         return new Promise((resolve, reject) => {
@@ -720,8 +719,6 @@ module.exports = {
         })
     },
     removeWishlistProduct: (details) => {
-        console.log("{{{{{{{{{");
-        console.log(details);
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collections.WISHLIST)
                 .updateOne({ _id: objectId(details.wishlist) },
@@ -737,4 +734,15 @@ module.exports = {
         return new Promise((resolve,reject)=>{
 
         })
-    }}       
+    },
+    addUserToCoupon :(coupon,userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            console.log("[[[[[[[[[[[[[[[[[[");
+            console.log(coupon,userId);
+            await db.get().collection(collections.COUPON).updateOne({'details.offertext':coupon},{$set:{
+                users:[userId]
+            }})
+            resolve()
+        })
+    }
+}       

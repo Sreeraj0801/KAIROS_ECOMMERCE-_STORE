@@ -29,9 +29,11 @@ module.exports.placeOrder = async(req,res)=>{
     let products = await userHelpers.getCartProductList(req.session.user._id);
     let totalPrice = await userHelpers.getTotalAmount(req.session.user._id);
     let address = await userHelpers.getSingleAddress(req.body.plan);
-    let paymentMethod = req.body.paymentMethod;;
+    let paymentMethod = req.body.paymentMethod;
+    totalPrice = totalPrice[0].total;
     if(req.body.coupon)
     {
+      await userHelpers.addUserToCoupon(req.body.coupon,req.session.user._id)
       userHelpers.placeOrder(address,products,totalPrice,paymentMethod).then((orderId)=>{
         console.log(paymentMethod);
         let result ={

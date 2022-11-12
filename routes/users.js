@@ -242,7 +242,7 @@ router.post('/removeWishlistProduct', userCheck, (req,res)=>{
 })
 
 router.post('/applycoupon',(req,res)=>{
-  productHelpers.findCoupon(req.body).then((response)=>{
+  productHelpers.findCoupon(req.body,req.session.user._id).then((response)=>{
     res.json(response)
   })
 })

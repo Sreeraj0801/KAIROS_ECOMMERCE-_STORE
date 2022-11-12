@@ -685,10 +685,13 @@ function selectcoupon(couponId)
                             {
                                 document.getElementById('couponMsg').innerHTML = "not a valid coupon "
                             }
+                            else if(response.user)
+                            {
+                                document.getElementById('couponMsg').innerHTML = "Coupon already used"
+                            }
                             else if(response.couponStatus)
                             {
-                                document.getElementById('couponMsgSucess').innerHTML = " coupon Applied "
-                                
+                                document.getElementById('couponMsgSucess').innerHTML = " coupon Applied ";
                                 amount = (total*40)/100;
                                 couponPercentage = response.offerPercentage;
                                 couponName = response.coupon;

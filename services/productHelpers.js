@@ -550,12 +550,17 @@ deleteCategory : (categoryId)=>{
         }})
     })
   },
-  findCoupon:(detail)=>{
+  findCoupon:(detail,user)=>{
     return new Promise(async(resolve,reject)=>{
     coupon = await db.get().collection(collections.COUPON).findOne({'details.offertext':detail.coupon})
+    user = await db.get().collection(collections.COUPON).findOne({users:user,'details.offertext':detail.coupon})
     if(coupon){
         if(coupon.details.status == 'expired'){
             resolve({expire:true})
+        }
+        else if(user)
+        {
+            resolve({user:true})
         }
         else{
             couponName = coupon.details.offertext
