@@ -47,6 +47,10 @@ hbs.registerHelper('multiply',(value,value2)=>{
   return  (parseInt(value) * parseInt(value2))
 })
 
+hbs.registerHelper('walletStatus',(value)=>{
+  return  value <= 0 ? true : false
+})
+
 
 /*Monog Db connect*/
 db.connect((err)=>{

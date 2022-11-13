@@ -138,6 +138,22 @@
                                             Want to change password ? </th>
                                             <td class="px-5"><a href="#signin-modal" data-toggle="modal"> click Here</a>
                                         </div>
+                                        <hr>
+                                        <div>
+                                            <h4 class="text-primary">Reffer a Friend</h4>
+                                            <small>Reffer your friend and gain the reward</small>
+                                        </div>
+                                        <div class="d-flex">
+                                         <!-- The text field -->
+                                        <div class="col-4">
+                                            <input type="text" value="{{UserDetails.refferal}}" id="myInput" class="form-control" style="border: 2px solid lightblue;border-radius: 4px;">
+                                            </div>
+
+                                    <!-- The button used to copy the text -->
+                                       <div>
+                                         <button onclick="myFunction()" class="btn btn-success rounded">Copy refferal</button>
+                                       </div>
+                                        </div>
                                     </div><!-- .End .tab-pane -->
 
                                     <div class="tab-pane fade" id="tab-orders" role="tabpanel"
@@ -239,9 +255,59 @@
                                     </div><!-- .End .tab-pane -->
                                     <div class="tab-pane fade" id="tab-downloads" role="tabpanel"
                                         aria-labelledby="tab-downloads-link">
-                                        <p>No downloads available yet.</p>
-                                        <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
-                                                class="icon-long-arrow-right"></i></a>
+                                        <div>
+                                            <h3 class="text-primary">Kairos Wallet</h3>
+                                        </div>
+                                        <div class="card">
+                                     <div class="card-body" style="border: 2px solid rgb(237, 214, 171);border-radius: 4px; width:auto ;">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                        <img src="https://cdn.dribbble.com/users/61734/screenshots/5384735/media/cf4f6e9320fbf91053e149fc7cae6b72.png?compress=1&resize=1000x750&vertical=top" alt="" style="height:112px;" >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h5 class="mt-5">Wallet Balance : </h5>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h4 class="mt-5 ">₹ <span class="text-success mt-5">{{walletDetails.Total}}</span></h4>
+                                    </div>
+                                    <div class="col-md-3 mt-5">
+                                         <BUTTON ONCLICK="ShowAndHide()" id="showButton" class="btn btn-success rounded">Show Transactions</BUTTON>
+                                    </div>
+                                    </div>
+                                    
+                                     </div>
+                                   </div>
+                                        <div  id="SectionName" STYLE="display:none">Transactions
+                                            {{#each walletDetails.Transaction}}
+                                            <div class="card mt-3" style="border: 2px solid lightblue;border-radius: 4px; width:auto ;">
+                                            <div class="card-body col-md-10">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                             {{this.Date}}
+                                            </div>
+                                            <div class="col-md-3">
+                                                {{#if (walletStatus this.Amount)}}
+                                                Rs &nbsp; <span class="text-danger">{{this.Amount}}</span>
+                                                {{else}}
+                                                Rs &nbsp; <span class="text-success">{{this.Amount}}</span>
+                                                {{/if}}
+                                            </div>
+                                            <div class="col-md-3">
+                                                {{#if (walletStatus this.Amount)}}
+                                                <p class="text-danger">Debited</p>
+                                                {{else}}
+                                                <p class="text-success"> Credited</p>
+                                                {{/if}}
+                                                
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>{{this.message}}</p>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            {{/each}}
+                                        </div>
                                     </div><!-- .End .tab-pane -->
                                     <div class="tab-pane fade" id="tab-address" role="tabpanel"
                                         aria-labelledby="tab-address-link">
@@ -653,3 +719,36 @@
             });
     }
 </script>
+
+
+<script>
+    function myFunction() {
+  // Get the text field
+  var copyText = document.getElementById("myInput");
+
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+   // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+
+  // Alert the copied text
+  
+  swal("Refferal copied to clipboard!",  copyText.value);
+}
+</script>
+
+
+<SCRIPT>
+function ShowAndHide() {
+    var x = document.getElementById('SectionName');
+    if (x.style.display == 'none') {
+        x.style.display = 'block';
+
+    } else {
+        x.style.display = 'none';
+    
+    }
+}
+</SCRIPT>

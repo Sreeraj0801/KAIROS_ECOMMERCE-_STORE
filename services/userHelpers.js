@@ -797,6 +797,11 @@ module.exports = {
                 }
             })
         })
-
+    },
+    getUserWallet:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            userWallet = await db.get().collection(collections.WALLET).findOne({userId:objectId(userId)})
+            resolve(userWallet)
+        })
     }
 }       

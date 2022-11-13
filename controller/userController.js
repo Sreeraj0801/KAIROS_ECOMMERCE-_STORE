@@ -15,28 +15,9 @@ module.exports.userLoginPage = async function (req, res, next) {
       res.redirect('/');
     }
     else {
-      req.session.userDetails
-      message = req.session.message
-      userExist = req.session.userExist;
-      invalidReferal = req.session.invalidReferal;
-      if(userExist)
-      {
-        res.render("users/login", { err: req.session.err , message,userExist});
-        req.session.userExist = null;
-      }
-      else if(invalidReferal)
-      {
-        res.render("users/login", { err: req.session.err , message,invalidReferal});
-        req.session.invalidReferal = null;
-      }
-      else{
-        res.render("users/login", { err: req.session.err , message})
-      }
-      res.render("users/login", { err: req.session.err , message,userExist})
-      req.session.message = ""
-      req.session.message1 = ""
-      req.session.loginErr = false
-      req.session.err = ""
+         res.render("users/login", { err: req.session.err});
+         req.session.loginErr = false
+         req.session.err = ""
     }
 }
 
@@ -75,47 +56,42 @@ module.exports.userLogin =  async (req, res) => {
   module.exports.signUp = async (req, res) => {
     if(req.body.refferal)
     {
-      let amount = parseInt(50);
+      let amount = parseInt(100);
       let refferalCode = await userHelpers.findRefferal(req.body.refferal,amount)
       if(refferalCode)
       {
+        
         userHelpers.addUser(req.body)
         .then((result) => {
         if (result.status) { 
+         
           req.session.userExist = false
           userHelpers.addWallet(result.id)
           userHelpers.addReferalMoney(result.id)
-          req.session.message = true;
-          res.redirect("/login")
+          res.json({user:true})
+
         }
          else {
-          req.session.userExist = true;
-          req.session.a = true
-          errorMail = result.message
-          res.redirect('/login')
+          
+          res.json({userExist:true})
         }
      })
       }
       else{
-        req.session.invalidReferal = true;
-        res.redirect('/login')
+        
+        res.json({invalidReferal:true});
       }
     }
-
 
     else{
       userHelpers.addUser(req.body)
       .then((result) => {
         if (result.status) { 
-          req.session.userExist = false
-          userHelpers.addWallet(result.id)
-          req.session.message = true;
-          res.redirect("/login")
+          userHelpers.addWallet(result.id);
+          res.json({user:true});
         }
          else {
-          req.session.userExist = true;
-          errorMail = result.message
-          res.redirect('/login')
+          res.json({userExist:true})
         }
      })
     }

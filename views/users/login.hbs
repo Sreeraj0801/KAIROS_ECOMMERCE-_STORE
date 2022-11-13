@@ -69,7 +69,7 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
-                                <form action="/signup" method="post" autocomplete="off">
+                                <form id="signUpForm">
                                     <div class="form-group">
                                         <label for="register-email-2">Your name *</label>
                                         <input type="text" class="form-control" id="name" name="Rname" required
@@ -100,7 +100,9 @@
                                         <input type="text" class="form-control" id="register-password-2"
                                             name="refferal">
                                     </div><!-- End .form-group -->
-
+                                    <div>
+                                        <p class="text-danger" id="signupMsg">sdfdf</p>
+                                    </div>
                                     {{#if errorMail}}
                                     <p style="color: red;">{{errorMail}}</p>
                                     {{/if}}
@@ -355,3 +357,35 @@
         document.getElementById('message').innerHTML = "";
     }
 </script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+$('#signUpForm').submit((e)=>{
+    e.preventDefault()
+    document.getElementById('signupMsg').innerHTML = " "
+	$.ajax({
+	url:'/signup',
+	type:'post',
+	data:$('#signUpForm').serialize(),
+	success:(response)=>{
+        if(response.user)
+        {
+            swal("Succesfully Registerd !", "Please Login!", "success").then(()=>{
+                location.reload()
+            })
+
+        }
+        else if(response.userExist)
+        {
+            document.getElementById('signupMsg').innerHTML = "User Exist"
+        }
+        else if(response.invalidReferal)
+        {
+            document.getElementById('signupMsg').innerHTML = "Invalid Refferal Please Login with a valid Refferal"
+        }
+        else{
+            alert("hai every bidy")
+        }
+						}
+					})
+				})		
+		</script>

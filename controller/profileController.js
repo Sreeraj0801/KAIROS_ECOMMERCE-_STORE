@@ -12,7 +12,8 @@ module.exports.profilePage = async (req, res) => {
         let UserDetails = await userHelpers.getUserDetails(req.session.user._id);
         cartCount = req.session.cartCount;
         userDetails = req.session ;
-        res.render('users/profile', { user: true, userDetails, orders, address, UserDetails,cartCount})
+        let walletDetails = await userHelpers.getUserWallet(req.session.user._id)
+        res.render('users/profile', { user: true, userDetails, orders, address, UserDetails,cartCount,walletDetails})
     } catch (error) {
 
     }
