@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/userAssets/css/style.css">
+</head>
+
+<body >
+        <main class="main">
+            <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17 " style="background-image: url('https://img.freepik.com/free-psd/abstract-background-with-phone_23-2149085909.jpg?w=2000');height:100% ">
+            {{!-- <div class="login-page h-100 pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17 bg-light" > --}}
+                {{!-- <h1 class="text-center mt-3 mb-3" >KAIROS</h1> --}}
+            	<div class="container">
+                    <h2 class="text-center" style="color:#fff ;">KAIROS</h4>
+            		<div class="form-box mt-5" style="border-radius:18px;">
+                        
+            			<div class="form-tab">
+							<div class="tab-content">
+                                
+							    <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+                                    <form id="phoneNumberForm">
+							    		<div class="form-group">
+							    			<label for="singin-email-2"><h6>Enter Your Registered Mobile Number</h5></label>
+							    			<input type="text" class="form-control" id="singin-email-2" name="phonenumber" pattern="[7-9]{1}[0-9]{9}" 
+                                            title="10 Di
+                                            git Phone number" required>
+							    		</div><!-- End .form-group -->
+                                               <p class="text-danger" id="errMsg"></p>
+							    			<button type="submit"class="btn btn-outline-primary-2" >
+			                					<span>Get OTP</span>
+			            						<i class="icon-long-arrow-right"></i>
+			                				</button>
+							    	</form>
+							    </div><!-- .End .tab-pane -->
+							</div><!-- End .tab-content -->
+						</div><!-- End .form-tab -->
+            		</div><!-- End .form-box -->
+            	</div><!-- End .container -->
+            </div><!-- End .login-page section-bg -->
+            </div>
+        </main><!-- End .main -->
+
+        
+    
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <!-- Sign in / Register Modal -->
+    <!-- Plugins JS File -->
+    <script src="/userAssets/js/jquery.min.js"></script>
+    <script src="/userAssets/js/bootstrap.bundle.min.js"></script>
+    <script src="/userAssets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/userAssets/js/jquery.waypoints.min.js"></script>
+    <script src="/userAssets/js/superfish.min.js"></script>
+    <script src="/userAssets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/userAssets/js/main.js"></script>
+</body>
+<script>
+    $('#phoneNumberForm').submit((e)=>{
+        e.preventDefault()
+        $.ajax({
+            url:'/forgetPhone',
+            method:'post',
+            data:$('#phoneNumberForm').serialize(),
+            success:(response)=>{
+                if(response.mobileNotExist)
+                {
+                    document.getElementById("errMsg").innerHTML = "Please Enter the registered mobile number"
+                }
+                else if(response.otp)
+                {
+                    location.href = "/otp"
+                }
+            }
+        })
+    })
+</script>
+
+<!-- molla/login.html  22 Nov 2019 10:04:03 GMT -->
+</html>

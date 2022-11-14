@@ -1,62 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <!-- molla/login.html  22 Nov 2019 10:04:03 GMT -->
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/userAssets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/userAssets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/userAssets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="/userAssets/images/icons/site.html">
-    <link rel="mask-icon" href="/userAssets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="/userAssets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
-    <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="/userAssets/images/icons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="/userAssets/css/style.css">
-    <!-- Plugins CSS File -->
+
     <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="/userAssets/css/style.css">
 </head>
 
 <body>
+
     <main class="main">
         <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
-
         </nav><!-- End .breadcrumb-nav -->
-
-        <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17 "
-            style="background-image: url('/userAssets/images/backgrounds/login-bg.jpg');height:120% ;">
-            <h1 class="text-center text-light">KAIROS</h1>
-            <h3 class="text-center text-warning">The precious moment</h3>
+        <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17  "
+            style="background-image: url('https://images4.newscred.com/Zz1kNmFkYmFmNzhlNGIxMWViYTU1ZDFmYjg0ZWI5MTc4Zg==');height:130% ;">
+            <h1 class="text-center" style="color: #141000;">KAIROS</h1>
+            <h3 class="text-center" style="color: #493c00;">The precious moment</h3>
             <div class="container">
-                <div class="form-box">
-                    <div class="form-tab">
-                      {{#if message}}
-                      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-                      <script>
-                        swal("Good job!", "Account Registered! PLEASE LOGIN", "success").then(()=>{
-                            location.reload();
-                        })
-                      </script>
-                      {{else if userExist}}
-                      <h6 class="text-danger">User Exist</h6>
-                      {{else if invalidReferal}}
-                      <h6 class="text-danger">Invalid Refferal Link</h6>
-                      {{/if}}  
-                        <h4 id="msg"></h4>
+                <div class="form-box" style="border-radius: 50px;  opacity:1">
+                    <div class="form-tab ">
                         <ul class="nav nav-pills nav-fill" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link " id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab"
@@ -71,37 +35,46 @@
                             <div class="tab-pane fade" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
                                 <form id="signUpForm">
                                     <div class="form-group">
-                                        <label for="register-email-2">Your name *</label>
+                                        {{!-- <label for="register-email-2">Your name *</label> --}}
+                                        <h6>Your Name *</h6>
                                         <input type="text" class="form-control" id="name" name="Rname" required
-                                            onkeyup="nameCheck()" onclick="nameCheck()">
+                                            onkeyup="nameCheck()" onclick="nameCheck()"
+                                            placeholder="please enter your user name">
                                         <p id="error-name" style="color: red;"> </p>
                                     </div><!-- End .form-group -->
                                     <div class="form-group">
-                                        <label for="register-email-2">Your email *</label>
+                                        {{!-- <label for="register-email-2">Your email *</label> --}}
+                                        <h6>Your email *</h6>
                                         <input type="email" name="Remail" class="form-control" id="email"
-                                            onkeyup="emailCheck()" onclick="emailCheck()">
+                                            onkeyup="emailCheck()" onclick="emailCheck()"
+                                            placeholder="please enter your unique email address">
                                         <p id="ermail" style="color: red"></p>
                                     </div><!-- End .form-group -->
                                     <div class="form-group">
-                                        <label for="phonenumber">Your Mobile Number *</label>
-                                        <input type="tel" class="form-control" id="phonenumber" name="Rmobile" required
-                                            onkeyup="phoneCheck()" onclick="phoneCheck()">
+                                        {{!-- <label for="phonenumber">Your Mobile Number *</label> --}}
+                                        <h6>Your Mobile Number *</h6>
+                                        <input type="tel" class="form-control " id="phonenumber" name="Rmobile" required
+                                            onkeyup="phoneCheck()" onclick="phoneCheck()"
+                                            placeholder="please enter your unique phone number">
                                         <p id="errphone" class="text-danger"></p>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
-                                        <label for="register-password-2">Password *</label>
+                                        {{!-- <label for="register-password-2">Password *</label> --}}
+                                        <h6>Password *</h6>
                                         <input type="password" class="form-control" id="register-password-2"
-                                            name="Rpassword" required onkeyup="phoneCheck()" onclick="passwordCheck()">
+                                            name="Rpassword" required onkeyup="phoneCheck()" onclick="passwordCheck()"
+                                            placeholder="enter your password">
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
-                                        <label for="register-password-2">Refferal code *</label>
-                                        <input type="text" class="form-control" id="register-password-2"
-                                            name="refferal">
+                                        {{!-- <label for="register-password-2">Refferal code *</label> --}}
+                                        <h6>Refferal code *</h6>
+                                        <input type="text" class="form-control" id="register-password-2" name="refferal"
+                                            placeholder=" please enter your refferal code if have">
                                     </div><!-- End .form-group -->
                                     <div>
-                                        <p class="text-danger" id="signupMsg">sdfdf</p>
+                                        <p class="text-danger" id="signupMsg"></p>
                                     </div>
                                     {{#if errorMail}}
                                     <p style="color: red;">{{errorMail}}</p>
@@ -127,15 +100,18 @@
                                 aria-labelledby="register-tab-2">
                                 <form action="/login" method="post">
                                     <div class="form-group">
-                                        <label for="singin-email-2"> email address *</label>
+                                        {{!-- <label for="singin-email-2"> email address *</label> --}}
+                                        <h6>email address *</h6>
+                                        <i class="fa fa-bold" aria-hidden="true"></i>
                                         <input type="email" class="form-control" id="singin-email-2" name="Lemail"
-                                            required>
+                                            placeholder="enter your registered email address" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
-                                        <label for="singin-password-2">Password *</label>
+                                        {{!-- <label for="singin-password-2">Password *</label> --}}
+                                        <h6>Password *</h6>
                                         <input type="password" class="form-control" id="Lpassword" name="Lpassword"
-                                            required>
+                                            placeholder="enter your password" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-footer">
@@ -149,9 +125,8 @@
                                             <label class="custom-control-label" for="signin-remember-2">Remember
                                                 Me</label>
                                         </div><!-- End .custom-checkbox --> --}}
-                                        <a href="/phoneLogin" class="forgot-link"></a>
-                                        <a data-toggle="modal" data-target = "#abi" class="forgot-link">Forgot Your
-                                            Password?</a>
+                                        <a href="/phoneLogin" class="forgot-link"></a>  
+                                            <div class="d-flex ml-auto"><a href="/phoneNumber" class="" style="text-decoration: none; ">Forget Your Password ?</a> </div> 
                                     </div><!-- End .form-footer -->
                                     {{#if err}}
                                     <p class="text-center" style="color: red;">{{err}}</p>
@@ -229,7 +204,7 @@
 
 
 
-    <div class="modal fade" id="abi" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="phoneForm" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -250,14 +225,13 @@
                                         <div class="form-group">
                                             <label for="singin-email">Please Enter Your Registered Mobile Number
                                                 *</label>
-                                            <input type="tel" class="form-control" id="mobNum" name="mobile" required
-                                                onclick="remove()">
+                                            <input type="tel" class="form-control" id="mobNum" name="mobile" required>
                                         </div><!-- End .form-group -->
                                         <!-- End .form-group -->
                                         <p id="passTrue"></p>
                                         <p id="message" class="text-danger text-center"></p>
                                         <div class="form-footer">
-                                            <button type="submit" class="btn btn-outline-primary-2">
+                                            <button type="submit" class="btn btn-outline-primary-2" onclick="phoneModal()">
                                                 <span>SUBMIT</span>
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
@@ -272,7 +246,6 @@
             </div><!-- End .form-box -->
         </div><!-- End .modal-body -->
     </div>
-
     <div class="modal fade" id="otpModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -328,64 +301,56 @@
     <script src="/userAssets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="/userAssets/js/main.js"></script>
-</body>
-<!-- molla/login.html  22 Nov 2019 10:04:03 GMT -->
-
-</html>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
-
-
-
-    $('#forgetMobile').submit((e)=>{
-        e.preventDefault()
-        $.ajax({
-            url: '/mobileNumber',
-            data: $('#forgetMobile').serialize(),
-            method: 'post',
-            success:(response)=>{
-                if(response.status)
-                {
-                    $('#phone-modal').modal('hide')
-                    $('#otpModal').modal('show')
-                }
-            }
-        })
-    })
+    function phoneModal(){
+    phone = document.getElementById('mobNum').value;
     
+    $.ajax({
+        url:'/mobileNumber',
+        method:'post',
+        data:{mobile:phone},
+        success:(response)=>{
+            if(response)
+            {
+                $('#otpModal').modal('show')
+            }
+        }
+    })
+    }
+
     function remove() {
         document.getElementById('message').innerHTML = "";
     }
 </script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
-$('#signUpForm').submit((e)=>{
-    e.preventDefault()
-    document.getElementById('signupMsg').innerHTML = " "
-	$.ajax({
-	url:'/signup',
-	type:'post',
-	data:$('#signUpForm').serialize(),
-	success:(response)=>{
-        if(response.user)
-        {
-            swal("Succesfully Registerd !", "Please Login!", "success").then(()=>{
-                location.reload()
-            })
 
-        }
-        else if(response.userExist)
-        {
-            document.getElementById('signupMsg').innerHTML = "User Exist"
-        }
-        else if(response.invalidReferal)
-        {
-            document.getElementById('signupMsg').innerHTML = "Invalid Refferal Please Login with a valid Refferal"
-        }
-        else{
-            alert("hai every bidy")
-        }
-						}
-					})
-				})		
-		</script>
+<script>
+    $('#signUpForm').submit((e) => {
+        e.preventDefault()
+        document.getElementById('signupMsg').innerHTML = " "
+        $.ajax({
+            url: '/signup',
+            type: 'post',
+            data: $('#signUpForm').serialize(),
+            success: (response) => {
+                if (response.user) {
+                    swal("Succesfully Registerd !", "Please Login!", "success").then(() => {
+                        location.reload()
+                    })
+
+                }
+                else if (response.userExist) {
+                    document.getElementById('signupMsg').innerHTML = "User Exist"
+                }
+                else if (response.invalidReferal) {
+                    document.getElementById('signupMsg').innerHTML = "Invalid Refferal Please Login with a valid Refferal"
+                }
+                else {
+                    alert("hai every bidy")
+                }
+            }
+        })
+    })		
+</script>
+

@@ -53,3 +53,4 @@ function moveToCart(prodId,wishId) {
         }
     })
 }
+

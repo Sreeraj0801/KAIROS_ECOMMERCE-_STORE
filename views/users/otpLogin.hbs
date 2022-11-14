@@ -31,9 +31,6 @@
 </head>
 
 <body>
-
-
-
     <main class="main">
         <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17 "
             style="background-image: url('/userAssets/images/backgrounds/login-bg.jpg');height:100% ">
@@ -56,18 +53,23 @@
                                             <label for="singin-email-2">
                                                 <h6>Enter the otp you recieved in your mobile</h6>
                                             </label>
-                                            <input type="text" class="form-control" id="singin-email-2" name="code"
-                                                required>
+                                            <input type="text" class="form-control" id="singin-email-2" name="code">
                                             <br>
                                             <p style="color: red;">{{OTPmessage}}</p>
                                         </div><!-- End .form-group -->
 
-                                        <button type="submit" class="btn btn-outline-primary-2">
+                                       <div class="row">
+                                        <div class="col-md-6">
+                                             <button type="submit" class="btn btn-outline-primary-2">
                                             <span>Verify</span>
                                             <i class="icon-long-arrow-right"></i>
                                         </button>
-                                        <button onclick="resendOtp()">Resend OTP?</button>
-
+                                        </div>
+                                        <div class="col-md-6">
+                                        <button onclick="resendOtp()" class="btn btn-outline-primary-2 " style="display: none;" id="otpButton">Resend OTP?</button>
+                                        </div>
+                                       </div>
+                                            <h5 id="countDown" class="text-danger mt-5"></p>
                                     </form>
 
                                 </div><!-- .End .tab-pane -->
@@ -116,4 +118,34 @@
             }
         })
     }
+</script>
+
+<script>
+  $( document ).ready(function() {
+      var fiveMinutes = 60*2,
+    display = document.querySelector('#countDown');
+    startTimer(fiveMinutes, display);
+
+});
+
+function startTimer(duration, display) {
+  var timer = duration,
+    minutes, seconds;
+     setInterval(function() {
+    minutes = parseInt(timer / 60, 10)
+    seconds = parseInt(timer % 60, 10);
+
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    display.textContent =  minutes +":"+seconds;
+
+
+    if (--timer < 0) {
+     document.getElementById('otpButton').style.display = 'block'
+     document.getElementById('countDown').style.display = 'none'
+    }
+  }, 1000);
+
+}
 </script>

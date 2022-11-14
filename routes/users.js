@@ -16,7 +16,7 @@ paypal.configure({
 
 const { userLoginPage, userLogin, signUp, logOut } = require("../controller/userController");
 const { userCheck } = require("../controller/sessionController");
-const { phoneLoginPage, phoneLogin, otpForgetLoginPage, otpLoginPage, resendOtp, otpLogin, forgetOtp } = require("../controller/otpController");
+const { phoneLoginPage, phoneLogin, otpForgetLoginPage, otpLoginPage, resendOtp, otpLogin, forgetOtp ,forgetPhone} = require("../controller/otpController");
 const { userHomePage } = require("../controller/userHomeController");
 const { userCategory, userCategoryProducts } = require("../controller/categoryController");
 const { userBrand } = require('../controller/brandController');
@@ -49,7 +49,7 @@ router.get("/logout", logOut);
 router.get('/phoneLogin', phoneLoginPage);
 
 /* <--------------------- Post PhoneLogin Page --------------------> */
-router.post('/phoneLogin', phoneLoginPage);
+// router.post('/phoneLogin', phoneLoginPage);
 
 // <------------------ post of phone number - sendcode  -----------> */
 router.post("/sendcode", phoneLogin);
@@ -182,6 +182,7 @@ const client = require('twilio')(process.env.TWELIO_SID_KEY, process.env.TWELIO_
 
 
 router.post('/mobileNumber', (req, res) => {
+  console.log(req.body);
   res.json({ status: true });
 })
 
@@ -247,5 +248,33 @@ router.post('/applycoupon',(req,res)=>{
   })
 })
 
+router.get('/samplepage',(req,res)=>{
+  res.render('users/samplePage')
+})
+
+router.get('/phoneNumber',(req,res)=>{
+  res.render('users/forgetPhone')
+})
+
+
+router.post('/forgetPhone',forgetPhone);
+
+router.get('/otp',(req,res)=>{
+  res.render('users/otp')
+})
+
+router.post('/forgetOtp',forgetOtp)
 module.exports = router;
+
+router.get('/changePassword',(req,res)=>{
+  res.render('users/changePassword')
+})
+
+router.post('/updatePassword',(req,res)=>{
+  userHelpers.changeForgetPword(req.session.phonenumber ,req.body).then((response)=>{
+    res.json(response)
+  })
+})
+
+
 

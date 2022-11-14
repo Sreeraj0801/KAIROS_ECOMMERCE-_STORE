@@ -1,6 +1,7 @@
 //requiring config files
 const dotenv = require('dotenv').config();
 
+const { log } = require('debug/src/browser');
 //Helpers
 const userHelpers = require('../services/userHelpers')
 //otp twelio
@@ -60,11 +61,11 @@ let OTPphonenumber
     client.verify 
     .services (process.env.TWELIO_SERVICE_ID) // Change Service ID
     .verifications.create({
-    to: `+91${OTPphonenumber}`,
+    to: `+91${phonenumber}`,
     channel:"sms",
     })
     .then((data) => {
-      phonenumber = OTPphonenumber
+      phonenumber = phonenumber
       res.json({})
   })
 }
@@ -83,20 +84,41 @@ module.exports.otpLogin = async  (req, res) => {
           userHelpers.userDetails(phonenumber).then((resolve)=>{
             user1 = resolve
           })
-          // res.status(200).send({
-          //   message: "User is Verified!!",
-          //   data,
-          // });
           req.session.userLoggedIn = true
           res.redirect('/')
         } else {
           OTPmessage = "Invalid OTP!!"
           res.redirect("/otpLogin")
-          
         }
       });
   }
 
+
+  module.exports.forgetPhone = async (req,res)=>{
+    userHelpers.findMobile(req.body.phonenumber).then((response)=>{
+      console.log(response);
+      if(response.status)
+      {
+        phonenumber = req.body.phonenumber;
+        client.verify 
+        .services (process.env.TWELIO_SERVICE_ID) // Change Service ID
+        .verifications.create({
+        to: `+91${req.body.phonenumber}`,
+        channel:"sms",
+        })
+        .then((data) => {
+          console.log("hai hello");
+          console.log(data);
+          req.session.user = response.user
+          res.json({otp:true})
+      });
+      }
+      else{
+        res.json(response)
+      }
+      
+    })
+  }
 
   module.exports.forgetOtp = async  (req, res) => {
     client.verify
@@ -110,14 +132,10 @@ module.exports.otpLogin = async  (req, res) => {
           userHelpers.userDetails(phonenumber).then((resolve)=>{
             user1 = resolve
           })
-          // res.status(200).send({
-          //   message: "User is Verified!!",
-          //   data,
-          // });
-          res.redirect('/changePword')
+          req.session.phonenumber = phonenumber;
+          res.json({verify:true})
         } else {
-          OTPmessage = "Invalid OTP!!"
-          res.redirect("/otpLogin")
+          res.json({invalidOtp:true})
           
         }
       });

@@ -595,41 +595,44 @@ module.exports = {
 
         })
     },
-    changeForgetPword: (mobile,details) => {
-        return new Promise(async (resolve, reject) => {
-            if(details.newPword === details.confPword)
+    changeForgetPword: (mobile,details)=>{
+        return new Promise(async(resolve,reject)=>{
+            if(details.Cpass === details.Npass && mobile)
             {
-                let userdata = await db.get().collection(collections.USER_COLLECTION).findOne({Rmobile:mobile});
-                if (userdata) {
-                    let pass = await bcrypt.hash(details.newPword, 10)
-                    db.get().collection(collections.USER_COLLECTION)
-                        .updateOne({ Rmobile: mobile }, { $set: { Rpassword: pass } })
-                        .then(() => {
-                            response.status = true
-                            resolve({ status: true })
-                        })
-                }
-                else {
-                    resolve({ status: false })
-                }
+                let pass = await bcrypt.hash(details.Npass, 10)
+                db.get().collection(collections.USER_COLLECTION).updateOne({
+                    Rmobile:mobile},{
+                        $set:{
+                            Rpassword:pass 
+                        }
+                    }).then(()=>{
+                        resolve({passwordUpdated:true})
+                    })
             }
             else{
-                resolve({compare:true})
+               resolve({passwordMatch:true})
             }
         })
+
     },
     findMobile:(mobileNo)=>{
+        console.log(mobileNo);
        return new Promise(async(resolve,reject)=>{
         let mobile = await db.get().collection(collections.USER_COLLECTION).findOne({Rmobile:mobileNo});
         if(mobile)
         {
-            resolve(mobile)
+            details = {
+                status:true,
+                mobile:true
+            }
+            resolve(details)
         }
         else{
-            resolve()
+            resolve({mobileNotExist:true})
         }
        })
     },
+
     returnOrder:(details)=>{
         let id = objectId(details.id)
         return new Promise(async(resolve,reject)=>{
@@ -744,6 +747,7 @@ module.exports = {
 
         })
     },
+    
     addUserToCoupon :(coupon,userId)=>{
         return new Promise(async(resolve,reject)=>{
             await db.get().collection(collections.COUPON).updateOne({'details.offertext':coupon},{$set:{
