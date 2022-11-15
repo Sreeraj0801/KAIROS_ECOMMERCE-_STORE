@@ -1,3 +1,4 @@
+const { log } = require('debug/src/browser');
 const { response } = require('express');
 const async = require('hbs/lib/async');
 const { Collection } = require('mongo');
@@ -346,7 +347,12 @@ deleteCategory : (categoryId)=>{
   },
   getOrders : ()=>{
    return new Promise(async(resolve,reject)=>{
-    let orders = await db.get().collection(collections.ORDER).find({}).sort({timestamp:-1}).toArray();
+    // let orders = await db.get().collection(collections.ORDER).find({}).sort({timestamp:-1}).toArray();
+    let orders = await db.get().collection(collections.ORDER).aggregate([
+        {
+            $unwind:'$products',
+        }
+    ]).toArray()
         resolve(orders);
    })
   },

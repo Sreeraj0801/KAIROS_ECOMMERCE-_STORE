@@ -24,7 +24,7 @@
         <td>{{this.name}}</td>
         <td>{{this.date}}</td>
         <td>{{this._id}}</td>
-        <td>₹{{this.totalAmount}}</td>
+        <td>₹{{this.products.totalPrice}}</td>
         <td>{{this.paymentMethod}}</td>
         <td>{{this.status}}</td>
         {{!-- <td>
@@ -40,28 +40,28 @@
         {{else if (delivered this.trackOrder)}}
         <td class="text-success">{{this.trackOrder}}</td>
         {{else}}
-        <td>{{this.trackOrder}}</td>
+        <td>{{this.products.trackOrder}}</td>
         {{/if}}
         <td>
-          {{#if (cancel this.trackOrder)}}
+          {{#if (cancel this.products.trackOrder)}}
           <select class="form-select" aria-label="Default select example" id="{{this._id}}">
-            <option selected name="status" value="Orderd" class="text-danger" disabled>{{this.trackOrder}}</option>
+            <option selected name="status" value="Orderd" class="text-danger" disabled>{{this.products.trackOrder}}</option>
             <option name="status" value="Dispached" disabled>Dispached</option>
             <option name="Shipped" value="Shipped" disabled>Shipped</option>
             <option name="Delivered" value="Deliverd" disabled>Deliverd</option>
             <option name="canceled" value="canceled" disabled>Canceled</option>
           </select>
-          {{else if (delivered this.trackOrder)}}
-           <select class="form-select" aria-label="Default select example" id="{{this._id}}" onchange="changeStatus(event,'{{this._id}}')">
-            <option selected name="status" value="Orderd" disabled>{{this.trackOrder}}</option>
+          {{else if (delivered this.products.trackOrder)}}
+           <select class="form-select" aria-label="Default select example" id="{{this._id}}" onchange="changeStatus(event,'{{this._id}}','{{this.products.item}}')">
+            <option selected name="status" value="Orderd" disabled>{{this.products.trackOrder}}</option>
             <option name="status" value="Dispached" disabled>Dispached</option>
             <option name="Shipped" value="Shipped" disabled>Shipped</option>
             <option name="Delivered" value="Deliverd" disabled>Deliverd</option>
             <option name="canceled" value="canceled" disabled>Canceled</option>
           </select>
         {{else}}
-          <select class="form-select" aria-label="Default select example" id="{{this._id}}" onchange="changeStatus(event,'{{this._id}}')">
-            <option selected name="status" value="Orderd" disabled>{{this.trackOrder}}</option>
+          <select class="form-select" aria-label="Default select example" id="{{this._id}}" onchange="changeStatus(event,'{{this._id}}','{{this.products.item}}')">
+            <option selected name="status" value="Orderd" disabled>{{this.products.trackOrder}}</option>
             <option name="status" value="Dispached">Dispached</option>
             <option name="Shipped" value="Shipped">Shipped</option>
             <option name="Delivered" value="Deliverd">Deliverd</option>
@@ -77,13 +77,13 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
-  function changeStatus(e,id) {
+  function changeStatus(e,orderId,prodId) {
     let status = e.target.value;
-    console.log(status)
     $.ajax({
       url:'/admin/updateTrackOrder',
       data:{
-        id:id,
+        orderId:orderId,
+        prodId:prodId,
         status:status
       },
       method :'put',

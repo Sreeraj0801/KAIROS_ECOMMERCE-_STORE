@@ -15,18 +15,24 @@
             <div class="col-lg-4 bg-light">
                 <div class="card card-dashboard shadow-lg p-3 mb-5  rounded" style="height: 90%;">
                     <div class="card-body">
+                        <h6>{{this._id}}</h6>
                         <div class="col-md-12 mt-4">
                             <img src="/productImages/{{product._id}}.jpg" alt="">
                         </div>
                         <div class="text-center mt-2">
                             <h5>{{this.product.title}}</h5>
-                            <p><span class="text-danger">proId:</span> {{this.product.category}}</p><br>
+                            <p><span class="text-danger">proId:</span> {{this.product._id}}</p><br>
                             <p class="" style="font-size: 20px; color: cadetblue;">₹ {{this.product.price}}</p>
                             <p>{{this.product.discription}}</p>
                             <p>{{this.product.gender}}</p>
                             <p>Qty : <span style="color: darkblue;">{{this.quantity}}</span></p>
                         </div>
+                     
                     </div><!-- End .card-dashboard -->
+                       <div class="d-flex">
+                            <button type="submit" class="btn btn-Primary">Return</button> 
+                            <button type="submit" class="btn btn-danger" onclick="cancelProduct('{{this.product._id}}','{{this._id}}')">Cancel</button>
+                        </div>
                 </div><!-- End .card-body -->
 
             </div><!-- End .col-lg-6 -->
@@ -36,5 +42,21 @@
     </div>
 
 
-</body>
+
 <!-- JavaScript Bundle with Popper -->
+<script>
+    function cancelProduct(prodId,orderId){
+        $.ajax({
+            url:'/cancelOrderProduct',
+            method:'post',
+            data:{
+                prodId:prodId,
+                orderId:orderId
+            },
+            success:(response)=>{
+            
+            }
+        })
+    }
+</script>
+</body>

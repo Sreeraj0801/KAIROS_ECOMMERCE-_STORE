@@ -65,6 +65,7 @@ router.post("/verify", otpLogin);
 
 
 router.post("/forgetPword", forgetOtp);
+
 // <----------------------------- Get Home Page -------------------> */
 router.post('/', userHomePage);
 
@@ -277,4 +278,8 @@ router.post('/updatePassword',(req,res)=>{
 })
 
 
-
+router.get('/cancelOrder/:id', cancelOrder)
+router.post('/cancelOrderProduct',(req,res)=>{
+  
+  res.json({status:true})
+})

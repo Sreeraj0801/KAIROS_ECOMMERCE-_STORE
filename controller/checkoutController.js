@@ -1,3 +1,4 @@
+const { log } = require('debug/src/browser');
 const { response } = require('express');
 const session = require('express-session')
 const productHelpers = require('../services/productHelpers')
@@ -33,8 +34,10 @@ module.exports.placeOrder = async(req,res)=>{
     totalPrice = totalPrice[0].total;
     if(req.body.coupon)
     {
+      console.log(req.body);
+      totalPrice = req.body.offerPrice;
       await userHelpers.addUserToCoupon(req.body.coupon,req.session.user._id)
-      userHelpers.placeOrder(address,products,totalPrice,paymentMethod).then((orderId)=>{
+      userHelpers.placeOrder(address,products,totalPrice,paymentMethod,req.body).then((orderId)=>{
         console.log(paymentMethod);
         let result ={
           paymentMethod:paymentMethod,
@@ -67,6 +70,7 @@ module.exports.placeOrder = async(req,res)=>{
         }
         if(paymentMethod === 'COD')
         {
+          userHelpers.inventory(products)
         res.json(result)
         }
         else if(paymentMethod == 'Razorpay'){

@@ -1,3 +1,4 @@
+const { log } = require('debug/src/browser');
 const session = require('express-session')
 const productHelpers = require('../services/productHelpers')
 const userHelpers = require('../services/userHelpers')
@@ -25,7 +26,9 @@ module.exports.adminViewOrdersPage =  async (req,res)=>{
 
   module.exports.UpdateTrackOrder = (req,res)=>{
     try {
-      userHelpers.updateTrackOrder (req.body.id,req.body.status).then((response)=>{
+      userHelpers.updateTrackOrder (req.body.orderId,req.body.prodId,req.body.status).then((response)=>{
+        console.log(response);
+
       res.json(response)
       }) 
     } catch (error) {

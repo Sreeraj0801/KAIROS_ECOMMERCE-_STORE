@@ -21,6 +21,7 @@ const { log } = require("console")
 const { request } = require("http")
 const { getProductDetails } = require("./productHelpers")
 const { Timestamp } = require("mongodb")
+const { stat } = require("fs")
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id':process.env.PAYPAL_CLIENT_ID,
@@ -317,8 +318,13 @@ module.exports = {
             resolve(cart.products);
         })
     },
-    placeOrder: (order, products, total, paymentMethod) => {
-    
+    placeOrder: (order, products, total, paymentMethod,couponDetails) => {
+        products.forEach(element => {
+            element.totalPrice = element.price*element.quantity
+        });    
+        products.forEach(element => {
+            element.trackOrder = "Preparing for dispatch"
+        });
         return new Promise((resolve, reject) => {
             let date = new Date();
             let Day = date.getDate();
@@ -349,6 +355,7 @@ module.exports = {
                 date: finaldate,
                 month:Month,
                 year:Year,
+                couponDetails:couponDetails,
                 timestamp: new Date()
             }
             db.get().collection(collections.ORDER).insertOne(orderObj)
@@ -363,13 +370,12 @@ module.exports = {
     getUserOrders: (userId) => {
         return new Promise(async (resolve, reject) => {
             let orders = await db.get().collection(collections.ORDER)
-                .find({ userId: objectId(userId)}).sort({timestamp:-1}).toArray()
+                .find({ userId: objectId(userId)}).sort({timestamp:-1}).toArray();
             resolve(orders)
         })
     },
     getOrderProducts: (orderId) => {
         return new Promise(async (resolve, reject) => {
-
             let products = await db.get().collection(collections.ORDER).aggregate([
                 {
                     $match: { _id: objectId(orderId) }
@@ -403,10 +409,50 @@ module.exports = {
 
         })
     },
-    updateTrackOrder: (cartId, status) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collections.ORDER).updateOne({ _id: objectId(cartId) }, { $set: { trackOrder: status } })
-            resolve({ status: true })
+    updateTrackOrder: (orderId,prodId, status) => {
+        return new Promise(async(resolve, reject) => {
+            db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.trackOrder': status }})
+           
+       if(status == 'canceled')
+       {
+        products = await db.get().collection(collections.ORDER).aggregate([
+            {
+                $match:{_id:objectId(orderId)}
+            },
+            {
+                $unwind:'$products',
+            },
+            {
+                $match:{'products.item':objectId(prodId)}
+            }
+        ]).toArray()
+        console.log(products[0].products.price);
+        userId = products[0].userId
+        price = products[0].products.price;
+        paymentMethod = products[0].paymentMethod
+        if(paymentMethod != 'COD'){
+            refferalData = {
+                Amount : parseInt(price),
+                Date:new Date().toDateString(),
+                Timestamp:new Date(),
+                status:"credited",
+                message:"Order Cancell Refund"
+            }
+            db.get().collection(collections.WALLET).updateOne({userId:userId},{
+                $inc:{
+                    Total:price
+                },
+                $push:{
+                    Transaction :refferalData
+                }
+            })
+        }
+        
+       }
+       else{
+        
+       }
+       resolve({ status: true })
         })
     },
     addAddress: (details) => {
@@ -506,8 +552,7 @@ module.exports = {
             resolve({ status: true })
         })
     },
-    generateRazorpay: (orderId, total) => {
-        total  = (total[0].total);
+    generateRazorpay: (orderId, total) => { 
         return new Promise((resolve, reject) => {
             var options = {
                 amount: parseInt(total)*100,  // amount in the smallest currency unit
@@ -806,6 +851,12 @@ module.exports = {
         return new Promise(async(resolve,reject)=>{
             userWallet = await db.get().collection(collections.WALLET).findOne({userId:objectId(userId)})
             resolve(userWallet)
+        })
+    },
+    inventory:(products)=>{
+        return new Promise(async(resolve,reject)=>{
+            console.log("Hai I am here");
+            console.log(products);
         })
     }
 }       
