@@ -188,23 +188,26 @@
                                                             <div style="padding-left:10% ;">
                                                                 <h6>Total Amount: <span style="color:orange;"> ₹
                                                                         {{this.totalAmount}}</span></h6>
-                                                                <p style="padding-top: 20px;">Status : <span
+                                                                <p style="padding-top: 25px;">Payment status : <span
                                                                         style="color:green;">{{this.status}}</span></p>
                                                                 <h6>Payment Method: <span
-                                                                        style="color:rgb(41, 182, 83);">
+                                                                        style="color:#29b653;">
                                                                         {{this.paymentMethod}}</span></h6>
+                                                                        <h6>Ordered Date: <span
+                                                                        style="color:rgb(235, 12, 38);">
+                                                                        {{this.date}}</span></h6>
                                                                 {{#if (cancel this.trackOrder)}}
-                                                                <p>Track Order : <span
+                                                                {{!-- <p>Track Order : <span
                                                                         style="color:red; font-size:18px;">{{this.trackOrder}}</span>
-                                                                </p>
+                                                                </p> --}}
                                                                 {{else if (delivered this.trackOrder)}}
-                                                                <p>Track Order : <span
+                                                                {{!-- <p>Track Order : <span
                                                                         style="color:green; font-size:18px;">{{this.trackOrder}}</span>
-                                                                </p>
+                                                                </p> --}}
                                                                 {{else}}
-                                                                <p>Track Order : <span
+                                                                {{!-- <p>Track Order : <span
                                                                         style="color:blue; font-size:18px;">{{this.trackOrder}}</span>
-                                                                </p>
+                                                                </p> --}}
                                                                 {{/if}}
                                                             </div>
                                                             <div style="padding-left:10% ;">
@@ -215,9 +218,9 @@
                                                                 <a href="/returnOrder/{{this._id}}"
                                                                     class="btn btn-warning">Return Order</a> <br>
                                                                 {{else}}
-                                                                <p>want to cancel order ?</p>
+                                                                {{!-- <p>want to cancel order ?</p>
                                                                 <a href="/cancelOrder/{{this._id}}"
-                                                                    class="btn btn-danger">Cancel</a> <br>
+                                                                    class="btn btn-danger">Cancel</a> <br> --}}
                                                                 {{/if}}
                                                                 <br>
                                                                 <p>To view Products </p>

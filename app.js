@@ -42,6 +42,9 @@ hbs.registerHelper('cancel', (value)=>{
 hbs.registerHelper('delivered', (value)=>{
   return value == "Deliverd" ? true: false
 })
+hbs.registerHelper('returnRequest', (value)=>{
+  return value == "return requested" ? true: false
+})
 
 hbs.registerHelper('multiply',(value,value2)=>{
   return  (parseInt(value) * parseInt(value2))

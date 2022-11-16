@@ -109,8 +109,6 @@ router.get('/deleteProduct/:id',sessionCheck,deleteProducts)
 
 /* <--------------------View Banner Page  -----------------> */
 router.get('/viewBanner', sessionCheck,viewBannerPage );
-
-
 /* <--------------------Add Banner Page  ------------------> */
 router.get('/addBanner', sessionCheck, addBannerPage);
 

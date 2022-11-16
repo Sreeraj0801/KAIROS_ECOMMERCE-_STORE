@@ -1,3 +1,4 @@
+const { log } = require('debug/src/browser');
 const session = require('express-session')
 const productHelpers = require('../services/productHelpers')
 const userHelpers = require('../services/userHelpers')
@@ -25,6 +26,7 @@ module.exports.viewOrderProducts = async (req, res) => {
         let products = await userHelpers.getOrderProducts(req.params.id)
         cartCount = req.session.cartCount;
         userDetails = req.session ;
+        console.log(products);
         res.render('users/viewOrderProducts', { user: true,cartCount,userDetails, products })
     } catch (error) {
 

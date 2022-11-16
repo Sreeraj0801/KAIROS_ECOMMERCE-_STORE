@@ -59,6 +59,9 @@
             <option name="Delivered" value="Deliverd" disabled>Deliverd</option>
             <option name="canceled" value="canceled" disabled>Canceled</option>
           </select>
+          {{else if (returnRequest this.products.trackOrder)}}
+          <select class="form-select" aria-label="Default select example" id="{{this._id}}" onchange="changeStatus(event,'{{this._id}}','{{this.products.item}}')">
+          <option selected name="status" value="Orderd" disabled>{{this.products.trackOrder}}</option>
         {{else}}
           <select class="form-select" aria-label="Default select example" id="{{this._id}}" onchange="changeStatus(event,'{{this._id}}','{{this.products.item}}')">
             <option selected name="status" value="Orderd" disabled>{{this.products.trackOrder}}</option>
@@ -89,6 +92,20 @@
       method :'put',
       success : (response)=>{
         if(response.status){
+          swal("Status Changed!").then(()=>{
+            location.reload();
+          })
+        }
+        else if(response.refund)
+        {
+          amount = response.amount
+          swal("Amount Refunded!", "An Amount of RS "+amount+"  is refunded", "success").then(()=>{
+            location.reload();
+          })
+        }
+          else if(response.COD)
+        {
+          amount = response.amount
           swal("Status Changed!").then(()=>{
             location.reload();
           })

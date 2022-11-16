@@ -386,7 +386,9 @@ module.exports = {
                 {
                     $project: {
                         item: '$products.item',
-                        quantity: '$products.quantity'
+                        quantity: '$products.quantity',
+                        totalPrice:'$products.totalPrice',
+                        trackOrder:'$products.trackOrder'
                     }
                 },
                 {
@@ -401,6 +403,8 @@ module.exports = {
                     $project: {
                         item: 1,
                         quantity: 1,
+                        totalPrice:1,
+                        trackOrder:1,
                         product: { $arrayElemAt: ['$product', 0] }
                     }
                 }
@@ -409,50 +413,93 @@ module.exports = {
 
         })
     },
-    updateTrackOrder: (orderId,prodId, status) => {
+    updateTrackOrder: (orderId,prodId, status,message) => {
         return new Promise(async(resolve, reject) => {
+           if(message)
+           {
+            db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.trackOrder': status,'products.$.message': message }})
+           }
+           else{
             db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.trackOrder': status }})
-           
+           }
        if(status == 'canceled')
        {
         products = await db.get().collection(collections.ORDER).aggregate([
             {
                 $match:{_id:objectId(orderId)}
             },
-            {
+            { 
                 $unwind:'$products',
             },
             {
                 $match:{'products.item':objectId(prodId)}
             }
         ]).toArray()
-        console.log(products[0].products.price);
         userId = products[0].userId
         price = products[0].products.price;
         paymentMethod = products[0].paymentMethod
         if(paymentMethod != 'COD'){
-            refferalData = {
-                Amount : parseInt(price),
-                Date:new Date().toDateString(),
-                Timestamp:new Date(),
-                status:"credited",
-                message:"Order Cancell Refund"
-            }
-            db.get().collection(collections.WALLET).updateOne({userId:userId},{
-                $inc:{
-                    Total:price
-                },
-                $push:{
-                    Transaction :refferalData
+            if(products[0].couponDetails)
+            {
+                total = products[0].products.totalPrice;
+                offer = products[0].couponDetails.offerPercentage;
+                cal = parseInt((total *offer)/100)
+                price = total - cal;
+                console.log(offer);
+                refferalData = {
+                    Amount : parseInt(price),
+                    Date:new Date().toDateString(),
+                    Timestamp:new Date(),
+                    status:"credited",
+                    message:"Order Cancell Refund"
                 }
-            })
+
+                db.get().collection(collections.WALLET).updateOne({userId:userId},{
+                    $inc:{
+                        Total:price
+                    },
+                    $push:{
+                        Transaction :refferalData
+                    }
+                })
+                detail={
+                    refund:true,
+                    amount:price
+                }
+                resolve(detail)
+            }
+            else{
+                refferalData = {
+                    Amount : parseInt(price),
+                    Date:new Date().toDateString(),
+                    Timestamp:new Date(),
+                    status:"credited",
+                    message:"Order Cancell Refund"
+                }
+                db.get().collection(collections.WALLET).updateOne({userId:userId},{
+                    $inc:{
+                        Total:price
+                    },
+                    $push:{
+                        Transaction :refferalData
+                    }
+                })
+                detail={
+                    refund:true,
+                    amount:price
+                }
+                resolve(detail)
+            }
+        }
+        else{
+            resolve({COD:true})
         }
         
        }
        else{
-        
+        resolve({ status: true })
        }
-       resolve({ status: true })
+       
         })
     },
     addAddress: (details) => {

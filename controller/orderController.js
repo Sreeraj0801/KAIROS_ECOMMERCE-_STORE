@@ -27,8 +27,6 @@ module.exports.adminViewOrdersPage =  async (req,res)=>{
   module.exports.UpdateTrackOrder = (req,res)=>{
     try {
       userHelpers.updateTrackOrder (req.body.orderId,req.body.prodId,req.body.status).then((response)=>{
-        console.log(response);
-
       res.json(response)
       }) 
     } catch (error) {

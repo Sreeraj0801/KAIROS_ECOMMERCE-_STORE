@@ -26,7 +26,7 @@ module.exports.checkoutPage = async (req,res,next)=>{
   }
   // <--------------------- post place order -------------------------> */
 module.exports.placeOrder = async(req,res)=>{
-      try {
+    try {
     let products = await userHelpers.getCartProductList(req.session.user._id);
     let totalPrice = await userHelpers.getTotalAmount(req.session.user._id);
     let address = await userHelpers.getSingleAddress(req.body.plan);
@@ -71,7 +71,7 @@ module.exports.placeOrder = async(req,res)=>{
         if(paymentMethod === 'COD')
         {
           userHelpers.inventory(products)
-        res.json(result)
+          res.json(result)
         }
         else if(paymentMethod == 'Razorpay'){
           userHelpers.generateRazorpay(orderId,totalPrice).then((response)=>{

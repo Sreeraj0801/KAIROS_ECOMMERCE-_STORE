@@ -26,13 +26,26 @@
                             <p>{{this.product.discription}}</p>
                             <p>{{this.product.gender}}</p>
                             <p>Qty : <span style="color: darkblue;">{{this.quantity}}</span></p>
+                            <div class="">
+                                <p>TrackOrder </p>
+                                <h5>{{this.trackOrder}}</h5>
+                            </div>
                         </div>
-                     
+
                     </div><!-- End .card-dashboard -->
-                       <div class="d-flex">
-                            <button type="submit" class="btn btn-Primary">Return</button> 
-                            <button type="submit" class="btn btn-danger" onclick="cancelProduct('{{this.product._id}}','{{this._id}}')">Cancel</button>
-                        </div>
+                    <div class="d-flex">
+                        <button type="submit" class="btn btn-Primary"
+                            onclick="returnRequest('{{this.product._id}}','{{this._id}}')">Request Return</button>
+                        {{#if (cancel this.trackOrder)}}
+
+                        {{else if (delivered this.trackOrder)}}
+
+                        {{else if (returnRequest this.trackOrder)}}
+                        {{else}}
+                        <button type="submit" class="btn btn-danger"
+                            onclick="cancelProduct('{{this.product._id}}','{{this._id}}')">Cancel</button>
+                        {{/if}}
+                    </div>
                 </div><!-- End .card-body -->
 
             </div><!-- End .col-lg-6 -->
@@ -42,21 +55,72 @@
     </div>
 
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script>
+        function cancelProduct(prodId, orderId) {
+            $.ajax({
+                url: '/cancelOrderProduct',
+                method: 'put',
+                data: {
+                    prodId: prodId,
+                    orderId: orderId
+                },
+                success: (response) => {
+                    if (response.refund) {
+                        amount = response.amount
+                        swal("Amount Refunded!", "An Amount of RS " + amount + "  is refunded", "success").then(() => {
+                            location.reload();
+                        })
+                    }
+                    else if (response.COD) {
+                        amount = response.amount
+                        swal("order Cancelled!", "Your Order Is cancelled", "success").then(() => {
+                            location.reload();
+                        })
+                    }
+                }
+            })
+        }
+    </script>
 
-<!-- JavaScript Bundle with Popper -->
-<script>
-    function cancelProduct(prodId,orderId){
-        $.ajax({
-            url:'/cancelOrderProduct',
-            method:'post',
-            data:{
-                prodId:prodId,
-                orderId:orderId
-            },
-            success:(response)=>{
-            
-            }
-        })
-    }
-</script>
+
+
+
+    <script>
+        function returnRequest(prodId, orderId) {
+
+            swal("Reason for Returning:", {
+                content: "input",
+            }).then((value) => {
+                swal("Return Requested!", "Your request form is submitted!", "success")
+                .then(()=>{
+                     $.ajax({
+                        url: '/returnOrderProduct',
+                        method: 'put',
+                        data: {
+                            prodId: prodId,
+                            orderId: orderId,
+                            message: value
+                        },
+                        success: (response) => {
+                            if (response.refund) {
+                                amount = response.amount
+                                swal("Amount Refunded!", "An Amount of RS " + amount + "  is refunded", "success").then(() => {
+                                    location.reload();
+                                })
+                            }
+                            else if (response.COD) {
+                                amount = response.amount
+                                swal("order Cancelled!", "Your Order Is cancelled", "success").then(() => {
+                                    location.reload();
+                                })
+                            }
+                        }
+                    })
+                }) 
+                });
+
+        }
+    </script>
 </body>

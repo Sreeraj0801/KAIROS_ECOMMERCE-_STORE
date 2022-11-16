@@ -279,7 +279,23 @@ router.post('/updatePassword',(req,res)=>{
 
 
 router.get('/cancelOrder/:id', cancelOrder)
-router.post('/cancelOrderProduct',(req,res)=>{
-  
-  res.json({status:true})
+
+router.put('/cancelOrderProduct',(req,res)=>{
+  let orderId = req.body.orderId;
+  let prodId = req.body.prodId;
+  let status = "canceled";
+  userHelpers.updateTrackOrder (orderId,prodId,status).then((response)=>{
+    res.json(response)
+  })
+})
+
+router.put('/returnOrderProduct',(req,res)=>{
+  let orderId = req.body.orderId;
+  let prodId = req.body.prodId;
+  let message = req.body.message;
+  console.log(req.body.message);
+  let status = "return requested";
+  userHelpers.updateTrackOrder (orderId,prodId,status,message).then((response)=>{
+    res.json(response)
+  })
 })
