@@ -22,6 +22,8 @@ const { request } = require("http")
 const { getProductDetails } = require("./productHelpers")
 const { Timestamp } = require("mongodb")
 const { stat } = require("fs")
+const async = require("hbs/lib/async")
+const { lookup } = require("dns")
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id':process.env.PAYPAL_CLIENT_ID,
@@ -325,6 +327,12 @@ module.exports = {
         products.forEach(element => {
             element.trackOrder = "Preparing for dispatch"
         });
+        if(couponDetails)
+        {
+            products.forEach(element => {
+                element.priceOffer = Math.ceil( element.totalPrice -  (element.totalPrice * parseInt(couponDetails.offerPercentage) /100))
+            });
+        }
         return new Promise((resolve, reject) => {
             let date = new Date();
             let Day = date.getDate();
@@ -413,15 +421,9 @@ module.exports = {
 
         })
     },
-    updateTrackOrder: (orderId,prodId, status,message) => {
+    updateTrackOrder: (orderId,prodId, status,message,refundAmount,userId) => {
         return new Promise(async(resolve, reject) => {
-           if(message)
-           {
-            db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.trackOrder': status,'products.$.message': message }})
-           }
-           else{
-            db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.trackOrder': status }})
-           }
+        db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.trackOrder': status }})
        if(status == 'canceled')
        {
         products = await db.get().collection(collections.ORDER).aggregate([
@@ -496,16 +498,48 @@ module.exports = {
         }
         
        }
+       else if(status == "return requested" && message){
+        db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.message': message}})
+        resolve({retunrequested:true})
+       }
+       else if(status == "return approved" && refundAmount)
+       {
+        console.log("hai bro how are you");
+        refundAmount = parseInt(refundAmount)
+        userId = objectId(userId)
+        db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.message': message}}).then(()=>{
+            refundData = {
+                Amount :refundAmount ,
+                Date:new Date().toDateString(),
+                Timestamp:new Date(),
+                status:"credited",
+                message:"Product Return Refund Amount"
+            }
+            db.get().collection(collections.WALLET).updateOne({userId:userId},{
+                $inc:{
+                    Total:refundAmount
+                },
+                $push:{
+                    Transaction :refundData
+                }
+            })
+    
+        })
+        resolve({retunrequested:true})
+       }
+       
        else{
         resolve({ status: true })
        }
-       
+        
         })
     },
+
     addAddress: (details) => {
         details.userId = objectId(details.userId)
         db.get().collection(collections.ADDRESS).insert(details)
     },
+
     getAddress: (userId) => {
         return new Promise(async (resolve, reject) => {
             let response = await db.get().collection(collections.ADDRESS).find({ userId: objectId(userId) }).toArray()
@@ -725,14 +759,14 @@ module.exports = {
        })
     },
 
-    returnOrder:(details)=>{
-        let id = objectId(details.id)
-        return new Promise(async(resolve,reject)=>{
-           let order =  await db.get().collection(collection.ORDER).find({_id:id}).toArray();
+    // returnOrder:(details)=>{
+    //     let id = objectId(details.id)
+    //     return new Promise(async(resolve,reject)=>{
+    //        let order =  await db.get().collection(collection.ORDER).find({_id:id}).toArray();
 
-        })
+    //     })
 
-    },
+    // },
     addWallet : (userId)=>{
         return new Promise((resolve,reject)=>{
             db.get().collection(collections.WALLET).insertOne({
@@ -905,5 +939,68 @@ module.exports = {
             console.log("Hai I am here");
             console.log(products);
         })
+    },
+    findSigleProduct:(prodId,orderId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let products = await db.get().collection(collections.ORDER).aggregate([
+                {
+                    $match: { _id: objectId(orderId)
+                     }
+                },
+                {
+                    $unwind: '$products'
+                },
+                {
+                    $match:{
+                        'products.item':objectId(prodId)
+                    }
+                },
+                {
+                    $lookup:{
+                        from:collections.PRODUCT,
+                        localField:'products.item',
+                        foreignField:'_id',
+                        as:'productDetails'
+                    }
+                },
+                {
+                    $unwind:'$productDetails'
+                }
+            ]).toArray()
+         resolve(products);
+
+        })
+    },
+    getReturnOrder :()=>{
+        return new Promise(async(resolve,reject)=>{
+           let  orders = await db.get().collection(collections.ORDER).aggregate([{
+                $match:{
+                    'products.trackOrder':"return requested"
+                }
+            },
+            {
+                $unwind: '$products'
+            },
+            {
+                $match:{
+                    'products.trackOrder':"return requested"
+                }
+            },
+            {
+                $lookup:{
+                    from:collections.PRODUCT,
+                    localField:'products.item',
+                    foreignField:'_id',
+                    as:'productDetails'
+                }
+            },
+            {
+                $unwind:'$productDetails'
+            }
+            ]).toArray()
+            resolve(orders)
+        })
     }
+    
+    
 }       

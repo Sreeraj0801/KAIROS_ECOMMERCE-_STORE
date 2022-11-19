@@ -64,7 +64,6 @@ module.exports.userLogin =  async (req, res) => {
         userHelpers.addUser(req.body)
         .then((result) => {
         if (result.status) { 
-         
           req.session.userExist = false
           userHelpers.addWallet(result.id)
           userHelpers.addReferalMoney(result.id)

@@ -195,14 +195,14 @@ router.post('/changePword', async (req, res) => {
 })
 
 router.get('/returnOrder/:id', (req, res) => {
-  // userHelpers.returnProducts(req.params.id)
+  userHelpers.returnProducts(req.params.id)
   let id = req.params.id;
   res.render('users/returnForm', { user: true, id })
 })
 
-router.post('/returnOrder', (req, res) => {
-  userHelpers.returnOrder(req.body)
-})
+// router.post('/returnOrder', (req, res) => {
+//   userHelpers.returnOrder(req.body)
+// })
 
 router.post("/searchProduct", (req, res) => {
   userHelpers.productSearch(req.body).then((products) => {
@@ -290,12 +290,28 @@ router.put('/cancelOrderProduct',(req,res)=>{
 })
 
 router.put('/returnOrderProduct',(req,res)=>{
-  let orderId = req.body.orderId;
-  let prodId = req.body.prodId;
-  let message = req.body.message;
-  console.log(req.body.message);
-  let status = "return requested";
-  userHelpers.updateTrackOrder (orderId,prodId,status,message).then((response)=>{
-    res.json(response)
-  })
+    let orderId = req.body.orderId;
+    let prodId = req.body.prodId;
+    let status = "return requested";
+    console.log("{{{{{{{{{{{{{{{{{{{{{");
+    console.log(req.body);
+    message  = {
+      reason:req.body.reason,
+      discription:req.body.freeform
+    }
+    userHelpers.updateTrackOrder (orderId,prodId,status,message).then((response)=>{
+     res.json(response)
+   })
+})
+
+
+router.get('/returnOrder/:prodId/:orderId',async (req, res) => {
+      cartCount = req.session.cartCount;
+      userDetails = req.session;
+      prodId = req.params.prodId;
+      orderId = req.params.orderId;
+      let product = await userHelpers.findSigleProduct(prodId,orderId);
+      product = product[0]
+      res.render('users/returnOrder', { user: true,cartCount,userDetails,product})
+
 })

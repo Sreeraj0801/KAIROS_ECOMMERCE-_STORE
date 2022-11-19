@@ -1,12 +1,12 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Accordion</h1>
+      <h1>Return Orders</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
           <li class="breadcrumb-item">Components</li>
-          <li class="breadcrumb-item active">Accordion</li>
+          <li class="breadcrumb-item active">Return Orders</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -17,47 +17,83 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Accordion without outline borders</h5>
+              <h5 class="card-title">Return orders notifications</h5>
 
               <!-- Accordion without outline borders -->
               <div class="accordion accordion-flush" id="accordionFlushExample">
+                {{#each orders}}
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                      Accordion Item #1
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne{{this.products.item}}" aria-expanded="false" aria-controls="flush-collapseOne">
+                       Order Id : &nbsp;&nbsp;{{this._id}}  
                     </button>
                   </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
-                  </div>
+                  <div id="flush-collapseOne{{this.products.item}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div>
+                      <div class="row">
+                      <div class="col-md-3">
+                      <img src="/productImages/{{this.products.item}}.jpg" alt="" class="m-5" style="height:140px;" >
+                      </div>
+                      <div class="col-md-3 mt-5">
+                        <p>{{this.productDetails.model}}</p>
+                        <p>{{this.productDetails.title}}</p>
+                        <p class="text-danger"> Rs {{this.productDetails.price}}</p>
+                        <small>{{this.products.item}}</small>
+                      </div>
+                      <div class="col-md-3 mt-5">
+                        <h5>{{this.name}}</h6>
+                        <p>payment Method : <span class="text-danger">{{this.paymentMethod}}</span></p>
+                        <p>Ordered On : <span class="text-warning">{{this.date}}</span></p>
+                        <p>Amount To be refunded : <span id="refundAmount"></span></p>
+                        {{#if this.products.priceOffer}}
+                        <h3 class="text-danger"> Rs {{this.products.priceOffer}}</h3>
+                        {{else}}
+                        <h3 class="text-danger"> Rs {{this.products.totalPrice}}</h3>
+                        {{/if}}
+                      </div>
+                      <div class="col-md-3 mt-5">
+                        <div>
+                       <h5 class="text-danger">Reason  for Returning</h5>
+                        <p>{{this.products.message.reason}}</small>
+                        </div>
+                        <div>
+                          <h5  class="text-primary">Discription</h5>
+                          <p>{{this.products.message.discription}}</p>
+                        </div>
+                        {{#if this.products.priceOffer}}
+                         <a onclick="returnApprove('{{this._id}}','{{this.products.item}}','{{this.products.priceOffer}}','{{this.userId}}')" class="btn btn-success">Approve Return</a>
+                        {{else}}
+                           <a onclick="returnApprove('{{this._id}}','{{this.products.item}}','{{this.products.totalPrice}}','{{this.userId}}')" class="btn btn-success">Approve Return</a>
+                        {{/if}}
+                      </div>
+                      </div>
+                    </div>
+                    </div>
                 </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="flush-headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                      Accordion Item #2
-                    </button>
-                  </h2>
-                  <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="flush-headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                      Accordion Item #3
-                    </button>
-                  </h2>
-                  <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-                  </div>
-                </div>
+                {{/each}}
               </div><!-- End Accordion without outline borders -->
-
             </div>
           </div>
-
         </div>
       </div>
     </section>
 
+<script>
+  function returnApprove(orderId,prodId,refund,userId)
+  {
+    $.ajax({
+      url:'/admin/returnOrderProduct',
+      method:'put',
+      data:{
+        orderId:orderId,
+        prodId:prodId,
+        refund:refund,
+        userId:userId
+      },
+      success:(response)=>{
+        alert(response)
+      }
+    })
+  } 
+</script>
   </main><!-- End #main -->

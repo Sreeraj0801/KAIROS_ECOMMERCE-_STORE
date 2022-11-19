@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
+<!-- Main CSS File -->
+<!-- CSS only -->
+<link rel="stylesheet" href="/userAssets/css/style.css">
+
+<body>
+    <div class="page-header text-center" style="background-image: url('/userAssets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title"> Return Order<span>Kairos</span></h1>
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <img src="/productImages/{{product.products.item}}.jpg" alt="" class="m-5" >
+                </div>
+                <div class="col-md-4 mt-2">
+                    <p>Quantity : <b>{{product.products.quantity}}</b></p>
+                    <p>Amount Paid: <b> Rs {{product.totalAmount}}</b></p><br>
+                    <h6>Deliver To : </h6>
+                    <b class="text-warning">{{product.name}}</b>
+                    <p>{{product.deliveryDetails.address.house}},
+                        {{product.deliveryDetails.address.street}},<br>
+                        {{product.deliveryDetails.address.city}},
+                        {{product.deliveryDetails.address.state}} <br>
+                        {{product.deliveryDetails.pincode}}</p>
+                </div>
+                <div class="col-md-4">
+                   <form id="returnForm">
+                     <div class="d-flex">
+                        <div>Reason for Returinig</div> &nbsp;<input type="text" name="reason" class="form-control">
+                    </div>
+                     <div class="d-flex mt-5">
+                    <div>Description </div>&nbsp;&nbsp; <textarea id="freeform" name="freeform" rows="4" cols="90"></textarea>
+                    </div>
+                    <div class="mb-5">
+                        <input type="text" name="orderId" id="" value="{{product._id}}" hidden>
+                    <input type="text" name="userId" value="{{product.userId}}" hidden>
+                    <input type="text" name="prodId" value="{{product.products.item}}" hidden>
+                    </div>
+                     <div>
+                    <button class="btn btn-primary rounded" type="submit">submit </button>
+                    </div>
+                   </form>
+                </div>
+            </div>
+            </div>
+        </div><!-- End .container -->
+    </div>
+    <!-- JavaScript Bundle with Popper -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+            $('#returnForm').submit((e)=>{
+            e.preventDefault()
+               $.ajax({
+                url:'/returnOrderProduct',
+                method:'put',
+                data:$('#returnForm').serialize(),
+                success:(response)=>{
+                    if(response.retunrequested)
+                    {
+                        swal("Return Requested!", "Your request form is submitted!", "success").then(()=>{
+                            location.href = '/profile'
+                        })
+                    }
+                    alert(response)
+                }
+            })
+            })
+    </script>
+
+</body>

@@ -9,9 +9,8 @@ module.exports.userHomePage = async function (req, res, next) {
     productHelpers.getAllCategory().then((category)=>{
       productHelpers.getBanner().then(async(banner) =>{
         if(req.session.userLoggedIn)
-        {
-         
-          let cartCount = await userHelpers.getCartCount(req.session.user._id)
+        { 
+         let cartCount = await userHelpers.getCartCount(req.session.user._id)
           req.session.cartCount = cartCount;
           userDetails = req.session ;
           cartCount = req.session.cartCount;

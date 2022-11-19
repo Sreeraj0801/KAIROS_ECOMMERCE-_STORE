@@ -34,8 +34,16 @@
 
                     </div><!-- End .card-dashboard -->
                     <div class="d-flex">
-                        <button type="submit" class="btn btn-Primary"
-                            onclick="returnRequest('{{this.product._id}}','{{this._id}}')">Request Return</button>
+
+                        {{#if (cancel this.trackOrder)}}
+
+                        {{else if (delivered this.trackOrder)}}
+                        <a type="submit" class="btn btn-Primary"href="/returnOrder/{{this.product._id}}/{{this._id}}">Request Return</a>
+
+                        {{else if (returnRequest this.trackOrder)}}
+                        {{else}}
+                        {{/if}}
+                        
                         {{#if (cancel this.trackOrder)}}
 
                         {{else if (delivered this.trackOrder)}}
@@ -89,7 +97,6 @@
 
     <script>
         function returnRequest(prodId, orderId) {
-
             swal("Reason for Returning:", {
                 content: "input",
             }).then((value) => {

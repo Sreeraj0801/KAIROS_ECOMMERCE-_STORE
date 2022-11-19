@@ -26,6 +26,7 @@ const { logOut } = require('../controller/userController');
 const { response } = require('express');
 const async = require('hbs/lib/async');
 const { resolve } = require('promise');
+const { log } = require('debug/src/browser');
 
 
 
@@ -94,9 +95,8 @@ router.get('/viewProducts', sessionCheck,viewProdutsPage);
 /* <----------------  Add Products page ------------------> */
 router.get('/addProducts', sessionCheck,addProductsPage)
 
-
 /* <---------------- Post Add Products page --------------> */
-  router.post('/addProduct',sessionCheck,upload.array('image'), addProducts)
+router.post('/addProduct',sessionCheck,upload.array('image'), addProducts)
 
 /* <------------------ Edit Products page ----------------> */
 router.get('/editProducts/:id', sessionCheck,editProductsPage);
@@ -134,8 +134,10 @@ router.get('/viewOrders', sessionCheck,adminViewOrdersPage)
 /* <---------------- Admin Update Track Order --------------> */
 router.put('/updateTrackOrder', sessionCheck,UpdateTrackOrder)
 
-router.get('/returnOrder',(req,res)=>{
-res.render('admin/returnOrders',{admin:true})
+router.get('/returnOrder',async (req,res)=>{
+let orders = await userHelpers.getReturnOrder()
+console.log(orders);
+res.render('admin/returnOrders',{admin:true,orders})
 })
 
 router.get('/salesReport',async (req,res)=>{
@@ -184,6 +186,18 @@ router.get('/productOffers',async (req,res)=>{
       res.json(response)
     })
   })
+
+  router.put('/returnOrderProduct',(req,res)=>{
+    let orderId = req.body.orderId;
+    let prodId = req.body.prodId;
+    let status = "return approved";
+    let refund = req.body.refund;
+    let userId = req.body.userId;
+    let message = null;
+    userHelpers.updateTrackOrder (orderId,prodId,status,message,refund,userId).then((response)=>{
+     res.json(response)
+   })
+})
 
  
   
