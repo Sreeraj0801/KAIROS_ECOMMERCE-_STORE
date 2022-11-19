@@ -12,10 +12,11 @@ module.exports.checkoutPage = async (req,res,next)=>{
     let products = await userHelpers.getCartProducts(req.session.user._id)
     var total = await userHelpers.getTotalAmount(req.session.user._id);
     let address = await userHelpers.getAddress(req.session.user._id);
-    let coupons = await productHelpers.getAllCoupons()
+    let coupons = await productHelpers.getAllCoupons();
+    let walletBallence = await productHelpers.gerWalletBalance(req.session.user._id)
     if(products.length > 0)
     {
-      res.render('users/checkout',{user:true,total:total[0],user:req.session.user,address ,products,coupons});
+      res.render('users/checkout',{user:true,total:total[0],user:req.session.user,address ,products,coupons,walletBallence});
     }
     else{
       res.redirect("/cart")
@@ -53,6 +54,14 @@ module.exports.placeOrder = async(req,res)=>{
             res.json(response)
           })
         }
+        else if(paymentMethod == 'wallet')
+        {
+          userHelpers.walletPayment(totalPrice,req.session.user._id).then((respose)=>{
+            response.paymentMethod = paymentMethod;
+            response.walletPayment = true;
+            res.json(response)
+          })
+        }
         else if(paymentMethod == 'Paypal') 
         {
          userHelpers.generatePaypal(orderId,totalPrice).then((link)=>{
@@ -72,6 +81,14 @@ module.exports.placeOrder = async(req,res)=>{
         {
           userHelpers.inventory(products)
           res.json(result)
+        }
+        else if(paymentMethod == 'wallet')
+        {
+          userHelpers.walletPayment(totalPrice,req.session.user._id).then((respose)=>{
+            response.paymentMethod = paymentMethod;
+            response.walletPayment = true;
+            res.json(response)
+          })
         }
         else if(paymentMethod == 'Razorpay'){
           userHelpers.generateRazorpay(orderId,totalPrice).then((response)=>{

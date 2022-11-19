@@ -336,10 +336,11 @@ module.exports = {
         return new Promise((resolve, reject) => {
             let date = new Date();
             let Day = date.getDate();
-            let Month = date.getMonth();
+            let Month = date.getMonth() + 1 ;
             let Year = date.getFullYear();
             let finaldate = `${Day}/${Month}/${Year}` 
             let status = paymentMethod == 'COD' ? 'placed' : 'pending'
+            status = paymentMethod == 'wallet' ? 'placed' : 'pending'
             let orderObj = {
                 deliveryDetails: {
                     mobile: order.phone,
@@ -504,7 +505,6 @@ module.exports = {
        }
        else if(status == "return approved" && refundAmount)
        {
-        console.log("hai bro how are you");
         refundAmount = parseInt(refundAmount)
         userId = objectId(userId)
         db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.message': message}}).then(()=>{
@@ -999,6 +999,29 @@ module.exports = {
             }
             ]).toArray()
             resolve(orders)
+        })
+    },
+
+    walletPayment : (totalAmount,userId)=>{
+        totalAmount = parseInt(totalAmount)
+        return new Promise((resolve,reject)=>{
+            refferalData = {
+                Amount : - totalAmount,
+                Date:new Date().toDateString(),
+                Timestamp:new Date(),
+                status:"debited",
+                message:"Wallet Purchase"
+            }
+            db.get().collection(collections.WALLET).updateOne({userId:objectId(userId)},{
+                $inc:{
+                    Total:- totalAmount
+                },
+                $push:{
+                    Transaction :refferalData
+                }
+            }).then((response)=>{
+                resolve(response)
+            })
         })
     }
     

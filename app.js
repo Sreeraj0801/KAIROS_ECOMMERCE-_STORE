@@ -49,6 +49,9 @@ hbs.registerHelper('returnRequest', (value)=>{
 hbs.registerHelper('multiply',(value,value2)=>{
   return  (parseInt(value) * parseInt(value2))
 })
+hbs.registerHelper('walletBalnce',(value,value2)=>{
+  return value <= value2 ? true : false
+})
 
 hbs.registerHelper('walletStatus',(value)=>{
   return  value <= 0 ? true : false

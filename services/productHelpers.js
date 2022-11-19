@@ -583,7 +583,11 @@ deleteCategory : (categoryId)=>{
         resolve({couponNoExist:true})
     }
     })
-    
-
+  },
+  gerWalletBalance:(userId)=>{
+    return new Promise(async(resolve,reject)=>{
+        let walletBalance = await db.get().collection(collections.WALLET).findOne({userId:objectId(userId)})
+        resolve(walletBalance.Total)
+    })
   }
 }

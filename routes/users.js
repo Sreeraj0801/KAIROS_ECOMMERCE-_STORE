@@ -293,8 +293,6 @@ router.put('/returnOrderProduct',(req,res)=>{
     let orderId = req.body.orderId;
     let prodId = req.body.prodId;
     let status = "return requested";
-    console.log("{{{{{{{{{{{{{{{{{{{{{");
-    console.log(req.body);
     message  = {
       reason:req.body.reason,
       discription:req.body.freeform

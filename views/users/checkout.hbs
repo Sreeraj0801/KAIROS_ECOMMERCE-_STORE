@@ -83,6 +83,11 @@
                                         <p> <span><a onclick="addAddress('{{user._id}}')" class="text-primary"
                                                     style="cursor: pointer;"> Add new address +</a></span> </p>
                                     </div>
+                                    {{#if address}}
+                                    {{else}}
+                                    <h5 class="text-danger">Please add  address to Place Order</h5>
+                                    {{/if}}
+
 
                                     {{#each address}}
                                     <div class="">
@@ -129,6 +134,7 @@
                                                 <tr class="summary-subtotal">
                                                     <td>Subtotal:</td>
                                                     <td id="totalPrice">₹ &nbsp; {{total.total}}</td>
+                                                    <input type="text" name="" id="totala" value="{{total.total}}">
                                                 </tr><!-- End .summary-subtotal -->
                                                 <tr>
                                                     <td>Shipping:</td>
@@ -155,8 +161,36 @@
                                                 </tr><!-- End .summary-total -->
                                             </tbody>
                                         </table><!-- End .table table-summary -->
+                                        <hr>
+                                        <h6>Please select a payment method</h1>
+                                        <input type="text" id="walletBalanceId" value="{{walletBallence}}">
+                                        {{!-- {{#if (walletBalnce total.total walletBallence)}}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentMethod"
+                                            id="exampleRadios1" value="wallet" >
+                                            <label class="form-check-label" for="exampleRadios1">&nbsp;&nbsp;
+                                                Kairos Wallet 
+                                            </label>
+                                        </div>
+                                        {{else}}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentMethod"
+                                            id="exampleRadios1" value="wallet" disabled >
+                                            <label class="form-check-label" for="exampleRadios1">&nbsp;&nbsp;
+                                                Kairos Wallet 
+                                            </label>
+                                              <br><small class="text-danger">Insufficient Fund to make this payment In Kairos wallet</h1>
+                                        </div>
 
+                                        {{/if}} --}}
 
+                                        <div class="form-check" onchange="checkBalance()" id="walletDiv">
+                                            <input class="form-check-input" type="radio" name="paymentMethod"
+                                            id="exampleRadios1" value="wallet" >
+                                            <label class="form-check-label" for="exampleRadios1">&nbsp;&nbsp;
+                                                Kairos Wallet 
+                                            </label>
+                                        </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="paymentMethod"
                                                 id="exampleRadios1" value="COD" checked>
@@ -178,12 +212,6 @@
                                                 PayPal
                                             </label>
                                         </div>
-
-
-
-
-
-
 
                                         <div class="accordion-summary" id="accordion-payment">
                                             {{!-- <div class="card">
@@ -265,11 +293,12 @@
                                                 </div><!-- End .collapse -->
                                             </div><!-- End .card -->
                                         </div><!-- End .accordion -->
-
-                                        <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
-                                            <span class="btn-text">Place Order</span>
-                                            <span class="btn-hover-text">Proceed to Checkout</span>
+                                        {{#if address}}
+                                       <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                        <span class="btn-text">Place Order</span>
+                                        <span class="btn-hover-text">Proceed to Checkout</span>
                                         </button>
+                                        {{/if}}
                                     </div><!-- End .summary -->
                                 </aside><!-- End .col-lg-3 -->
                             </div><!-- End .row -->
@@ -452,6 +481,11 @@
                 else if (response.paymentMethod == 'Razorpay') {
                     razorpayPayment(response)
                 }
+                else if(response.walletPayment)
+                {
+                    alert("payment succesfull");
+                    location.href = '/sample'
+                }
                 else {
                     location.href = response;
                 }
@@ -500,7 +534,6 @@
                 if (response.status) {
                     alert("payment succesfull")
                     location.href = '/sample'
-
                 }
                 else {
                     alert('payment failed')
@@ -509,12 +542,31 @@
         })
     }
 </script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
+    let uniqueWallet
     function addAddress(userId) {
         location.href = '/addAddress'
     }
-</script>
-<script>
+    function checkBalance(){
+        
+                    totalPrice = document.getElementById('totala').value
+                    walletBalance = document.getElementById('walletBalanceId').value
+                    uniqueWallet = walletBalance
+                    if(totalPrice>=walletBalance)
+                    {
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Insufficient Balance',
+                        text: 'Insuffient Balance in your Kairos wallet!',
+                        footer: 'Please your any other payment Method'
+                                 }).then(()=>{
+                                    document.getElementById('walletDiv').style.display = "none"
+                                 })
+                    }
+    }
+
 
     function selectcoupon(couponId) {
         let coupon = document.getElementById('couponvalues' + couponId).value;
@@ -525,8 +577,8 @@
         e.preventDefault()
         total = document.getElementById('totalAmount').value;
         document.getElementById('totalAmountand').innerHTML = "₹" + total;
-        document.getElementById('couponMsgSucess').innerHTML = "  "
-        document.getElementById('couponMsg').innerHTML = " "
+        document.getElementById('couponMsgSucess').innerHTML = "  ";
+        document.getElementById('couponMsg').innerHTML = " "          
         $.ajax({
             url: '/applycoupon',
             type: 'post',
@@ -550,10 +602,14 @@
                     finalAmount = total - d;
                     finalAmount = Math.ceil(finalAmount);
                     document.getElementById('totalAmountand').innerHTML = "₹" + finalAmount;
+                    document.getElementById('totala').value = finalAmount;
                     document.getElementById('discountPercentage').innerHTML = couponPercentage + "%"
                     document.getElementById('offerPricew').value = finalAmount
                     document.getElementById('couponName').value = couponName
-                    document.getElementById('offerPercentage').value = couponPercentage
+                    document.getElementById('offerPercentage').value = couponPercentage;
+                    if(finalAmount <= uniqueWallet){
+                        document.getElementById('walletDiv').style.display = 'block'
+                    }
                 }
             }
 
