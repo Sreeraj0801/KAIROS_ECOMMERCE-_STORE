@@ -21,7 +21,7 @@ const {adminViewOrdersPage,UpdateTrackOrder} = require('../controller/orderContr
 const productHelpers = require('../services/productHelpers');
 const { Db, Admin } = require('mongodb');
 const userHelpers = require('../services/userHelpers');
-const { upload } = require('../public/javascripts/fileUpload');
+const { upload, uploadBrand } = require('../public/javascripts/fileUpload');
 const { logOut } = require('../controller/userController');
 const { response } = require('express');
 const async = require('hbs/lib/async');
@@ -48,16 +48,16 @@ router.get('/home', sessionCheck,adminHome);
 router.get('/viewUsers',sessionCheck,adminViewUsers);
 
 /* <-----------------  user Block button ----------------> */
-router.get('/userBlock/:id', blockUser)
+router.get('/userBlock/:id', sessionCheck,blockUser)
 
 /* <-----------------  user Unblock button --------------> */
-router.get('/userUnBlock/:id',unBlockUser)
+router.get('/userUnBlock/:id',sessionCheck,unBlockUser)
 
 /* <-----------------  Add Category page ----------------> */
 router.get('/addCategory', sessionCheck, addCategoryPage);
 
 /* <-----------------  Post Category page ---------------> */
-router.post('/addCategory',postAddCategoryPage);
+router.post('/addCategory',sessionCheck,postAddCategoryPage);
 
 /* <---------------  Get View Category Page -------------> */
 router.get('/viewCategory', sessionCheck,viewCategoryPage);
@@ -66,25 +66,25 @@ router.get('/viewCategory', sessionCheck,viewCategoryPage);
 router.get('/editCategory/:id', sessionCheck,editCategory)
 
 /* <---------------  Post Edit Category Page -------------> */
-router.post('/editCategory/:id',postEditCategory)
+router.post('/editCategory/:id',sessionCheck,postEditCategory)
 
 /* <---------------  Post Delete Category Page -----------> */
-router.get('/deleteCategory/:id',deleteCategory)
+router.get('/deleteCategory/:id',sessionCheck,deleteCategory)
 
 /* <---------------  Add Brand Category page -------------> */
 router.get('/addBrand', sessionCheck,addBrandsPage);
 
 /* <----------------  Add Brand Category -----------------> */
-router.post('/addBrand',addBrand)
+router.post('/addBrand',sessionCheck,uploadBrand.any('image'),addBrand)
 
 /* <----------------  View Brand Category ----------------> */
 router.get('/viewBrand', sessionCheck,viewBrand);
 
 /* <-----------------  Get Edit Brand --------------------> */
-router.get('/editBrand/:id', sessionCheck ,editbrandPage)
+router.get('/editBrand/:id', sessionCheck, upload.any('image') ,editbrandPage)
 
 /* <-----------------  Post Edit Brand -------------------> */
-router.post('/editBrand/:id',editBrand)
+router.post('/editBrand/:id',sessionCheck,uploadBrand.any('image'),editBrand)
 
 /* <-------------------  Delete Brand --------------------> */
 router.get('/deleteBrand/:id',deleteBrand)

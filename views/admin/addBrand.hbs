@@ -3,13 +3,45 @@
     <h3 class="text-primary  mb-5 fw-bold">Add Brand</h3>
     <hr>
     <div class="container">
-      <form action="/admin/addBrand" method="post">
+      <form action="/admin/addBrand" enctype="multipart/form-data" method="post">
         <div class="row mb-3">
           <label for="inputText" class="col-sm-2  col-form-label">Brand Name</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="brand">
+          <div class="col-sm-5">
+            <input type="text" class="form-control" name="brand" id="brandNameField"  onkeyup="checkForm()" required>
+            <p id="errMsg" class="text-danger"></p>
+          </div>
+          <script>
+            function checkForm()
+            {document.getElementById('errMsg').innerHTML = ""
+              brandName = document.getElementById('brandNameField').value
+              brandName = brandName.trim();
+              if(brandName == "" || brandName == null)
+              {
+                document.getElementById('errMsg').innerHTML = "field cannot be blank"
+              }
+            }
+          </script>
+        </div>
+        <div class="row mb-3">
+          <label for="inputText" class="col-sm-2  col-form-label">Brand Image</label>
+          <div class="col-sm-5">
+            <input type="file" class="form-control p-5" name="image" accept="image/gif, image/jpeg, image/png" id="brandImageFile" required>
+          </div>
+           <div class="col-md-4">
+            <div style="display: none;" id="imageShow"><img id="blah" src="#" alt="your image" / style="height:150px;"></div>
           </div>
         </div>
+       
+          
+          <script>
+          brandImageFile.onchange = evt => {
+          const [file] = brandImageFile.files
+            if (file) {
+            imageShow.style.display = 'block';
+            blah.src = URL.createObjectURL(file)
+            }
+          }
+          </script>
 
         <div class="col-sm-10 text-center">
           <button type="submit" class="btn btn-primary">Submit Form</button>

@@ -1,4 +1,5 @@
-<section>
+<main class="main" id="main">
+  <section>
   <div class="container">
     <h3 class="text-primary mt-5 mb-5 fw-bold">View Brand</h3>
 
@@ -13,6 +14,7 @@
         <tr>
           <th scope="col">SI NO</th>
           <th scope="col">Brand</th>
+          <th scope="col">Image</th>
           <th scope="col">Options</th>
 
         </tr>
@@ -23,6 +25,7 @@
         <tr>
           <th scope="row">{{plusOne @index}}</th>
           <td>{{this.brand}}</td>
+          <td><img style="height:50px ;width:50px ;" src="/pictures/brandImages/{{this.image}}" alt="Image"></td>
           {{!-- <td><img style="height:50px ;width:50px ;" src="/productImages/{{this._id}}.jpg" alt=""></td> --}}
           <td><a class="btn btn-primary" href="/admin/editBrand/{{this._id}}">Edit</a>
             <a href="/admin/deleteBrand/{{this._id}}" class="btn btn-outline-danger"
@@ -34,3 +37,4 @@
     </table>
   </div>
 </section>
+</main>

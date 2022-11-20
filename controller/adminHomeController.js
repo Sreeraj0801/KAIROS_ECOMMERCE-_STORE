@@ -1,3 +1,4 @@
+const { log } = require("debug/src/browser");
 const productHelpers = require("../services/productHelpers");
 const { logOut } = require("./userController");
 
@@ -6,8 +7,12 @@ module.exports.adminHome = async function (req, res, next) {
   let dailySales = await productHelpers.getDailysSales();
   let monthlySales = await productHelpers.getMonthlySales(); 
   let yearlySales = await productHelpers.getYearlySales();
-  
-  console.log(monthlySales);
-  console.log(dailySales);
-    res.render('admin/adminHome', { admin: true,dailySales,monthlySales,yearlySales});
+  let topSellingProducts = await productHelpers.topSellingProducts();
+  let Daily = await productHelpers.getDailysSales();
+  let Monthly = await productHelpers.getMonthlySales(); 
+  let Yearly = await productHelpers.getYearlySales(); 
+  let customers = await productHelpers.getCustomers();
+  console.log("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{");
+  console.log(topSellingProducts);
+  res.render('admin/adminHome', { admin: true,dailySales,monthlySales,yearlySales,Daily,Monthly,Yearly,customers,topSellingProducts});
   };

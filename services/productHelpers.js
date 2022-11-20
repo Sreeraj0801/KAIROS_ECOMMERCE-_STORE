@@ -4,6 +4,7 @@ const async = require('hbs/lib/async');
 const { Collection } = require('mongo');
 const { Db, Timestamp } = require('mongodb');
 const { resolve, reject } = require('promise');
+const { CustomerProfilesContext } = require('twilio/lib/rest/trusthub/v1/customerProfiles');
 const collections = require('../config/collections');
 var collection = require('../config/collections')
 var db = require('../config/connection')
@@ -219,15 +220,24 @@ module.exports={
         })
      }
      ,
-     updateBrand : (brandId,BrandDetails) => {
-        console.log(brandId);
+     updateBrand : (details) => {
+        console.log(details);
          return new Promise((resolve,reject)=>{
          db.get().collection(collections.BRAND)
-         .updateOne({_id:objectId(brandId)},{
+         .updateOne({_id:objectId(details.id)},{
             $set:{
-                brand:BrandDetails.brand}})
+                brand:details.brand,
+                image:details.image}})
          resolve()
        })
+  },
+  getBrand:(brandId)=>{
+    return new Promise(async(resolve,reject)=>{
+        brand =await db.get().collection(collections.BRAND).findOne({_id:objectId(brandId)})
+        console.log("OOOOOOOOOOOOOOOOOOOOO");
+        console.log(brand);
+        resolve(brand)
+    })
   },
   deleteBrand : (brandId)=>{
     return new Promise((resolve,reject)=>{
@@ -588,6 +598,49 @@ deleteCategory : (categoryId)=>{
     return new Promise(async(resolve,reject)=>{
         let walletBalance = await db.get().collection(collections.WALLET).findOne({userId:objectId(userId)})
         resolve(walletBalance.Total)
+    })
+  },
+  getCustomers:()=>{
+    return new Promise(async(resolve,reject)=>{
+       customer =  await db.get().collection(collections.ORDER).aggregate([
+           {
+            $group:{_id:"$userId"}
+           }
+        ]).toArray()
+        customer = customer.length;
+        resolve(customer)        
+    })
+  },
+  topSellingProducts :()=>{
+    return new Promise((resolve,reject)=>{
+        db.get().collection(collections.ORDER).aggregate([
+            {
+                $unwind:'$products'
+            },
+            {
+                $group:{_id:"$products.item","count":{$sum:"$products.quantity"}}
+            },{
+                $sort:{"count":-1}
+            },
+            {
+                $limit:6
+            },
+            {
+                $lookup:{
+                    from:collection.PRODUCT,
+                    localField:"_id",
+                    foreignField:"_id",
+                    as:"productdetails"
+                }
+            },
+            {
+                $project:{
+                    product:{ $arrayElemAt: ['$productdetails', 0] }
+                }
+            }
+        ]).toArray().then((response)=>{
+            resolve(response)
+        })
     })
   }
 }
