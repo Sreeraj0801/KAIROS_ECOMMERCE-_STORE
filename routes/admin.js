@@ -21,7 +21,7 @@ const {adminViewOrdersPage,UpdateTrackOrder} = require('../controller/orderContr
 const productHelpers = require('../services/productHelpers');
 const { Db, Admin } = require('mongodb');
 const userHelpers = require('../services/userHelpers');
-const { upload, uploadBrand, uploadCategory } = require('../public/javascripts/fileUpload');
+const { upload, uploadBrand, uploadCategory ,uploadBanner} = require('../public/javascripts/fileUpload');
 const { logOut } = require('../controller/userController');
 const { response } = require('express');
 const async = require('hbs/lib/async');
@@ -102,7 +102,7 @@ router.post('/addProduct',sessionCheck,upload.array('image'), addProducts)
 router.get('/editProducts/:id', sessionCheck,editProductsPage);
 
 /* <--------------------Put Edit Products  ---------------> */
-router.post('/editProducts/:id',editProducts)
+router.post('/editProducts/:id',upload.array('image'),editProducts)
 
 /* <--------------------Delete  Products  -----------------> */
 router.get('/deleteProduct/:id',sessionCheck,deleteProducts)
@@ -113,13 +113,13 @@ router.get('/viewBanner', sessionCheck,viewBannerPage );
 router.get('/addBanner', sessionCheck, addBannerPage);
 
 /* <-------------------- Post Add Banner -------------------> */
-router.post('/addBanner',addBanner)
+router.post('/addBanner',uploadBanner.any('image'),addBanner)
 
 /* <--------------------  Edit Banner Page -----------------> */
 router.get('/editBanner/:id', sessionCheck, editBannerPage);
 
 /* <--------------------Put   Edit Banner  -----------------> */
-router.post('/editBanner/:id', sessionCheck,editBanner)
+router.post('/editBanner/:id',uploadBanner.any('image'), sessionCheck,editBanner)
 /* <--------------------Put   Edit Banner  -----------------> */
 
 /* <------------------- Get Delete Banner  -----------------> */

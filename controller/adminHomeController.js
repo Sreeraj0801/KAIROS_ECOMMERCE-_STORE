@@ -12,5 +12,6 @@ module.exports.adminHome = async function (req, res, next) {
   let Monthly = await productHelpers.getMonthlySales(); 
   let Yearly = await productHelpers.getYearlySales(); 
   let customers = await productHelpers.getCustomers();
+  Daily = Daily[0].count;
   res.render('admin/adminHome', { admin: true,dailySales,monthlySales,yearlySales,Daily,Monthly,Yearly,customers,topSellingProducts});
   };

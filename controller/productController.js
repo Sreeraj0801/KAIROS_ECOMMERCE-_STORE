@@ -75,12 +75,21 @@ module.exports.editProductsPage =  async function (req, res, next) {
 // <----------------- Admin Put Edit Products  ---------------------------> 
 module.exports.editProducts = async (req, res) => {
   let id = req.params.id
-  productHelpers.updateProduct(req.params.id, req.body).then((response) => {
+  products = await productHelpers.getProduct(id);
+  if(req.files != 0)
+  {
+    const fileName = files.map((file)=>{
+    return file.filename
+    })
+    var product = req.body;
+    product.image = fileName;
+  }
+  else{
+    var product = req.body;
+    product.image = products.image;
+  }
+  productHelpers.updateProduct(req.params.id, product).then((response) => {
     res.redirect('/admin/viewProducts')
-    if (req.files.image) {
-      let image = req.files.image
-      image.mv('./public/productImages/' + id + '.jpg')
-    }
   })
 }
 

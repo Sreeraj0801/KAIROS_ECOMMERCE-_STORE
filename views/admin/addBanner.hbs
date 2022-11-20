@@ -8,14 +8,24 @@
         <div class="row mb-3">
           <label for="inputText" class="col-sm-2  col-form-label">Banner Name</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="bannerName">
+            <input type="text" class="form-control" name="bannerName" onkeyup="checkForm()" onchange="checkForm()" id="bannerNameField">
           </div>
-
+          <p id="errMsg" class="text-danger text-center"></p>
+          <script>
+            function checkForm() {
+              document.getElementById('errMsg').innerHTML = ""
+              bannerName = document.getElementById('bannerNameField').value
+              bannerName = bannerName.trim();
+              if (bannerName == "" || bannerName == null) {
+                document.getElementById('errMsg').innerHTML = "field cannot be blank"
+              }
+            }
+          </script>
         </div>
         <div class="row mb-3">
           <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
           <div class="col-sm-8 ">
-            <div style="display: none;" id="imageShow" class="col"><img id="blah" src="#" alt="your image" /></div>
+            
             <div class="col">
               <input class="form-control p-5" type="file" id="formFile" name="image"
                 accept="image/gif, image/jpeg, image/png">
@@ -27,7 +37,7 @@
           <button type="submit" class="btn btn-primary">Submit Form</button>
         </div>
     </div>
-
+<div style="display: none;" id="imageShow" class="col-md-12"><img id="blah" src="#" alt="your image" style="height:250px;"/></div>
     </form>
 
     </div>

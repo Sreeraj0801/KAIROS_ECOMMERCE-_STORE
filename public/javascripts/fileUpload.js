@@ -39,10 +39,22 @@ const uploadCategory =  multer({
     storage : storage2
 })
 
+//<-----------------For Banner Images ----------->
+const storage3 = multer.diskStorage({
+    destination:function(req,file,callback){
+        callback(null,"public/pictures/bannerImages")
+    },
+    filename : function(req,file,callback){
+        callback(null,file.originalname+'-'+Date.now())
+    }
+})
+const uploadBanner =  multer({
+    storage : storage3
+})
 
 
 
 //<-----------------Module Exporting  ----------->
 module.exports = {
-    upload , uploadBrand,uploadCategory
+    upload , uploadBrand,uploadCategory,uploadBanner
 }
