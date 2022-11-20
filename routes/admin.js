@@ -21,7 +21,7 @@ const {adminViewOrdersPage,UpdateTrackOrder} = require('../controller/orderContr
 const productHelpers = require('../services/productHelpers');
 const { Db, Admin } = require('mongodb');
 const userHelpers = require('../services/userHelpers');
-const { upload, uploadBrand } = require('../public/javascripts/fileUpload');
+const { upload, uploadBrand, uploadCategory } = require('../public/javascripts/fileUpload');
 const { logOut } = require('../controller/userController');
 const { response } = require('express');
 const async = require('hbs/lib/async');
@@ -57,7 +57,7 @@ router.get('/userUnBlock/:id',sessionCheck,unBlockUser)
 router.get('/addCategory', sessionCheck, addCategoryPage);
 
 /* <-----------------  Post Category page ---------------> */
-router.post('/addCategory',sessionCheck,postAddCategoryPage);
+router.post('/addCategory',sessionCheck, uploadCategory.any('image'),postAddCategoryPage);
 
 /* <---------------  Get View Category Page -------------> */
 router.get('/viewCategory', sessionCheck,viewCategoryPage);
@@ -66,7 +66,7 @@ router.get('/viewCategory', sessionCheck,viewCategoryPage);
 router.get('/editCategory/:id', sessionCheck,editCategory)
 
 /* <---------------  Post Edit Category Page -------------> */
-router.post('/editCategory/:id',sessionCheck,postEditCategory)
+router.post('/editCategory/:id',uploadCategory.any('image'),sessionCheck,postEditCategory)
 
 /* <---------------  Post Delete Category Page -----------> */
 router.get('/deleteCategory/:id',sessionCheck,deleteCategory)
@@ -81,7 +81,7 @@ router.post('/addBrand',sessionCheck,uploadBrand.any('image'),addBrand)
 router.get('/viewBrand', sessionCheck,viewBrand);
 
 /* <-----------------  Get Edit Brand --------------------> */
-router.get('/editBrand/:id', sessionCheck, upload.any('image') ,editbrandPage)
+router.get('/editBrand/:id', sessionCheck, uploadBrand.any('image') ,editbrandPage)
 
 /* <-----------------  Post Edit Brand -------------------> */
 router.post('/editBrand/:id',sessionCheck,uploadBrand.any('image'),editBrand)

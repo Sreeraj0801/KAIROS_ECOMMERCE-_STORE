@@ -182,6 +182,12 @@ module.exports={
             resolve(category)
         })
     },
+    getCategory:(id)=>{
+        return new Promise((resolve,reject)=>{
+            category =db.get().collection(collections.CATEGORY).findOne({_id:objectId(id)})
+            resolve(category)
+        })
+    },
     getAllCategoryBrands :(() => {
         let response = {};
         return  new Promise(async(resolve,reject)=>{
@@ -234,8 +240,6 @@ module.exports={
   getBrand:(brandId)=>{
     return new Promise(async(resolve,reject)=>{
         brand =await db.get().collection(collections.BRAND).findOne({_id:objectId(brandId)})
-        console.log("OOOOOOOOOOOOOOOOOOOOO");
-        console.log(brand);
         resolve(brand)
     })
   },
@@ -254,12 +258,13 @@ module.exports={
         resolve(categoryDetails) 
     })
   },
-  updateCategory : (categoryId,categoryDetails) => {
+  updateCategory : (details) => {
      return new Promise((resolve,reject)=>{
      db.get().collection(collections.CATEGORY)
-     .updateOne({_id:objectId(categoryId)},{
+     .updateOne({_id:objectId(details.id)},{
         $set:{
-            category:categoryDetails.category}})
+            category:details.category,
+            image:details.image}})
      resolve()
    })
 } ,
@@ -623,7 +628,7 @@ deleteCategory : (categoryId)=>{
                 $sort:{"count":-1}
             },
             {
-                $limit:6
+                $limit:10
             },
             {
                 $lookup:{

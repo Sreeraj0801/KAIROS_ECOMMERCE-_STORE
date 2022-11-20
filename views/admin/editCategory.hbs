@@ -8,14 +8,15 @@
         <div class="row mb-3">
           <label for="inputText" class="col-sm-2  col-form-label">Category</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="category" value="{{category.category}}">
+            <input type="text" class="form-control" name="category" value="{{category.category}}" id="categoryForm" onkeyup="checkForm()">
+            <p id="errMsg" class="text-danger"></p>
           </div>
         </div>
 
         <div class="row mb-3">
           <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
           <div class="col-sm-8 d-flex">
-            <img id="imageView" src="/categoryImages/{{category._id}}.jpg" alt="" style="width:200px; height: 200px;">
+            <img id="imageView" src="/pictures/categoryImages/{{category.image}}" alt="" style="width:200px; height: 200px;">
             <input class="form-control p-5 m-5 text-warning" type="file" id="formFile" name="image"
               value="{{product.image}}" accept="image/gif, image/jpeg, image/png" onchange="viewImage(event)">
           </div>
@@ -37,3 +38,14 @@
     document.getElementById('imageView').src = URL.createObjectURL(event.target.files[0])
   }
 </script>
+
+         <script>
+            function checkForm() {
+              document.getElementById('errMsg').innerHTML = ""
+              brandName = document.getElementById('categoryForm').value
+              brandName = brandName.trim();
+              if (brandName == "" || brandName == null) {
+                document.getElementById('errMsg').innerHTML = "field cannot be blank"
+              }
+            }
+          </script>

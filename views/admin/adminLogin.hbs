@@ -65,24 +65,26 @@
                     <p class="text-center small">Enter your username & password to login</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate method="post" action="/admin/">
+                  <form class="row g-3 needs-validation" method="post" action="/admin/">
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="adminName" class="form-control" id="yourUsername" required onkeyup="nameCheck()">
-                        <p id="error"></p>
+                        <input type="text" name="adminName" class="form-control" id="yourUsername" required
+                          onkeyup="nameCheck()" onkeydown="nameCheck()">
+
                         <div class="invalid-feedback">Please enter your username.</div>
                       </div>
                     </div>
-
+                    <p id="errMsg" class="text-danger"></p>
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
+                      <input type="password" name="password" class="form-control" id="yourPassword"
+                        onkeyup="passwordCheck()" onkeydown="passwordCheck()" required>
                       <div class="invalid-feedback">Please enter your password!</div>
                     </div>
-
+                    <p id="errPass" class="text-danger"></p>
                     <div class="col-12">
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
@@ -136,24 +138,63 @@
   <script src="/adminAssets/js/main.js"></script>
 
 </body>
+
 </html>
 
 
 <script>
-    function nameCheck()
-    {
-       let name = document.getElementById("yourUsername").value 
-       if(name === "" || name === null)
-       {
-        console.log("a")
-        document.getElementById("error").innerHTML = "Name cannot be empty"
-       }
-       else
-       {
-         console.log("b")
-                document.getElementById("error").innerHTML = " "
 
-            
-       }
+function passwordCheck(){
+  document.getElementById('errPass').innerHTML = ""
+    password = document.getElementById('yourPassword').value;
+    password = password.trim();
+    if(password == null || password == "")
+    {
+      document.getElementById('errPass').innerHTML = "Filed cannot be blank"
     }
+}
+
+
+
+
+  function nameCheck() {
+    function ValidateEmail(name) {
+      const characters = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (characters.test(name)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function ValidateEmailSignature(name) {
+      const characters = /@/;
+      if (characters.test(name)) {
+        return true;
+      } else {
+      }
+    }
+
+    document.getElementById('errMsg').innerHTML = " "
+    let name = document.getElementById('yourUsername').value;
+    name = name.trim()
+    let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    if (name == null || name == "") {
+      document.getElementById('errMsg').innerHTML = "Field cannot be blank"
+    }
+    else {
+      if (ValidateEmail(name)) {
+        document.getElementById("errMsg").innerHTML = "";
+        return true;
+      } else {
+        if (ValidateEmailSignature(name)) {
+          document.getElementById("errMsg").innerHTML = "Enter the remaining part after '@'";
+          return false;
+        } else {
+          document.getElementById("errMsg").innerHTML = "Email should contain '@'";
+          return false;
+        }
+      }
+    }
+  }
 </script>

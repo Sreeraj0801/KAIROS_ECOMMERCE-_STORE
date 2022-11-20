@@ -20,16 +20,10 @@ module.exports.addCategoryPage = async function (req, res, next) {
 
 /* <--------------------- Post Admin Add Category --------------------> */
 module.exports.postAddCategoryPage = async (req, res, next) => {
-  productHelpers.addCategory(req.body).then((id)=>{
-    let image = req.files.image
-    image.mv('./public/categoryImages/' + id + '.jpg', (err, done) => {
-      if (!err) {
-        res.redirect('/admin/viewCategory')
-      }
-      else {
-        console.log(err);
-      }
-    })
+  const files = req.body;
+  files.image = req.files[0].filename;
+  productHelpers.addCategory(files).then((id)=>{
+    res.redirect('/admin/viewCategory')
   }) 
 } 
 
@@ -51,12 +45,20 @@ module.exports.editCategory = async (req, res, next) => {
 /* <----------------------- Post EditCategory  ----------------------> */
 module.exports.postEditCategory = async (req, res) => {
   let id = req.params.id
-  productHelpers.updateCategory(req.params.id, req.body).then((response) => {
+  category =await productHelpers.getCategory(id);
+  if(req.files != 0)
+  {
+    var files = req.body;
+    files.id = req.params.id;
+    files.image = req.files[0].filename;
+  }
+  else{
+    var files = req.body;
+    files.id = req.params.id;
+    files.image = category.image
+  }
+  productHelpers.updateCategory(files).then((response) => {
     res.redirect('/admin/viewCategory')
-    if(req.files.image){
-      let image = req.files.image
-      image.mv('./public/categoryImages/' + id + '.jpg')
-    }
   })
 }
 
