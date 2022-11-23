@@ -2,6 +2,7 @@
 <!-- Main CSS File -->
 <!-- CSS only -->
 <link rel="stylesheet" href="/userAssets/css/style.css">
+<link rel="stylesheet" href="/stylesheets/progressBar.css">
 
 <body>
     <div class="page-header text-center" style="background-image: url('/userAssets/images/page-header-bg.jpg')">
@@ -68,8 +69,22 @@
                 </div>
             </div>
             </div>
-            {{/each}}
+            <div class="container">
+                                    <div class="tracking">
+                                        <div class="title">Tracking Order</div>
+                                    </div>
+                                    <div class="progress-track">
+                                        <ul id="progressbar">
+                                            
+                                            <li class="step0 active  " id="step1">Ordered</li>
+                                            <li class="step0  text-center" id="step2">Shipped</li>
+                                            <li class="step0  text-right" id="step3">Delivered</li>
+                                            <li class="step0 text-right" id="step4">Return</li>
+                                        </ul>
+                                    </div>
 
+                                </div>
+            {{/each}}
         </div>
     </div>
 

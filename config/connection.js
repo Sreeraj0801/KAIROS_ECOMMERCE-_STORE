@@ -5,7 +5,7 @@ const state={
 }
 
 module.exports.connect = function (done) {
-    const url = 'mongodb://localhost:27017'
+    const url = 'mongodb+srv://kairos:kairos@cluster0.wolxfcl.mongodb.net/test'
     const dbname = 'kairos'
 
     mongoClient.connect(url, (err, data) => {

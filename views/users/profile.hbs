@@ -59,8 +59,8 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
-                                            role="tab" aria-controls="tab-account" aria-selected="false">Account
-                                            Details</a>
+                                            role="tab" aria-controls="tab-account" aria-selected="false">Refferal Code
+                                            </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="/logout">Sign Out</a>
@@ -274,7 +274,7 @@
                                         <h4 class="mt-5 ">₹ <span class="text-success mt-5">{{walletDetails.Total}}</span></h4>
                                     </div>
                                     <div class="col-md-3 mt-5">
-                                         <BUTTON ONCLICK="ShowAndHide()" id="showButton" class="btn btn-success rounded">Show Transactions</BUTTON>
+                                         <BUTTON ONCLICK="ShowAndHide()" id="showButton" class="btn btn-success rounded"> Transactions</BUTTON>
                                     </div>
                                     </div>
                                     
@@ -361,41 +361,24 @@
 
                                     <div class="tab-pane fade" id="tab-account" role="tabpanel"
                                         aria-labelledby="tab-account-link">
-                                        <form action="#">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <label>First Name *</label>
-                                                    <input type="text" class="form-control" required>
-                                                </div><!-- End .col-sm-6 -->
+                                        <div class="container-fluid"> 
+                                            <img src="https://img.freepik.com/premium-vector/refer-friend-flat-design-illustration-with-megaphone-screen-mobile-phone-social-media-marketing-friends-via-banner-background-poster_2175-2225.jpg?w=900" alt="" style="height: 60%; width: 90%;">
+                                        </div>
+                                        <div class="mt-2">
+                                            <h4 class="text-primary">Reffer a Friend</h4>
+                                            <small>Reffer your friend and gain the reward</small>
+                                        </div>
+                                        <div class="d-flex">
+                                         <!-- The text field -->
+                                        <div class="col-4">
+                                            <input type="text" value="{{UserDetails.refferal}}" id="myInput" class="form-control" style="border: 2px solid lightblue;border-radius: 4px;">
+                                            </div>
 
-                                                <div class="col-sm-6">
-                                                    <label>Last Name *</label>
-                                                    <input type="text" class="form-control" required>
-                                                </div><!-- End .col-sm-6 -->
-                                            </div><!-- End .row -->
-
-                                            <label>Display Name *</label>
-                                            <input type="text" class="form-control" required>
-                                            <small class="form-text">This will be how your name will be displayed in the
-                                                account section and in reviews</small>
-
-                                            <label>Email address *</label>
-                                            <input type="email" class="form-control" required>
-
-                                            <label>Current password (leave blank to leave unchanged)</label>
-                                            <input type="password" class="form-control">
-
-                                            <label>New password (leave blank to leave unchanged)</label>
-                                            <input type="password" class="form-control">
-
-                                            <label>Confirm new password</label>
-                                            <input type="password" class="form-control mb-2">
-
-                                            <button type="submit" class="btn btn-outline-primary-2">
-                                                <span>SAVE CHANGES</span>
-                                                <i class="icon-long-arrow-right"></i>
-                                            </button>
-                                        </form>
+                                    <!-- The button used to copy the text -->
+                                       <div>
+                                         <button onclick="myFunction()" class="btn btn-success rounded">Copy refferal</button>
+                                       </div>
+                                        </div>
                                     </div><!-- .End .tab-pane -->
                                 </div>
                             </div><!-- End .col-lg-9 -->

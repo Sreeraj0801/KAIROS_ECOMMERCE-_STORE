@@ -501,7 +501,16 @@
                 }
                 else if(response.walletPayment)
                 {
-                    location.href = '/sample'
+                Swal.fire({
+                title: 'Ordered succesfully!',
+                text: 'Your Order has Placed.',
+                imageUrl: 'https://i.pinimg.com/originals/0d/e4/1a/0de41a3c5953fba1755ebd416ec109dd.gif',
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Custom image',
+                }).then(()=>{
+                 location.href = '/profile'
+                })
                 }
                 else {
                     location.href = response;
@@ -549,8 +558,16 @@
             method: 'post',
             success: (response) => {
                 if (response.status) {
-                    alert("payment succesfull")
-                    location.href = '/sample'
+                Swal.fire({
+                title: 'Ordered succesfully!',
+                text: 'Your Order has Placed.',
+                imageUrl: 'https://i.pinimg.com/originals/0d/e4/1a/0de41a3c5953fba1755ebd416ec109dd.gif',
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Custom image',
+                }).then(()=>{
+                 location.href = '/profile'
+                })
                 }
                 else {
                     alert('payment failed')
@@ -625,7 +642,7 @@
                     document.getElementById('couponName').value = couponName
                     document.getElementById('offerPercentage').value = couponPercentage;
                     if(finalAmount <= uniqueWallet){
-                        document.getElementById('walletDiv').style.display = 'block'
+                    document.getElementById('walletDiv').style.display = 'block'
                     }
                 }
             }
