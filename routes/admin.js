@@ -82,7 +82,7 @@ router.get('/viewBrand', sessionCheck,viewBrand);
 
 /* <-----------------  Get Edit Brand --------------------> */
 router.get('/editBrand/:id', sessionCheck, uploadBrand.any('image') ,editbrandPage)
-
+ 
 /* <-----------------  Post Edit Brand -------------------> */
 router.post('/editBrand/:id',sessionCheck,uploadBrand.any('image'),editBrand)
 

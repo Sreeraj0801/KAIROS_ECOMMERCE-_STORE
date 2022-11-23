@@ -409,12 +409,44 @@ module.exports = {
                     }
                 },
                 {
+                    $lookup: {
+                        from: collection.CATEGORY,
+                        localField: 'product.category',
+                        foreignField: '_id',
+                        as: 'categoryDetails'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: collection.BRAND,
+                        localField: 'product.brand',
+                        foreignField: '_id',
+                        as: 'brandDetails'
+                    }
+                },
+
+                {
                     $project: {
-                        item: 1,
+                        model: 1,
+                        title: 1,
+                        category: 1,
+                        brand: 1,
+                        price: 1,
+                        stock: 1,
+                        discription: 1,
+                        gender: 1,
+                        image:1,
+                        offerPercentage:1,
+                        oldPrice:1,
+                        date:1,
+                        item:1,
                         quantity: 1,
                         totalPrice:1,
                         trackOrder:1,
-                        product: { $arrayElemAt: ['$product', 0] }
+                        product: { $arrayElemAt: ['$product', 0] },
+                        categoryDetails: { $arrayElemAt: ['$categoryDetails', 0] },
+                        brandDetails: { $arrayElemAt: ['$brandDetails', 0] },
+
                     }
                 }
             ]).toArray()
@@ -448,7 +480,6 @@ module.exports = {
                 offer = products[0].couponDetails.offerPercentage;
                 cal = parseInt((total *offer)/100)
                 price = total - cal;
-                console.log(offer);
                 refferalData = {
                     Amount : parseInt(price),
                     Date:new Date().toDateString(),
@@ -550,12 +581,10 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             addId = objectId(addId)
             address = await db.get().collection(collections.ADDRESS).findOne({ _id: addId })
-            console.log(address);
             resolve(address)
         })
     },
     getUserDetails: (userId) => {
-        console.log(userId);
         return new Promise((resolve, reject) => {
             details = db.get().collection(collections.USER_COLLECTION).findOne({ _id: objectId(userId) })
             resolve(details)
@@ -742,7 +771,6 @@ module.exports = {
 
     },
     findMobile:(mobileNo)=>{
-        console.log(mobileNo);
        return new Promise(async(resolve,reject)=>{
         let mobile = await db.get().collection(collections.USER_COLLECTION).findOne({Rmobile:mobileNo});
         if(mobile)
@@ -936,8 +964,6 @@ module.exports = {
     },
     inventory:(products)=>{
         return new Promise(async(resolve,reject)=>{
-            console.log("Hai I am here");
-            console.log(products);
         })
     },
     findSigleProduct:(prodId,orderId)=>{

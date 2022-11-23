@@ -48,7 +48,11 @@ module.exports = {
                             as: 'brandDetails'
                         }
                     },
-
+                    {
+                        $sort:{
+                            date:-1
+                        }
+                    },
                     {
 
                         $project: {
@@ -69,7 +73,7 @@ module.exports = {
                         }
                     }
                 ]).toArray()
-                resolve(product)
+                resolve(product);     
             }
         })
     },
@@ -159,6 +163,9 @@ module.exports = {
                             discription: 1,
                             gender: 1,
                             image: 1,
+                            date:1,
+                            offerPercentage:1,
+                            oldPrice:1,
                             categoryDetails: { $arrayElemAt: ['$categoryDetails', 0] },
                             brandDetails: { $arrayElemAt: ['$brandDetails', 0] },
 
@@ -167,6 +174,13 @@ module.exports = {
                 ]).toArray()
                 resolve(product)
             }
+        })
+    },
+
+    newProducts:()=>{
+        return new Promise(async(resolve,reject)=>{
+        products = await db.get().collection(collections.PRODUCT).find({}).sort({date:-1}).limit(8).toArray();
+        resolve(products);
         })
     },
 
@@ -187,7 +201,6 @@ module.exports = {
     getAllCategory: () => {
         return new Promise((resolve, reject) => {
             category = db.get().collection(collections.CATEGORY).find({}).toArray()
-            console.log(resolve);
             resolve(category)
         })
     },
@@ -202,7 +215,6 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             response.category = await db.get().collection(collections.CATEGORY).find({}).toArray()
             response.brand = await db.get().collection(collections.BRAND).find({}).toArray()
-            console.log(response);
             resolve(response)
 
         }
@@ -236,7 +248,6 @@ module.exports = {
     }
     ,
     updateBrand: (details) => {
-        console.log(details);
         return new Promise((resolve, reject) => {
             db.get().collection(collections.BRAND)
                 .updateOne({ _id: objectId(details.id) }, {
@@ -290,6 +301,55 @@ module.exports = {
                 })
         })
     },
+    getBrandProducts:(brandId)=>{
+        let pid = objectId(brandId)
+        return new Promise(async (resolve, reject) => {
+            {
+                product = await db.get().collection(collections.PRODUCT).aggregate([
+                    {
+                        $match: { brand: pid }
+                    },
+                    {
+                        $lookup: {
+                            from: collection.CATEGORY,
+                            localField: 'category',
+                            foreignField: '_id',
+                            as: 'categoryDetails'
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: collection.BRAND,
+                            localField: 'brand',
+                            foreignField: '_id',
+                            as: 'brandDetails'
+                        }
+                    },
+
+                    {
+                        $project: {
+                            model: 1,
+                            title: 1,
+                            category: 1,
+                            brand: 1,
+                            price: 1,
+                            stock: 1,
+                            discription: 1,
+                            gender: 1,
+                            image:1,
+                            offerPercentage:1,
+                            oldPrice:1,
+                            date:1,
+                            categoryDetails: { $arrayElemAt: ['$categoryDetails', 0] },
+                            brandDetails: { $arrayElemAt: ['$brandDetails', 0] },
+
+                        }
+                    }
+                ]).toArray()
+                resolve(product)
+            }
+        })
+    },
     getCategoryProducts: (categoryId) => {
         let pid = objectId(categoryId)
         return new Promise(async (resolve, reject) => {
@@ -325,6 +385,10 @@ module.exports = {
                             stock: 1,
                             discription: 1,
                             gender: 1,
+                            image:1,
+                            offerPercentage:1,
+                            oldPrice:1,
+                            date:1,
                             categoryDetails: { $arrayElemAt: ['$categoryDetails', 0] },
                             brandDetails: { $arrayElemAt: ['$brandDetails', 0] },
 
@@ -549,8 +613,6 @@ module.exports = {
             details.offerPercentage = parseInt(details.offerPercentage);
             details.status = "valid"
             let coupon = await db.get().collection(collections.COUPON).findOne({ 'details.offertext': details.offertext })
-            console.log(coupon);
-            console.log(details.offertext);
             if (coupon) {
                 if (details.createdDate > details.expiryDate) {
                     resolve({ date: true })

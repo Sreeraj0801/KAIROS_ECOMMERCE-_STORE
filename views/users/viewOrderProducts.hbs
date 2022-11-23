@@ -12,29 +12,35 @@
     <div class="container">
         <div class="row">
             {{#each products}}
-            <div class="col-lg-4 bg-light">
-                <div class="card card-dashboard shadow-lg p-3 mb-5  rounded" style="height: 90%;">
-                    <div class="card-body">
-                        <h6>{{this._id}}</h6>
-                        <div class="col-md-12 mt-4">
-                            <img src="/productImages/{{product._id}}.jpg" alt="">
-                        </div>
-                        <div class="text-center mt-2">
-                            <h5>{{this.product.title}}</h5>
-                            <p><span class="text-danger">proId:</span> {{this.product._id}}</p><br>
-                            <p class="" style="font-size: 20px; color: cadetblue;">₹ {{this.product.price}}</p>
-                            <p>{{this.product.discription}}</p>
-                            <p>{{this.product.gender}}</p>
-                            <p>Qty : <span style="color: darkblue;">{{this.quantity}}</span></p>
-                            <div class="">
-                                <p>TrackOrder </p>
-                                <h5>{{this.trackOrder}}</h5>
-                            </div>
-                        </div>
 
-                    </div><!-- End .card-dashboard -->
-                    <div class="d-flex">
-
+            <div class="card col-md-12 mb-5">
+            <div class="card-body rounded" style="background-color: rgb(228, 246, 251);">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="mt-1">
+                            <img class="rounded" src="/pictures/productImages/{{this.product.image.[0]}}" alt="" style="height: 180px;">
+                        </div>
+                        <small>{{this._id}}</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h5 class="mt-3">{{this.brandDetails.brand}}</h5>
+                        <h6 >{{this.categoryDetails.category}}</h6>
+                        <b>{{this.product.title}}</b><br>          
+                    </div>
+                    <div class="col-md-3">
+                        <h6 class="mt-5">Quantity:&nbsp;{{this.quantity}}</h6>
+                        {{#if this.product.offerPercentage}}
+                        <span>
+                        <s>₹ {{this.product.oldPrice}}</s>
+                        <h5 class="">₹ <span class="text-danger">{{this.product.price}}</span></h5>
+                        </span>
+                        {{else}}
+                        <h5 class="mt-1">₹ <span class="text-danger">{{this.product.price}}</span></h5>
+                        {{/if}}
+                        <B>TRACK ORDER</B>
+                        <h6 class="text-danger">{{this.trackOrder}}</h6>
+                    </div>
+                    <div class="col-md-3">
                         {{#if (cancel this.trackOrder)}}
 
                         {{else if (delivered this.trackOrder)}}
@@ -49,14 +55,19 @@
                         {{else if (delivered this.trackOrder)}}
 
                         {{else if (returnRequest this.trackOrder)}}
+
+                        {{else if (returnApproved this.trackOrder)}}
+                        
                         {{else}}
-                        <button type="submit" class="btn btn-danger"
+                        <div class="mt-5">
+                            <button type="submit" class="btn btn-danger rounded mt-5"
                             onclick="cancelProduct('{{this.product._id}}','{{this._id}}')">Cancel</button>
+                        </div>
                         {{/if}}
                     </div>
-                </div><!-- End .card-body -->
-
-            </div><!-- End .col-lg-6 -->
+                </div>
+            </div>
+            </div>
             {{/each}}
 
         </div>

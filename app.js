@@ -39,6 +39,10 @@ hbs.registerHelper('stockOut',(value)=>{
 hbs.registerHelper('cancel', (value)=>{
   return value == "canceled" ? true: false
 })
+
+hbs.registerHelper('returnApproved', (value)=>{
+  return value == "return approved" ? true: false
+})
 hbs.registerHelper('delivered', (value)=>{
   return value == "Deliverd" ? true: false
 })
@@ -83,6 +87,6 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
+});  
 
 module.exports = app;

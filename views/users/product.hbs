@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<!-- molla/category-4cols.html  22 Nov 2019 10:02:52 GMT -->
-<head>
     <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/userAssets/css/plugins/owl-carousel/owl.carousel.css">
-        <link rel="stylesheet" href="/userAssets/css/skins/skin-demo-17.css">
-
-    <!-- Main CSS File -->
     <link rel="stylesheet" href="/userAssets/css/style.css">
-    <script src="/javascripts/script.js"></script>
-    <!-- Favicon -->
-</head>
-
 <body>
     <div class="page-wrapper">
 
@@ -26,7 +14,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                         <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Grid 4 Columns</li>
+                        <li class="breadcrumb-item active" aria-current="page">All Products</li>
                     </ol>
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
@@ -37,9 +25,9 @@
                         <div class="col-lg-9">
                             <div class="toolbox">
                                 <div class="toolbox-left">
-                                    <div class="toolbox-info">
+                                    {{!-- <div class="toolbox-info">
                                         Showing <span>9 of 56</span> Products
-                                    </div><!-- End .toolbox-info -->
+                                    </div><!-- End .toolbox-info --> --}}
                                 </div><!-- End .toolbox-left -->
                             </div><!-- End .toolbox -->
 
@@ -49,29 +37,31 @@
                                     <div class="col-6 col-md-4 col-lg-4 col-xl-3">
                                         <div class="product product-7 text-center">
                                             <figure class="product-media">
+                                                {{#if this.offerPercentage}}
+                                                <span class="product-label label-circle label-sale">{{this.offerPercentage}}% Off</span>
+                                                {{/if}}
                                                 {{!-- <span class="product-label label-out">Out of Stock</span> --}}
                                                 <a href="/product/{{this._id}}">
-                                                    <img src="/pictures/productImages/{{this.image.[2]}}" alt="Product image"
-                                                        class="product-image">
-                                                </a>
+
+                                <img src="/pictures/productImages/{{this.image.[0]}}" alt="Product image"
+                                    class="product-image">
+                                <img src="/pictures/productImages/{{this.image.[3]}}" alt="Product image"
+                                    class="product-image-hover">
+                            </a>
+                                                
 
                                                 <div class="product-action-vertical">
                                                     <a href="#"
                                                         class="btn-product-icon btn-wishlist btn-expandable"><span>add
                                                             to wishlist</span></a>
-                                                    <a href="popup/quickView.html"
-                                                        class="btn-product-icon btn-quickview"
-                                                        title="Quick view"><span>Quick view</span></a>
-                                                    <a href="#" class="btn-product-icon btn-compare"
-                                                        title="Compare"><span>Compare</span></a>
                                                 </div><!-- End .product-action-vertical -->
 
                                                 <div class="product-action">
                                                     {{#if (stockOut this.stock)}}
                                                     <button class="btn-product bg-danger">Stock Out</button>
                                                     {{else}}
-                                                    <button onclick="addToCart('{{this._id}}')"
-                                                    class="btn-product btn-cart">Add to cart</button>
+                                                    <button  onclick="addToCart('{{this._id}}')"
+                                                    class="btn-product btn-cart" style="border: none;">Add to cart</button>
                                                     {{/if}}
                                                 </div><!-- End .product-action -->
                                             </figure><!-- End .product-media -->
@@ -81,17 +71,26 @@
                                                 <div class="product-cat">
                                                     <h5>{{this.brandDetails.brand}}</h5>
                                                     <a href="#">{{this.categoryDetails.category}}</a>
-                                                </div><!-- End .product-cat -->{{this.discription}}</a></h3>
+                                                </div><!-- End .product-cat -->{{this.title}}</a></h3>
                                                 <!-- End .product-title -->
                                                 <div class="product-price">
-                                                    <span class="out-price text-primary">₹{{this.price}}</span>
+                                                    <span class="out-price text-primary">
+                                {{#if this.offerPercentage}}
+                                <div class="product-price">
+                                    <span class="new-price">Now <b>₹{{this.price}}</b></span>
+                                    <span class="old-price">Was <s>₹{{this.oldPrice}}</s></span>
+                                </div><!-- End .product-price -->
+                                <p>{{this.offerPercentage}}% Off</p>
+                                {{else}}
+                                <span>₹ &nbsp;<b class="text-primary">{{this.price}}</b></span>
+                                {{/if}}
                                                 </div><!-- End .product-price -->
                                                 <div class="ratings-container">
-                                                    <div class="ratings">
+                                                    {{!-- <div class="ratings">
                                                         <div class="ratings-val" style="width: 80%;"></div>
                                                         <!-- End .ratings-val -->
-                                                    </div><!-- End .ratings -->
-                                                    <span class="ratings-text">( 6 Reviews )</span>
+                                                    </div><!-- End .ratings --> --}}
+                                                    {{!-- <span class="ratings-text">( 6 Reviews )</span> --}}
                                                 </div><!-- End .rating-container -->
                                             </div><!-- End .product-body -->
                                         </div><!-- End .product -->
@@ -144,12 +143,12 @@
                                                 {{#each data.category}}
                                                 <div class="filter-item">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="cat-1"
-                                                            value="this._id">
+                                                        <input type="checkbox" class="custom-control-input" id="{{this.category}}"
+                                                            value="{{this.category}}">
                                                         <label class="custom-control-label"
-                                                            for="cat-1">{{this.category}}</label>
+                                                            for="{{this.category}}">{{this.category}}</label>
                                                     </div><!-- End .custom-checkbox -->
-                                                    <span class="item-count">3</span>
+                                                    {{!-- <span class="item-count">3</span> --}}
                                                 </div><!-- End .filter-item -->
                                                 {{/each}}
 
@@ -269,13 +268,13 @@
                                                         {{#each data.brand}}
                                                         <div class="custom-control custom-checkbox">
                                                             <input type="checkbox" class="custom-control-input"
-                                                                id="brand-1">
+                                                                id="{{this.brand}}">
                                                             <label class="custom-control-label"
-                                                                for="brand-1">{{this.brand}}</label>
+                                                                for="{{this.brand}}">{{this.brand}}</label>
                                                         </div><!-- End .custom-checkbox -->
-                                                    </div><!-- End .filter-item -->
+                                                    
                                                     {{/each}}
-
+                                                    </div><!-- End .filter-item -->
 
                                                 </div><!-- End .filter-items -->
                                             </div><!-- End .widget-body -->
@@ -599,4 +598,4 @@
 </body>
 <!-- molla/category-4cols.html  22 Nov 2019 10:02:55 GMT -->
 </html>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+

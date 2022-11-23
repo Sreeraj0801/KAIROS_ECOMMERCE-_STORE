@@ -32,7 +32,7 @@
                     <div>
                       <div class="row">
                       <div class="col-md-3">
-                      <img src="/productImages/{{this.products.item}}.jpg" alt="" class="m-5" style="height:140px;" >
+                      <img src="/pictures/productImages/{{this.productDetails.image.[0]}}" alt="" class="m-5" style="height:140px;" >
                       </div>
                       <div class="col-md-3 mt-5">
                         <p>{{this.productDetails.model}}</p>
@@ -77,6 +77,8 @@
         </div>
       </div>
     </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
   function returnApprove(orderId,prodId,refund,userId)

@@ -1,14 +1,17 @@
+const { log } = require('debug/src/browser');
 const productHelpers = require('../services/productHelpers')
 
 
 // <---------------------------- Get singleProduct page ------------------->
 module.exports.userSingleProductsPage = async function (req, res, next) {
     productHelpers.getProductDetails(req.params.id).then((product)=>{ 
+      console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
+      console.log(product);
       if(req.session.userLoggedIn)
       {
         userDetails = req.session ;
         cartCount = req.session.cartCount;
-        res.render('users/singleProduct', { user:true ,userDetails ,cartCount, product:product[0] });
+        res.render('users/singleProduct', { user:true ,userDetails ,cartCount, product:product[0] }); 
       }else{
         res.render('users/singleProduct', { user:true, product:product[0] });
       }
@@ -78,6 +81,7 @@ module.exports.editProducts = async (req, res) => {
   products = await productHelpers.getProduct(id);
   if(req.files != 0)
   {
+    const files = req.files;
     const fileName = files.map((file)=>{
     return file.filename
     })

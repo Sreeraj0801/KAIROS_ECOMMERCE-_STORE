@@ -39,7 +39,6 @@ let OTPphonenumber
       });
       }
       else{
-        console.log(response.message);
              otpMessage =   response.message;
              res.redirect('/phoneLogin');
       }
@@ -96,7 +95,6 @@ module.exports.otpLogin = async  (req, res) => {
 
   module.exports.forgetPhone = async (req,res)=>{
     userHelpers.findMobile(req.body.phonenumber).then((response)=>{
-      console.log(response);
       if(response.status)
       {
         phonenumber = req.body.phonenumber;
@@ -107,8 +105,6 @@ module.exports.otpLogin = async  (req, res) => {
         channel:"sms",
         })
         .then((data) => {
-          console.log("hai hello");
-          console.log(data);
           req.session.user = response.user
           res.json({otp:true})
       });

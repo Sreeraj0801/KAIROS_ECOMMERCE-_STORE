@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <!-- molla/category-4cols.html  22 Nov 2019 10:02:52 GMT -->
 
 <head>
@@ -11,74 +9,12 @@
     <link rel="stylesheet" href="/userAssets/css/style.css">
     <!-- Favicon -->
 
+
 </head>
 
 <body>
     <div class="page-wrapper">
         <div class="col-lg-12 text-center">
-            <div class="toolbox">
-                <div class="toolbox-left">
-                    <div class="toolbox-info">
-                        Showing <span>9 of 56</span> Products
-                    </div><!-- End .toolbox-info -->
-                </div><!-- End .toolbox-left -->
-
-                <div class="toolbox-right">
-                    <div class="toolbox-sort">
-                        <label for="sortby">Sort by:</label>
-                        <div class="select-custom">
-                            <select name="sortby" id="sortby" class="form-control">
-                                <option value="popularity" selected="selected">Most Popular</option>
-                                <option value="rating">Most Rated</option>
-                                <option value="date">Date</option>
-                            </select>
-                        </div>
-                    </div><!-- End .toolbox-sort -->
-                    <div class="toolbox-layout">
-                        <a href="category-list.html" class="btn-layout">
-                            <svg width="16" height="10">
-                                <rect x="0" y="0" width="4" height="4" />
-                                <rect x="6" y="0" width="10" height="4" />
-                                <rect x="0" y="6" width="4" height="4" />
-                                <rect x="6" y="6" width="10" height="4" />
-                            </svg>
-                        </a>
-
-                        <a href="category-2cols.html" class="btn-layout">
-                            <svg width="10" height="10">
-                                <rect x="0" y="0" width="4" height="4" />
-                                <rect x="6" y="0" width="4" height="4" />
-                                <rect x="0" y="6" width="4" height="4" />
-                                <rect x="6" y="6" width="4" height="4" />
-                            </svg>
-                        </a>
-
-                        <a href="category.html" class="btn-layout">
-                            <svg width="16" height="10">
-                                <rect x="0" y="0" width="4" height="4" />
-                                <rect x="6" y="0" width="4" height="4" />
-                                <rect x="12" y="0" width="4" height="4" />
-                                <rect x="0" y="6" width="4" height="4" />
-                                <rect x="6" y="6" width="4" height="4" />
-                                <rect x="12" y="6" width="4" height="4" />
-                            </svg>
-                        </a>
-
-                        <a href="category-4cols.html" class="btn-layout active">
-                            <svg width="22" height="10">
-                                <rect x="0" y="0" width="4" height="4" />
-                                <rect x="6" y="0" width="4" height="4" />
-                                <rect x="12" y="0" width="4" height="4" />
-                                <rect x="18" y="0" width="4" height="4" />
-                                <rect x="0" y="6" width="4" height="4" />
-                                <rect x="6" y="6" width="4" height="4" />
-                                <rect x="12" y="6" width="4" height="4" />
-                                <rect x="18" y="6" width="4" height="4" />
-                            </svg>
-                        </a>
-                    </div><!-- End .toolbox-layout -->
-                </div><!-- End .toolbox-right -->
-            </div>
 
             <main class="main">
                 <div class="page-header text-center"
@@ -97,97 +33,105 @@
                     </div><!-- End .container -->
                 </nav><!-- End .breadcrumb-nav -->
 
-                <div class="page-content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-lg-12">
+                {{#if products}}
+                <div class="products mb-3">
+                    <div class="container">
+                        {{#each products}}
+                        <div class="product product-list border-bottom" style="border:lightblue ;">
+                            <div class="row">
+                                <div class="col-6 col-lg-3">
+                                    <figure class="product-media">
+                                        <a href="/product/{{this._id}}">
+                                            <img src="/pictures/productImages/{{this.image.[0]}}" alt="Product image"
+                                                class="product-image">
+                                        </a>
+                                    </figure><!-- End .product-media -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
 
-                                <div class="products mb-3">
-                                    <div class="row justify-content-center">
-                                        {{#each products}}
-                                        <div class="col-6 col-md-3 col-lg-4 col-xl-3">
-                                            <div class="product product-7">
-                                                <figure class="product-media m-5">
-                                                    {{!-- <span class="product-label label-out">Out of Stock</span> --}}
-                                                    <a href="/product/{{this._id}}">
-                                                        <img src="/productImages/{{this._id}}.jpg" alt="Product image"
-                                                            class="product-image" style="height:320px;">
-                                                    </a>
+                                <div class="col-6 col-lg-3 order-lg-last">
+                                    <div class="product-list-action">
+                                        <div class="product-price">
+                                            {{#if this.offerPercentage}}
+                                            <div class="product-price">
+                                                <span class="new-price">Now <b>₹{{this.price}}</b></span>
+                                                <span class="old-price">Was <s>₹{{this.oldPrice}}</s></span>
+                                            </div><!-- End .product-price -->
 
-                                                    <div class="product-action-vertical">
-                                                        <a href="#"
-                                                            class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                                                to wishlist</span></a>
-                                                        <a href="popup/quickView.html"
-                                                            class="btn-product-icon btn-quickview"
-                                                            title="Quick view"><span>Quick view</span></a>
-                                                        <a href="#" class="btn-product-icon btn-compare"
-                                                            title="Compare"><span>Compare</span></a>
-                                                    </div><!-- End .product-action-vertical -->
-
-                                                    <div class="product-action">
-                                                        {{#if (stockOut this.stock)}}
-                                                        <button onclick=""
-                                                            class="btn-product btn-cart btn-danger bg-danger">Stock
-                                                            Out</button>
-                                                        {{else}}
-                                                        <a href="#" class="btn-product btn-cart"><span>add to
-                                                                cart</span></a>
-                                                        {{/if}}
-                                                    </div><!-- End .product-action -->
-                                                </figure><!-- End .product-media -->
-
-                                                <div class="product-body">
-
-                                                    <div class="product-cat">
-                                                        <h5>{{this.brandDetails.brand}}</h5>
-                                                        <a href="#">{{this.categoryDetails.category}}</a>
-                                                    </div><!-- End .product-cat -->{{this.discription}}</a></h3>
-                                                    <!-- End .product-title -->
-                                                    <div class="product-price">
-                                                        <span class="out-price text-primary">₹{{this.price}}</span>
-                                                    </div><!-- End .product-price -->
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style="width: 80%;"></div>
-                                                            <!-- End .ratings-val -->
-                                                        </div><!-- End .ratings -->
-                                                        <span class="ratings-text">( 6 Reviews )</span>
-                                                    </div><!-- End .rating-container -->
-                                                </div><!-- End .product-body -->
-                                            </div><!-- End .product -->
-                                        </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
-                                        {{/each}}
-
-                                    </div><!-- End .row -->
-                                </div><!-- End .products -->
+                                            {{else}}
+                                            <span>₹ &nbsp;<b class="text-danger">{{this.price}}</b></span>
+                                            {{/if}}
+                                        </div><!-- End .product-price -->
+                                        {{#if this.offerPercentage}}
+                                        <div>
+                                            <p class=" p-2 mb-3" style="background:lightblue;"><span
+                                                    class="text-dark fw-5">{{this.offerPercentage}}%
+                                                    Off</span></p>
+                                        </div>
+                                        {{/if}}
 
 
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item disabled">
-                                            <a class="page-link page-link-prev" href="#" aria-label="Previous"
-                                                tabindex="-1" aria-disabled="true">
-                                                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                                        {{!-- <div class="product-action">
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                                title="Quick view"><span>quick view</span></a>
+                                            <a href="#" class="btn-product btn-compare"
+                                                title="Compare"><span>compare</span></a>
+                                        </div><!-- End .product-action --> --}}
+                                        {{#if (stockOut this.stock)}}
+                                        <button onclick="" class="btn-product btn-cart btn-danger bg-danger">Stock
+                                            Out</button>
+                                        {{else}}
+                                        <a onclick="addToCart('{{this._id}}')" class="btn-product btn-cart"><span>add to
+                                                cart</span></a>
+                                        {{/if}}
+
+                                    </div><!-- End .product-list-action -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-lg-6">
+                                    <div class="product-body product-action-inner">
+                                        <a onclick="addToWishlist('{{this._id}}')" class="btn-product btn-wishlist"
+                                            title="Add to wishlist"><span>add to
+                                                wishlist</span></a>
+                                        <br>
+                                        <div class="product-cat">
+                                            <a href="#">{{this.brandDetails.brand}}</a><br>
+                                            <a href="#">{{this.categoryDetails.category}}</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="product.html">{{this.title}}</a></h3>
+                                        <!-- End .product-title -->
+
+                                        <div class="product-content">
+                                            <small>{{this.discription}} </p>
+                                        </div><!-- End .product-content -->
+
+                                        <div class="product-nav product-nav-thumbs">
+                                            <a href="#" class="active">
+                                                <img src="/pictures/productImages/{{this.image.[1]}}"
+                                                    alt="product desc">
                                             </a>
-                                        </li>
-                                        <li class="page-item active" aria-current="page"><a class="page-link"
-                                                href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item-total">of 6</li>
-                                        <li class="page-item">
-                                            <a class="page-link page-link-next" href="#" aria-label="Next">
-                                                Next <span aria-hidden="true"><i
-                                                        class="icon-long-arrow-right"></i></span>
+                                            <a href="#">
+                                                <img src="/pictures/productImages/{{this.image.[2]}}"
+                                                    alt="product desc">
                                             </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div><!-- End .col-lg-9 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .container -->
-                </div><!-- End .page-content -->
+                                            <a href="#">
+                                                <img src="/pictures/productImages/{{this.image.[3]}}"
+                                                    alt="product desc">
+                                            </a>
+                                        </div><!-- End .product-nav -->
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .col-lg-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .product -->
+                        {{/each}}
+                    </div>
+                </div><!-- End .products -->
+                {{else}}
+                <div class="d-flex justify-content-center">
+                    <img src="/pictures/images/no_products.gif" alt="" style="height:250px ;">
+                </div>
+                <h4 class="mt-5">SORRY !</h4>
+                <h5 class="text-danger">No products are available for this category</h5>
+                {{/if}}
             </main><!-- End .main -->
         </div><!-- End .page-wrapper -->
         <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
@@ -205,166 +149,6 @@
                         placeholder="Search in..." required>
                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                 </form>
-
-                <nav class="mobile-nav">
-                    <ul class="mobile-menu">
-                        <li class="active">
-                            <a href="index.html">Home</a>
-
-                            <ul>
-                                <li><a href="index-1.html">01 - furniture store</a></li>
-                                <li><a href="index-2.html">02 - furniture store</a></li>
-                                <li><a href="index-3.html">03 - electronic store</a></li>
-                                <li><a href="index-4.html">04 - electronic store</a></li>
-                                <li><a href="index-5.html">05 - fashion store</a></li>
-                                <li><a href="index-6.html">06 - fashion store</a></li>
-                                <li><a href="index-7.html">07 - fashion store</a></li>
-                                <li><a href="index-8.html">08 - fashion store</a></li>
-                                <li><a href="index-9.html">09 - fashion store</a></li>
-                                <li><a href="index-10.html">10 - shoes store</a></li>
-                                <li><a href="index-11.html">11 - furniture simple store</a></li>
-                                <li><a href="index-12.html">12 - fashion simple store</a></li>
-                                <li><a href="index-13.html">13 - market</a></li>
-                                <li><a href="index-14.html">14 - market fullwidth</a></li>
-                                <li><a href="index-15.html">15 - lookbook 1</a></li>
-                                <li><a href="index-16.html">16 - lookbook 2</a></li>
-                                <li><a href="index-17.html">17 - fashion store</a></li>
-                                <li><a href="index-18.html">18 - fashion store (with sidebar)</a></li>
-                                <li><a href="index-19.html">19 - games store</a></li>
-                                <li><a href="index-20.html">20 - book store</a></li>
-                                <li><a href="index-21.html">21 - sport store</a></li>
-                                <li><a href="index-22.html">22 - tools store</a></li>
-                                <li><a href="index-23.html">23 - fashion left navigation store</a></li>
-                                <li><a href="index-24.html">24 - extreme sport store</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="category.html">Shop</a>
-                            <ul>
-                                <li><a href="category-list.html">Shop List</a></li>
-                                <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
-                                <li><a href="category.html">Shop Grid 3 Columns</a></li>
-                                <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
-                                <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span
-                                                class="tip tip-hot">Hot</span></span></a></li>
-                                <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
-                                <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
-                                <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span
-                                                class="tip tip-new">New</span></span></a></li>
-                                <li><a href="cart.html">Cart</a></li>
-                                <li><a href="checkout.html">Checkout</a></li>
-                                <li><a href="wishlist.html">Wishlist</a></li>
-                                <li><a href="#">Lookbook</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="product.html" class="sf-with-ul">Product</a>
-                            <ul>
-                                <li><a href="product.html">Default</a></li>
-                                <li><a href="product-centered.html">Centered</a></li>
-                                <li><a href="product-extended.html"><span>Extended Info<span
-                                                class="tip tip-new">New</span></span></a></li>
-                                <li><a href="product-gallery.html">Gallery</a></li>
-                                <li><a href="product-sticky.html">Sticky Info</a></li>
-                                <li><a href="product-sidebar.html">Boxed With Sidebar</a></li>
-                                <li><a href="product-fullwidth.html">Full Width</a></li>
-                                <li><a href="product-masonry.html">Masonry Sticky Info</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">Pages</a>
-                            <ul>
-                                <li>
-                                    <a href="about.html">About</a>
-
-                                    <ul>
-                                        <li><a href="about.html">About 01</a></li>
-                                        <li><a href="about-2.html">About 02</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="contact.html">Contact</a>
-
-                                    <ul>
-                                        <li><a href="contact.html">Contact 01</a></li>
-                                        <li><a href="contact-2.html">Contact 02</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="login.html">Login</a></li>
-                                <li><a href="faq.html">FAQs</a></li>
-                                <li><a href="404.html">Error 404</a></li>
-                                <li><a href="coming-soon.html">Coming Soon</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="blog.html">Blog</a>
-
-                            <ul>
-                                <li><a href="blog.html">Classic</a></li>
-                                <li><a href="blog-listing.html">Listing</a></li>
-                                <li>
-                                    <a href="#">Grid</a>
-                                    <ul>
-                                        <li><a href="blog-grid-2cols.html">Grid 2 columns</a></li>
-                                        <li><a href="blog-grid-3cols.html">Grid 3 columns</a></li>
-                                        <li><a href="blog-grid-4cols.html">Grid 4 columns</a></li>
-                                        <li><a href="blog-grid-sidebar.html">Grid sidebar</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Masonry</a>
-                                    <ul>
-                                        <li><a href="blog-masonry-2cols.html">Masonry 2 columns</a></li>
-                                        <li><a href="blog-masonry-3cols.html">Masonry 3 columns</a></li>
-                                        <li><a href="blog-masonry-4cols.html">Masonry 4 columns</a></li>
-                                        <li><a href="blog-masonry-sidebar.html">Masonry sidebar</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Mask</a>
-                                    <ul>
-                                        <li><a href="blog-mask-grid.html">Blog mask grid</a></li>
-                                        <li><a href="blog-mask-masonry.html">Blog mask masonry</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Single Post</a>
-                                    <ul>
-                                        <li><a href="single.html">Default with sidebar</a></li>
-                                        <li><a href="single-fullwidth.html">Fullwidth no sidebar</a></li>
-                                        <li><a href="single-fullwidth-sidebar.html">Fullwidth with sidebar</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="elements-list.html">Elements</a>
-                            <ul>
-                                <li><a href="elements-products.html">Products</a></li>
-                                <li><a href="elements-typography.html">Typography</a></li>
-                                <li><a href="elements-titles.html">Titles</a></li>
-                                <li><a href="elements-banners.html">Banners</a></li>
-                                <li><a href="elements-product-category.html">Product Category</a></li>
-                                <li><a href="elements-video-banners.html">Video Banners</a></li>
-                                <li><a href="elements-buttons.html">Buttons</a></li>
-                                <li><a href="elements-accordions.html">Accordions</a></li>
-                                <li><a href="elements-tabs.html">Tabs</a></li>
-                                <li><a href="elements-testimonials.html">Testimonials</a></li>
-                                <li><a href="elements-blog-posts.html">Blog Posts</a></li>
-                                <li><a href="elements-portfolio.html">Portfolio</a></li>
-                                <li><a href="elements-cta.html">Call to Action</a></li>
-                                <li><a href="elements-icon-boxes.html">Icon Boxes</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav><!-- End .mobile-nav -->
-
-                <div class="social-icons">
-                    <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-                    <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-                    <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-                    <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
-                </div><!-- End .social-icons -->
             </div><!-- End .mobile-menu-wrapper -->
         </div><!-- End .mobile-menu-container -->
 
@@ -499,5 +283,19 @@
         <!-- Main JS File -->
 </body>
 <!-- molla/category-4cols.html  22 Nov 2019 10:02:55 GMT -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="/userAssets/js/jquery.min.js"></script>
+<script src="/userAssets/js/bootstrap.bundle.min.js"></script>
+<script src="/userAssets/js/jquery.hoverIntent.min.js"></script>
+<script src="/userAssets/js/jquery.waypoints.min.js"></script>
+<script src="/userAssets/js/superfish.min.js"></script>
+<script src="/userAssets/js/owl.carousel.min.js"></script>
+<script src="/userAssets/js/bootstrap-input-spinner.js"></script>
+<script src="/userAssets/js/jquery.magnific-popup.min.js"></script>
+<!-- Main JS File -->
+<script src="/userAssets/js/main.js"></script>
+<script src="/userAssets/js/demos/demo-17.js"></script>
+<script src="/javascripts/script.js"></script>
+<script src="/javascripts/wishlist.js"></script>
 
 </html>

@@ -134,7 +134,7 @@
                                                 <tr class="summary-subtotal">
                                                     <td>Subtotal:</td>
                                                     <td id="totalPrice">₹ &nbsp; {{total.total}}</td>
-                                                    <input type="text" name="" id="totala" value="{{total.total}}">
+                                                    <input type="text" name="" id="totala" value="{{total.total}}" hidden>
                                                 </tr><!-- End .summary-subtotal -->
                                                 <tr>
                                                     <td>Shipping:</td>
@@ -163,7 +163,7 @@
                                         </table><!-- End .table table-summary -->
                                         <hr>
                                         <h6>Please select a payment method</h1>
-                                        <input type="text" id="walletBalanceId" value="{{walletBallence}}">
+                                        <input type="text" id="walletBalanceId" value="{{walletBallence}}" hidden>
                                         {{!-- {{#if (walletBalnce total.total walletBallence)}}
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="paymentMethod"
@@ -461,10 +461,21 @@
     <!-- Plugins JS File -->
 </body>
 <script src="/userAssets/js/jquery.min.js"></script>
-<script src="/userAssets/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/userAssets/js/bootstrap.bundle.min.js"></script>
+    <script src="/userAssets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/userAssets/js/jquery.waypoints.min.js"></script>
+    <script src="/userAssets/js/superfish.min.js"></script>
+    <script src="/userAssets/js/owl.carousel.min.js"></script>
+    <script src="/userAssets/js/bootstrap-input-spinner.js"></script>
+    <script src="/userAssets/js/jquery.magnific-popup.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/userAssets/js/main.js"></script>
+    <script src="/userAssets/js/demos/demo-17.js"></script>
+    <script src="/javascripts/script.js"></script>
+    <script src="/javascripts/wishlist.js"></script>
 {{!-- Razorpay Library --}}
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     $("#checkoutForm").submit((e) => {
         e.preventDefault()
@@ -474,16 +485,22 @@
             data: $('#checkoutForm').serialize(),
             success: (response) => {
                 if (response.paymentMethod == 'COD') {
-                    swal("Good job!", "Cash On Delivery!", "success").then(() => {
-                        location.href = '/profile'
-                    })
+                Swal.fire({
+                title: 'Ordered succesfully!',
+                text: 'Your Order has Placed.',
+                imageUrl: 'https://i.pinimg.com/originals/b9/88/b7/b988b7c3e84e1f83ef9447157831b460.gif',
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Custom image',
+                }).then(()=>{
+                 location.href = '/profile'
+                })
                 }
                 else if (response.paymentMethod == 'Razorpay') {
                     razorpayPayment(response)
                 }
                 else if(response.walletPayment)
                 {
-                    alert("payment succesfull");
                     location.href = '/sample'
                 }
                 else {

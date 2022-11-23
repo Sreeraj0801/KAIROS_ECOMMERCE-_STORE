@@ -1,3 +1,4 @@
+const { log } = require('debug/src/browser');
 const productHelpers = require('../services/productHelpers')
 
 
@@ -9,7 +10,14 @@ const productHelpers = require('../services/productHelpers')
  /* <--------------------- Post Category Products Page --------------> */
  module.exports.userCategoryProducts = async (req,res)=>{
     productHelpers.getCategoryProducts(req.params.id).then((products)=>{
-      res.render("users/categoryProducts",{user:true,products})
+
+      if(req.session.userLoggedIn)
+      {
+        userDetails = req.session ;
+        cartCount = req.session.cartCount;
+        res.render("users/categoryProducts",{user:user = true ,userDetails ,cartCount,products})
+      }
+      res.render("users/categoryProducts",{user:user = true,products})
     })
   }
 

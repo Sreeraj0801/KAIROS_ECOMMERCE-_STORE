@@ -35,7 +35,6 @@ module.exports.placeOrder = async(req,res)=>{
     totalPrice = totalPrice[0].total;
     if(req.body.coupon)
     {
-      console.log(req.body);
       totalPrice = req.body.offerPrice;
       await userHelpers.addUserToCoupon(req.body.coupon,req.session.user._id)
       userHelpers.placeOrder(address,products,totalPrice,paymentMethod,req.body).then((orderId)=>{
@@ -72,7 +71,6 @@ module.exports.placeOrder = async(req,res)=>{
     }
     else{
       userHelpers.placeOrder(address,products,totalPrice,paymentMethod).then((orderId)=>{
-        console.log(paymentMethod);
         let result ={
           paymentMethod:paymentMethod,
           orderId:orderId

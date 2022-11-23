@@ -9,8 +9,9 @@
             <h1 class="page-title"> Return Order<span>Kairos</span></h1>
             <div class="row mt-5">
                 <div class="col-md-4">
-                    <img src="/productImages/{{product.products.item}}.jpg" alt="" class="m-5" >
+                    <img src="/pictures/productImages/{{product.productDetails.image.[0]}}" alt="" class="m-5" >
                 </div>
+
                 <div class="col-md-4 mt-2">
                     <p>Quantity : <b>{{product.products.quantity}}</b></p>
                     <p>Amount Paid: <b> Rs {{product.totalAmount}}</b></p><br>
@@ -41,6 +42,7 @@
                    </form>
                 </div>
             </div>
+            
             </div>
         </div><!-- End .container -->
     </div>

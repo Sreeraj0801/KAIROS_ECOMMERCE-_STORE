@@ -26,6 +26,7 @@ module.exports.viewOrderProducts = async (req, res) => {
         let products = await userHelpers.getOrderProducts(req.params.id)
         cartCount = req.session.cartCount;
         userDetails = req.session ;
+        console.log("[[[[[[[[[[[[[[[");
         console.log(products);
         res.render('users/viewOrderProducts', { user: true,cartCount,userDetails, products })
     } catch (error) {

@@ -1,14 +1,13 @@
 
 function addToCart(prodId) {
     $.ajax({
-        url: '/addToCart/' + prodId,
+        url: '/addToCart/' + prodId, 
         method: 'get',
-        success: (response) => {
+        success: (response) => { 
             if (!response.status) {
-                swal("Please Login", "Login to  Add to Cart!", "Error");
-                setTimeout(() => {
-                    window.location.href = '/login'
-                }, 2000);
+                swal("Please Login", "Login to  Add to Cart!", "error").then(()=>{
+                    location.href = '/login'
+                })
             }
             else if (response.status) {
                 let count = $("#cart-count").html()

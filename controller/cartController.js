@@ -1,3 +1,4 @@
+const { log } = require('debug/src/browser')
 const session = require('express-session')
 const productHelpers = require('../services/productHelpers')
 const userHelpers = require('../services/userHelpers')
@@ -12,6 +13,8 @@ module.exports.userCartPage = async (req, res, next) => {
         }
         userDetails = req.session ;
         cartCount = req.session.cartCount;
+        console.log("]]]]]]]]]]]]]]");
+        console.log(products);
         res.render('users/cart', { user: true,userDetails,cartCount, 'userId': req.session.user._id, products, total: total[0] })
     } catch (error) {
         console.log(error);
@@ -19,18 +22,22 @@ module.exports.userCartPage = async (req, res, next) => {
 }
 // <------------------------Post Cart Page ------------------------>
 module.exports.userCart = async (req, res) => {
+
     try {
         if (req.session.userLoggedIn) {
+       
+ 
             userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
                 userHelpers.deleteWishlistProduct(req.params.id)
                 res.json({ status: true })
             })
         }
         else {
-            const response = false;
-            res.json(response)
+          
+            res.json({status:false})
         }
     } catch (error) {
+
         res.send(error)
     }
 }

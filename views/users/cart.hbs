@@ -1,35 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <!-- molla/cart.html  22 Nov 2019 09:55:06 GMT -->
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/userAssets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/userAssets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/userAssets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="/userAssets/images/icons/site.html">
-    <link rel="mask-icon" href="/userAssets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="/userAssets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
-    <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="/userAssets/images/icons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-    <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
-    <!-- Main CSS File -->
-    <link rel="stylesheet" href="/userAssets/css/style.css">
-</head>
-
 <body>
     <div class="page-wrapper">
 
@@ -74,7 +45,7 @@
                                                 <div class="product">
                                                     <figure class="product-media">
                                                         <a href="#">
-                                                            <img src="/productImages/{{this.product._id}}.jpg"
+                                                            <img src="/pictures/productImages/{{this.product.image.[0]}}"
                                                                 alt="Product image">
                                                         </a>
                                                     </figure>
@@ -84,7 +55,14 @@
                                                     </h3><!-- End .product-title -->
                                                 </div><!-- End .product -->
                                             </td>
-                                            <td class="price-col">₹{{this.product.price}}</td>
+                                            {{#if this.product.offerPercentage}}
+                                            <td class="price-col">
+                                                ₹{{this.product.price}} <br>
+                                                <s class="text-danger">₹{{this.product.oldPrice}}</s><br>
+                                                </td>
+                                                {{else}}
+                                                <td class="price-col">₹{{this.product.price}}</td>
+                                            {{/if}}
                                             {{!-- <td class="quantity-col">
                                                 <div class="cart-product-quantity">
                                                     <input type="number" class="form-control btn btn-spinner" value="{{this.quantity}}" min="1" step="1"
@@ -131,7 +109,7 @@
                                 </table><!-- End .table table-wishlist -->
 
                                 <div class="cart-bottom">
-                                    <div class="cart-discount">
+                                    {{!-- <div class="cart-discount">
                                         <form action="#">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" required
@@ -142,7 +120,7 @@
                                                 </div><!-- .End .input-group-append -->
                                             </div><!-- End .input-group -->
                                         </form>
-                                    </div><!-- End .cart-discount -->
+                                    </div><!-- End .cart-discount --> --}}
 
                                     <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i
                                             class="icon-refresh"></i></a>
@@ -199,11 +177,11 @@
                                                 <td>$20.00</td>
                                             </tr><!-- End .summary-shipping-row --> --}}
 
-                                            <tr class="summary-shipping-estimate">
+                                            {{!-- <tr class="summary-shipping-estimate">
                                                 <td>Estimate for Your Country<br> <a href="dashboard.html">Change
                                                         address</a></td>
                                                 <td>&nbsp;</td>
-                                            </tr><!-- End .summary-shipping-estimate -->
+                                            </tr><!-- End .summary-shipping-estimate --> --}}
 
                                             <tr class="summary-total">
                                                 <td>Total:</td>
@@ -216,7 +194,7 @@
                                         class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
                                 </div><!-- End .summary -->
 
-                                <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
+                                <a href="/product" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
                                         SHOPPING</span><i class="icon-refresh"></i></a>
                             </aside><!-- End .col-lg-3 -->
                         </div><!-- End .row -->
@@ -226,7 +204,7 @@
 
 {{else}}
 <div class="container d-flex justify-content-center" >
-     <img src="/images/productImages/empty-cart.gif" alt="Product image" class="product-image" style="height: 250px; width: 350px;" >
+     <img src="/pictures/images/empty-cart.gif" alt="Product image" class="product-image" style="height: 250px; width: 350px;" >
 </div>
 <h2 class="text-center">Cart Empty</h2>
 <h4 class="text-center text-success">Please fill your cart!</h4>

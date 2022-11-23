@@ -1,7 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-<link rel="apple-touch-icon" sizes="180x180" href="/userAssets/images/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/userAssets/images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/userAssets/images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/userAssets/images/icons/favicon-16x16.png">
     <link rel="manifest" href="/userAssets/images/icons/site.html">
@@ -31,7 +29,6 @@
     <!-- Main CSS File -->
     <link rel="stylesheet" href="/userAssets/css/style.css">
     <link rel="stylesheet" href="/userAssets/css/plugins/nouislider/nouislider.css">
-
 </head>
 
 <body>
@@ -67,7 +64,9 @@
                                 <div class="product-gallery product-gallery-vertical">
                                     <div class="row">
                                         <figure class="product-main-image">
-                                            <img id="product-zoom" src="/pictures/productimages/{{product.image.[0]}}" data-zoom-image="/pictures/productimages/{{product.image.[3]}}" alt="product image">
+                                            <img id="product-zoom" src="/pictures/productimages/{{product.image.[0]}}"
+                                                data-zoom-image="/pictures/productimages/{{product.image.[3]}}"
+                                                alt="product image">
 
                                             <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                                 <i class="icon-arrows"></i>
@@ -75,20 +74,32 @@
                                         </figure><!-- End .product-main-image -->
 
                                         <div id="product-zoom-gallery" class="product-image-gallery">
-                                            <a class="product-gallery-item active" href="#" data-image="/pictures/productimages/{{product.image.[3]}}" data-zoom-image="/pictures/productimages/{{product.image.[3]}}">
-                                                <img src="/pictures/productimages/{{product.image.[3]}}" alt="product side">
+                                            <a class="product-gallery-item active" href="#"
+                                                data-image="/pictures/productimages/{{product.image.[3]}}"
+                                                data-zoom-image="/pictures/productimages/{{product.image.[3]}}">
+                                                <img src="/pictures/productimages/{{product.image.[3]}}"
+                                                    alt="product side">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="/pictures/productimages/{{product.image.[0]}}" data-zoom-image="/pictures/productimages/{{product.image.[0]}}">
-                                                <img src="/pictures/productimages/{{product.image.[0]}}" alt="product cross">
+                                            <a class="product-gallery-item" href="#"
+                                                data-image="/pictures/productimages/{{product.image.[0]}}"
+                                                data-zoom-image="/pictures/productimages/{{product.image.[0]}}">
+                                                <img src="/pictures/productimages/{{product.image.[0]}}"
+                                                    alt="product cross">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="/pictures/productimages/{{product.image.[1]}}" data-zoom-image="/pictures/productimages/{{product.image.[1]}}">
-                                                <img src="/pictures/productimages/{{product.image.[1]}}" alt="product with model">
+                                            <a class="product-gallery-item" href="#"
+                                                data-image="/pictures/productimages/{{product.image.[1]}}"
+                                                data-zoom-image="/pictures/productimages/{{product.image.[1]}}">
+                                                <img src="/pictures/productimages/{{product.image.[1]}}"
+                                                    alt="product with model">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="/pictures/productimages/{{product.image.[2]}}" data-zoom-image="/pictures/productimages/{{product.image.[2]}}">
-                                                <img src="/pictures/productimages/{{product.image.[2]}}" alt="product back">
+                                            <a class="product-gallery-item" href="#"
+                                                data-image="/pictures/productimages/{{product.image.[2]}}"
+                                                data-zoom-image="/pictures/productimages/{{product.image.[2]}}">
+                                                <img src="/pictures/productimages/{{product.image.[2]}}"
+                                                    alt="product back">
                                             </a>
                                         </div><!-- End .product-image-gallery -->
                                     </div><!-- End .row -->
@@ -101,20 +112,30 @@
                                     <h1 class="product-title" style="font-size: 3rem;">{{product.title}}</h1>
                                     <!-- End .product-title -->
 
-                                    <div class="ratings-container">
+                                    {{!-- <div class="ratings-container">
                                         <div class="ratings">
                                             <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
                                         </div><!-- End .ratings -->
-                                        <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews
-                                            )</a>
-                                    </div><!-- End .rating-container -->
+                                    </div><!-- End .rating-container --> --}}
 
-                                    <div class="product-price">
-                                        ₹ {{product.price}}
-                                    </div><!-- End .product-price -->
-
+                                <div class="product-price">
+                                {{#if product.offerPercentage}}
+                                <div class="product-price">
+                                    <span class="new-price">Now <b>₹{{product.price}}</b></span>
+                                    <span class="old-price">Was <s>₹{{product.oldPrice}}</s></span>
+                                </div><!-- End .product-price -->
+                                <br>
+                                {{else}}
+                                <span>₹ &nbsp;<b class="text-danger">{{product.price}}</b></span>
+                                {{/if}}
+                                </div><!-- End .product-price -->
+                                {{#if product.offerPercentage}}
+                                 <div class="col-lg-3">
+                                <h4 class="bg-primary p-2">{{product.offerPercentage}}% Off</h4>
+                                </div>
+                                {{/if}}
                                     <div class="product-content">
-                                        <p style="font-size: 1.8rem;">{{product.discription}}</p>
+                                        <p>{{product.discription}}</small>
                                     </div><!-- End .product-content -->
 
 
@@ -130,13 +151,15 @@
                                         {{#if (stockOut product.stock)}}
                                         <a href="#" class="btn-product btn-cart bg-danger "><span>Stock Out</span></a>
                                         {{else}}
-                                        <button onclick="addToCart('{{product._id}}')" class="btn-product btn-cart">Add to cart</button>
+                                        <button onclick="addToCart('{{product._id}}')" class="btn-product btn-cart">Add
+                                            to cart</button>
                                         {{/if}}
 
                                         <div class="details-action-wrapper">
-                                            <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to
+                                            <a onclick="addToWishlist('{{product._id}}')" class="btn-product btn-wishlist" title="Wishlist"><span>Add to
                                                     Wishlist</span></a>
-                                            {{!-- <a href="#" class="btn-product btn-compare" title="Compare"><span>Add to
+                                            {{!-- <a href="#" class="btn-product btn-compare" title="Compare"><span>Add
+                                                    to
                                                     Compare</span></a> --}}
                                         </div><!-- End .details-action-wrapper -->
                                     </div><!-- End .product-details-action -->
@@ -278,8 +301,8 @@
                         </div><!-- End .tab-content -->
                     </div><!-- End .product-details-tab -->
 
-                    <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
-
+                    {{!-- <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center --> --}}
+{{!-- 
                     <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
                         data-owl-options='{
                             "nav": false, 
@@ -409,7 +432,7 @@
                         <div class="product product-7 text-center">
                             <figure class="product-media">
                                 <span class="product-label label-top">Top</span>
-                                <a href="/product/:{{this._id}}">
+                                <a href="/product/:{{product._id}}">
                                     <img src="/userAssets/images/products/product-11.jpg" alt="Product image"
                                         class="product-image">
                                 </a>
@@ -547,12 +570,12 @@
                                 </div><!-- End .rating-container -->
                             </div><!-- End .product-body -->
                         </div><!-- End .product -->
-                    </div><!-- End .owl-carousel -->
+                    </div><!-- End .owl-carousel --> --}}
                 </div><!-- End .container -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
 
-        
+
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
@@ -572,12 +595,24 @@
 
                 <div class="col-6 justify-content-end">
                     <div class="product-price">
-                        ₹ {{product.price}}
+                        <div class="product-price">
+                                {{#if product.offerPercentage}}
+                                <div class="product-price">
+                                    <span class="new-price">Now <b>₹{{product.price}}</b></span>
+                                    <span class="old-price">Was <s>₹{{product.oldPrice}}</s></span>
+                                    <span class="">
+                                        {{product.offerPercentage}}% Off
+                                    </span>
+                                </div><!-- End .product-price -->
+                                {{else}}
+                                <span>₹ &nbsp;<b class="text-danger">{{product.price}}</b></span>
+                                {{/if}}
+                                </div><!-- End .product-price -->
                     </div><!-- End .product-price -->
-                    <div class="product-details-quantity">
+                    {{!-- <div class="product-details-quantity">
                         <input type="number" id="sticky-cart-qty" class="form-control" value="1" min="1" max="10"
                             step="1" data-decimals="0" required>
-                    </div><!-- End .product-details-quantity -->
+                    </div><!-- End .product-details-quantity --> --}}
 
                     <div class="product-details-action">
                         {{#if (stockOut product.stock)}}
@@ -585,7 +620,7 @@
                         {{else}}
                         <button onclick="addToCart('{{product._id}}')" class="btn-product btn-cart">Add to cart</button>
                         {{/if}}
-                        <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                        <a onclick="addToWishlist('{{product._id}}')" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
                     </div><!-- End .product-details-action -->
                 </div><!-- End .col-6 -->
             </div><!-- End .row -->
@@ -606,7 +641,7 @@
                 <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
             </form>
 
-            
+
 
             <div class="social-icons">
                 <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
@@ -754,8 +789,12 @@
     <script src="/userAssets/js/jquery.magnific-popup.min.js"></script>
     <!-- Main JS File -->
     <script src="/userAssets/js/main.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/javascripts/script.js"></script>
+    <script src="/javascripts/wishlist.js"></script>
     {{/if}}
 </body>
 <!-- Kairos//product/:{{this._id}}  22 Nov 2019 09:55:05 GMT -->
 <script src="/javascripts/script.js"></script>
+
 </html>

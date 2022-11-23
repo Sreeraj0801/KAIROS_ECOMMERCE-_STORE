@@ -16,7 +16,7 @@ paypal.configure({
 
 const { userLoginPage, userLogin, signUp, logOut } = require("../controller/userController");
 const { userCheck } = require("../controller/sessionController");
-const { phoneLoginPage, phoneLogin, otpForgetLoginPage, otpLoginPage, resendOtp, otpLogin, forgetOtp ,forgetPhone} = require("../controller/otpController");
+const { phoneLoginPage, phoneLogin, otpForgetLoginPage, otpLoginPage, resendOtp, otpLogin, forgetOtp, forgetPhone } = require("../controller/otpController");
 const { userHomePage } = require("../controller/userHomeController");
 const { userCategory, userCategoryProducts } = require("../controller/categoryController");
 const { userBrand } = require('../controller/brandController');
@@ -59,7 +59,7 @@ router.get('/otpLogin', otpLoginPage);
 
 // <------------------------ Post Resend OTP code  ----------------> */
 router.post("/resendcode", resendOtp);
-
+ 
 // <------------------------ Post Otp Login - Verify  -------------> */
 router.post("/verify", otpLogin);
 
@@ -82,16 +82,16 @@ router.get('/Brand', userBrand);
 router.get('/product/:id', userSingleProductsPage);
 
 // <---------------------- Get All Products Page ------------------> */
-router.get('/product', userAllProducts);
+router.get('/product', userAllProducts);   
 
 // <------------------------ Get Cart Page ------------------------> */
 router.get('/cart', userCheck, userCartPage);
-
-// <------------------------Post Cart Page ------------------------> */
-router.get('/addToCart/:id', userCheck, userCart);
  
+// <------------------------Post Cart Page ------------------------> */
+router.get('/addToCart/:id', userCart);
+
 // <-------------------- Get Cart Products ------------------------> */
-router.get('/categoryProducts/:id', userCheck, userCategoryProducts);
+router.get('/categoryProducts/:id', userCategoryProducts);
 
 // <------------- Post change product Quantity -------------------> */
 router.post('/changeProductQuantity', userCheck, cartProductsQty)
@@ -183,7 +183,6 @@ const client = require('twilio')(process.env.TWELIO_SID_KEY, process.env.TWELIO_
 
 
 router.post('/mobileNumber', (req, res) => {
-  console.log(req.body);
   res.json({ status: true });
 })
 
@@ -200,21 +199,24 @@ router.get('/returnOrder/:id', (req, res) => {
   res.render('users/returnForm', { user: true, id })
 })
 
-// router.post('/returnOrder', (req, res) => {
-//   userHelpers.returnOrder(req.body)
-// })
+
 
 router.post("/searchProduct", (req, res) => {
   userHelpers.productSearch(req.body).then((products) => {
-    res.render('users/searchProduct', { products, user: true })
-  })
+    if(req.session.userLoggedIn)
+  {
+    userDetails = req.session ;
+    cartCount = req.session.cartCount;
+    res.render("users/categoryProducts",{user:user = true ,userDetails ,cartCount,products})
+  }
+  res.render("users/categoryProducts",{user:user = true,products})
+    })
 })
-  
+
 
 router.get('/wishlist', userCheck, async (req, res) => {
   {
     let products = await userHelpers.getWishlistProducts(req.session.user._id);
-    console.log(products);
     let total = 0;
     userDetails = req.session;
     cartCount = req.session.cartCount;
@@ -224,7 +226,7 @@ router.get('/wishlist', userCheck, async (req, res) => {
 
 
 
-router.get('/addToWishlist/:id', userCheck, (req,res) => {
+router.get('/addToWishlist/:id', userCheck, (req, res) => {
   if (req.session.userLoggedIn) {
     userHelpers.addToWishlist(req.params.id, req.session.user._id).then((response) => {
       res.json(response)
@@ -237,79 +239,106 @@ router.get('/addToWishlist/:id', userCheck, (req,res) => {
 })
 
 
-router.post('/removeWishlistProduct', userCheck, (req,res)=>{
+router.post('/removeWishlistProduct', userCheck, (req, res) => {
   userHelpers.removeWishlistProduct(req.body).then((response) => {
-    res.json(response)
-})
-})
-
-router.post('/applycoupon',(req,res)=>{
-  productHelpers.findCoupon(req.body,req.session.user._id).then((response)=>{
     res.json(response)
   })
 })
 
-router.get('/samplepage',(req,res)=>{
-  res.render('users/samplePage')
+router.post('/applycoupon', (req, res) => {
+  productHelpers.findCoupon(req.body, req.session.user._id).then((response) => {
+    res.json(response)
+  })
 })
 
-router.get('/phoneNumber',(req,res)=>{
+router.get('/samplepage', (req, res) => {
+  productHelpers.getAllProduct().then((products) => {
+    productHelpers.getAllCategory().then((category)=>{
+      productHelpers.getBanner().then(async(banner) =>{
+        if(req.session.userLoggedIn)
+        { 
+         let cartCount = await userHelpers.getCartCount(req.session.user._id)
+          req.session.cartCount = cartCount;
+          userDetails = req.session ;
+          cartCount = req.session.cartCount;
+          res.render('users/samplePage', {products ,category,banner ,userDetails,cartCount ,user:user = true})
+        }else{
+          res.render('users/samplePage')
+        } 
+      }) 
+    })
+    })
+  }
+)
+
+router.get('/phoneNumber', (req, res) => {
   res.render('users/forgetPhone')
 })
 
 
-router.post('/forgetPhone',forgetPhone);
+router.post('/forgetPhone', forgetPhone);
 
-router.get('/otp',(req,res)=>{
+router.get('/otp', (req, res) => {
   res.render('users/otp')
 })
 
-router.post('/forgetOtp',forgetOtp)
+router.post('/forgetOtp', forgetOtp)
 module.exports = router;
 
-router.get('/changePassword',(req,res)=>{
+router.get('/changePassword', (req, res) => {
   res.render('users/changePassword')
 })
 
-router.post('/updatePassword',(req,res)=>{
-  userHelpers.changeForgetPword(req.session.phonenumber ,req.body).then((response)=>{
+router.post('/updatePassword', (req, res) => {
+  userHelpers.changeForgetPword(req.session.phonenumber, req.body).then((response) => {
     res.json(response)
   })
 })
 
 
 router.get('/cancelOrder/:id', cancelOrder)
-
-router.put('/cancelOrderProduct',(req,res)=>{
+router.put('/cancelOrderProduct', (req, res) => {
   let orderId = req.body.orderId;
   let prodId = req.body.prodId;
   let status = "canceled";
-  userHelpers.updateTrackOrder (orderId,prodId,status).then((response)=>{
+  userHelpers.updateTrackOrder(orderId, prodId, status).then((response) => {
     res.json(response)
   })
 })
 
-router.put('/returnOrderProduct',(req,res)=>{
-    let orderId = req.body.orderId;
-    let prodId = req.body.prodId;
-    let status = "return requested";
-    message  = {
-      reason:req.body.reason,
-      discription:req.body.freeform
-    }
-    userHelpers.updateTrackOrder (orderId,prodId,status,message).then((response)=>{
-     res.json(response)
-   })
+router.put('/returnOrderProduct', (req, res) => {
+  let orderId = req.body.orderId;
+  let prodId = req.body.prodId;
+  let status = "return requested";
+  message = {
+    reason: req.body.reason,
+    discription: req.body.freeform
+  }
+  userHelpers.updateTrackOrder(orderId, prodId, status, message).then((response) => {
+    res.json(response)
+  })
 })
 
 
-router.get('/returnOrder/:prodId/:orderId',async (req, res) => {
-      cartCount = req.session.cartCount;
-      userDetails = req.session;
-      prodId = req.params.prodId;
-      orderId = req.params.orderId;
-      let product = await userHelpers.findSigleProduct(prodId,orderId);
-      product = product[0]
-      res.render('users/returnOrder', { user: true,cartCount,userDetails,product})
+router.get('/returnOrder/:prodId/:orderId', async (req, res) => {
+  cartCount = req.session.cartCount;
+  userDetails = req.session;
+  prodId = req.params.prodId;
+  orderId = req.params.orderId;
+  let product = await userHelpers.findSigleProduct(prodId, orderId);
+  product = product[0]
+  console.log(";;;;;;;;;;;;;;;;;;;;;;;;;");
+  console.log(product);
+  res.render('users/returnOrder', { user: true, cartCount, userDetails, product })
+})
 
+router.get('/brandProducts/:id',async(req,res)=>{
+  products = await productHelpers.getBrandProducts(req.params.id);
+  if(req.session.userLoggedIn)
+  {
+    userDetails = req.session ;
+    cartCount = req.session.cartCount;
+    res.render("users/categoryProducts",{user:user = true ,userDetails ,cartCount,products})
+  }
+  res.render("users/categoryProducts",{user:user = true,products})
 })
