@@ -26,8 +26,6 @@ module.exports.viewOrderProducts = async (req, res) => {
         let products = await userHelpers.getOrderProducts(req.params.id)
         cartCount = req.session.cartCount;
         userDetails = req.session ;
-        console.log("[[[[[[[[[[[[[[[");
-        console.log(products);
         res.render('users/viewOrderProducts', { user: true,cartCount,userDetails, products })
     } catch (error) {
 
@@ -47,7 +45,9 @@ module.exports.cancelOrder = async (req, res) => {
 // <-------------------------User Add Address Page-------------------> */
 module.exports.addAddressPage = async (req, res) => {
     try {
-        res.render('users/addAddress', { user: true, loggedIn: req.session.userLoggedIn, user: req.session.user })
+        cartCount = req.session.cartCount;
+        userDetails = req.session ;
+        res.render('users/addAddress', { user: true, cartCount,userDetails})
     } catch (error) {
 
     }
@@ -92,8 +92,10 @@ module.exports.updateUserDetails = (req, res) => {
 // <---------------------- Update User Address Page ----------------> */
 module.exports.updateAdressPage = async (req, res) => {
     try {
+        cartCount = req.session.cartCount;
+        userDetails = req.session ;
         userHelpers.getSingleAddress(req.params.id).then((address) => {
-            res.render('users/updateAddress', { user: true, address })
+            res.render('users/updateAddress', { user: true, address ,cartCount,userDetails})
         })
     } catch (error) {
 

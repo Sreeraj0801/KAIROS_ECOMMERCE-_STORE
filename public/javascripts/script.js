@@ -1,4 +1,7 @@
-
+function cartClick() {
+    location.href = "/cart"
+ }
+ 
 function addToCart(prodId) {
     $.ajax({
         url: '/addToCart/' + prodId, 

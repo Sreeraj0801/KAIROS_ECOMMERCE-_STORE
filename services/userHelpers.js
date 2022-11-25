@@ -339,8 +339,14 @@ module.exports = {
             let Month = date.getMonth() + 1 ;
             let Year = date.getFullYear();
             let finaldate = `${Day}/${Month}/${Year}` 
-            let status = paymentMethod == 'COD' ? 'placed' : 'pending'
-            status = paymentMethod == 'wallet' ? 'placed' : 'pending'
+            let status 
+            if(paymentMethod == 'COD')
+            {
+                status = 'placed'
+            } 
+            else{
+                status =  'pending'
+            }
             let orderObj = {
                 deliveryDetails: {
                     mobile: order.phone,

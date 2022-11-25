@@ -3,7 +3,6 @@ const session = require('express-session');
 const { resolve } = require('promise');
 const router = express.Router();
 const userHelpers = require('../services/userHelpers')
-
 const paypal = require('paypal-rest-sdk');
 const { log } = require("console")
 paypal.configure({
@@ -326,9 +325,7 @@ router.get('/returnOrder/:prodId/:orderId', async (req, res) => {
   prodId = req.params.prodId;
   orderId = req.params.orderId;
   let product = await userHelpers.findSigleProduct(prodId, orderId);
-  product = product[0]
-  console.log(";;;;;;;;;;;;;;;;;;;;;;;;;");
-  console.log(product);
+  product = product[0];
   res.render('users/returnOrder', { user: true, cartCount, userDetails, product })
 })
 

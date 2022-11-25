@@ -49,6 +49,12 @@ hbs.registerHelper('delivered', (value)=>{
 hbs.registerHelper('returnRequest', (value)=>{
   return value == "return requested" ? true: false
 })
+hbs.registerHelper('ordered', (value)=>{
+  return value == "Preparing for dispatch" ? true: false
+})
+hbs.registerHelper('shipped', (value)=>{
+  return value == "Shipped" ? true: false
+})
 
 hbs.registerHelper('multiply',(value,value2)=>{
   return  (parseInt(value) * parseInt(value2))

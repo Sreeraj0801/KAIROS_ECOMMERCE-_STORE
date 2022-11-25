@@ -454,6 +454,8 @@ module.exports = {
             let orders = await db.get().collection(collections.ORDER).aggregate([
                 {
                     $unwind: '$products',
+                },{
+                    $sort:{timestamp:-1}
                 }
             ]).toArray()
             resolve(orders);

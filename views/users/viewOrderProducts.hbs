@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/userAssets/css/style.css">
 <link rel="stylesheet" href="/stylesheets/progressBar.css">
 
-<body>
+<body style="background-color: rgb(228, 246, 251);">
     <div class="page-header text-center" style="background-image: url('/userAssets/images/page-header-bg.jpg')">
         <div class="container">
             <h1 class="page-title"> Ordered Products<span>Kairos</span></h1>
@@ -14,81 +14,114 @@
         <div class="row">
             {{#each products}}
 
-            <div class="card col-md-12 mb-5">
-            <div class="card-body rounded" style="background-color: rgb(228, 246, 251);">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="mt-1">
-                            <img class="rounded" src="/pictures/productImages/{{this.product.image.[0]}}" alt="" style="height: 180px;">
+            <div class="card col-md-12 mb-5 mt-4">
+                <div class="card-body rounded">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mt-1">
+                                <img class="rounded" src="/pictures/productImages/{{this.product.image.[0]}}" alt=""
+                                    style="height: 180px;">
+                            </div>
+                            <small>{{this._id}}</small>
                         </div>
-                        <small>{{this._id}}</small>
-                    </div>
-                    <div class="col-md-3">
-                        <h5 class="mt-3">{{this.brandDetails.brand}}</h5>
-                        <h6 >{{this.categoryDetails.category}}</h6>
-                        <b>{{this.product.title}}</b><br>          
-                    </div>
-                    <div class="col-md-3">
-                        <h6 class="mt-5">Quantity:&nbsp;{{this.quantity}}</h6>
-                        {{#if this.product.offerPercentage}}
-                        <span>
-                        <s>₹ {{this.product.oldPrice}}</s>
-                        <h5 class="">₹ <span class="text-danger">{{this.product.price}}</span></h5>
-                        </span>
-                        {{else}}
-                        <h5 class="mt-1">₹ <span class="text-danger">{{this.product.price}}</span></h5>
-                        {{/if}}
-                        <B>TRACK ORDER</B>
-                        <h6 class="text-danger">{{this.trackOrder}}</h6>
-                    </div>
-                    <div class="col-md-3">
-                        {{#if (cancel this.trackOrder)}}
-
-                        {{else if (delivered this.trackOrder)}}
-                        <a type="submit" class="btn btn-Primary"href="/returnOrder/{{this.product._id}}/{{this._id}}">Request Return</a>
-
-                        {{else if (returnRequest this.trackOrder)}}
-                        {{else}}
-                        {{/if}}
-                        
-                        {{#if (cancel this.trackOrder)}}
-
-                        {{else if (delivered this.trackOrder)}}
-
-                        {{else if (returnRequest this.trackOrder)}}
-
-                        {{else if (returnApproved this.trackOrder)}}
-                        
-                        {{else}}
-                        <div class="mt-5">
-                            <button type="submit" class="btn btn-danger rounded mt-5"
-                            onclick="cancelProduct('{{this.product._id}}','{{this._id}}')">Cancel</button>
+                        <div class="col-md-3">
+                            <h5 class="mt-3">{{this.brandDetails.brand}}</h5>
+                            <h6>{{this.categoryDetails.category}}</h6>
+                            <b>{{this.product.title}}</b><br>
                         </div>
-                        {{/if}}
+                        <div class="col-md-3">
+                            <h6 class="mt-5">Quantity:&nbsp;{{this.quantity}}</h6>
+                            {{#if this.product.offerPercentage}}
+                            <span>
+                                <s>₹ {{this.product.oldPrice}}</s>
+                                <h5 class="">₹ <span class="text-danger">{{this.product.price}}</span></h5>
+                            </span>
+                            {{else}}
+                            <h5 class="mt-1">₹ <span class="text-danger">{{this.product.price}}</span></h5>
+                            {{/if}}
+                            <B>TRACK ORDER</B>
+                            <h6 class="text-danger">{{this.trackOrder}}</h6>
+                        </div>
+                        <div class="col-md-3">
+                            {{#if (cancel this.trackOrder)}}
+
+                            {{else if (delivered this.trackOrder)}}
+                            <a type="submit" class="btn btn-primary mt-5"
+                                href="/returnOrder/{{this.product._id}}/{{this._id}}">Request Return</a>
+
+                            {{else if (returnRequest this.trackOrder)}}
+                            {{else}}
+                            {{/if}}
+
+                            {{#if (cancel this.trackOrder)}}
+
+                            {{else if (delivered this.trackOrder)}}
+
+                            {{else if (returnRequest this.trackOrder)}}
+
+                            {{else if (returnApproved this.trackOrder)}}
+
+                            {{else}}
+                            <div class="mt-5">
+                                <button type="submit" class="btn btn-danger rounded mt-5"
+                                    onclick="cancelProduct('{{this.product._id}}','{{this._id}}')">Cancel</button>
+                            </div>
+                            {{/if}}
+                        </div>
                     </div>
                 </div>
-            </div>
-            </div>
-            <div class="container">
-                                    <div class="tracking">
-                                        <div class="title">Tracking Order</div>
-                                    </div>
-                                    <div class="progress-track">
-                                        <ul id="progressbar">
-                                            
-                                            <li class="step0 active  " id="step1">Ordered</li>
-                                            <li class="step0  text-center" id="step2">Shipped</li>
-                                            <li class="step0  text-right" id="step3">Delivered</li>
-                                            <li class="step0 text-right" id="step4">Return</li>
-                                        </ul>
-                                    </div>
+                <div class="container">
+                    <div class="tracking">
+                        <div class="title">Tracking Order</div>
+                    </div>
+                    <div class="progress-track">
+                        <ul id="progressbar">
+                            {{#if (ordered this.trackOrder)}}
+                            <li class="step0 active  " id="step1">Ordered</li>
+                            <li class="step0  text-center " id="step2">Shipped</li>
+                            <li class="step0  text-right" id="step3">Delivered</li>
+                            <li class="step0 text-right" id="step4">Return</li>
+                            {{else if (shipped this.trackOrder)}}
+                            <li class="step0 active  " id="step1">Ordered</li>
+                            <li class="step0  text-center active" id="step2">Shipped</li>
+                            <li class="step0  text-right" id="step3">Delivered</li>
+                            <li class="step0 text-right" id="step4">Return</li>
+                            {{else if (delivered this.trackOrder)}}
+                             <li class="step0 active  " id="step1">Ordered</li>
+                            <li class="step0  text-center active" id="step2">Shipped</li>
+                            <li class="step0  text-right active" id="step3">Delivered</li>
+                            <li class="step0 text-right" id="step4">Return</li>
+                            {{else if (returnRequest this.trackOrder)}}
+                             <li class="step0 active  " id="step1">Ordered</li>
+                            <li class="step0  text-center active" id="step2">Shipped</li>
+                            <li class="step0  text-right active" id="step3">Delivered</li>
+                            <li class="step0 text-right active" id="step4">Return</li>
+                            {{else}}
+                            {{/if}}
+                        </ul>
+                    </div>
 
-                                </div>
+                </div>
+            </div>
+
             {{/each}}
         </div>
     </div>
 
-
+    <script src="/userAssets/js/jquery.min.js"></script>
+    <script src="/userAssets/js/bootstrap.bundle.min.js"></script>
+    <script src="/userAssets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/userAssets/js/jquery.waypoints.min.js"></script>
+    <script src="/userAssets/js/superfish.min.js"></script>
+    <script src="/userAssets/js/owl.carousel.min.js"></script>
+    <script src="/userAssets/js/bootstrap-input-spinner.js"></script>
+    <script src="/userAssets/js/jquery.elevateZoom.min.js"></script>
+    <script src="/userAssets/js/bootstrap-input-spinner.js"></script>
+    <script src="/userAssets/js/jquery.magnific-popup.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/userAssets/js/main.js"></script>
+    <script src="/javascripts/script.js"></script>
+    <script src="/javascripts/wishlist.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script>
@@ -127,32 +160,32 @@
                 content: "input",
             }).then((value) => {
                 swal("Return Requested!", "Your request form is submitted!", "success")
-                .then(()=>{
-                     $.ajax({
-                        url: '/returnOrderProduct',
-                        method: 'put',
-                        data: {
-                            prodId: prodId,
-                            orderId: orderId,
-                            message: value
-                        },
-                        success: (response) => {
-                            if (response.refund) {
-                                amount = response.amount
-                                swal("Amount Refunded!", "An Amount of RS " + amount + "  is refunded", "success").then(() => {
-                                    location.reload();
-                                })
+                    .then(() => {
+                        $.ajax({
+                            url: '/returnOrderProduct',
+                            method: 'put',
+                            data: {
+                                prodId: prodId,
+                                orderId: orderId,
+                                message: value
+                            },
+                            success: (response) => {
+                                if (response.refund) {
+                                    amount = response.amount
+                                    swal("Amount Refunded!", "An Amount of RS " + amount + "  is refunded", "success").then(() => {
+                                        location.reload();
+                                    })
+                                }
+                                else if (response.COD) {
+                                    amount = response.amount
+                                    swal("order Cancelled!", "Your Order Is cancelled", "success").then(() => {
+                                        location.reload();
+                                    })
+                                }
                             }
-                            else if (response.COD) {
-                                amount = response.amount
-                                swal("order Cancelled!", "Your Order Is cancelled", "success").then(() => {
-                                    location.reload();
-                                })
-                            }
-                        }
+                        })
                     })
-                }) 
-                });
+            });
 
         }
     </script>

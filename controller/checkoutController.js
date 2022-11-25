@@ -13,10 +13,12 @@ module.exports.checkoutPage = async (req,res,next)=>{
     var total = await userHelpers.getTotalAmount(req.session.user._id);
     let address = await userHelpers.getAddress(req.session.user._id);
     let coupons = await productHelpers.getAllCoupons();
-    let walletBallence = await productHelpers.gerWalletBalance(req.session.user._id)
+    let walletBallence = await productHelpers.gerWalletBalance(req.session.user._id);
+    let cartCount = req.session.cartCount;
+    let userDetails = req.session ;
     if(products.length > 0)
     {
-      res.render('users/checkout',{user:true,total:total[0],user:req.session.user,address ,products,coupons,walletBallence});
+      res.render('users/checkout',{user:true,total:total[0],user:req.session.user,address ,products,coupons,walletBallence,cartCount,userDetails});
     }
     else{
       res.redirect("/cart")

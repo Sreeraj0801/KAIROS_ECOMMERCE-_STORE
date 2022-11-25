@@ -2,9 +2,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
+    <title>Kairos - Ecommerse
+    </title>
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUihJ0eCr-XUEWPYYiinzZp_deHNrq1yfUz9QOLycxAZcnI3Id3amXsDu4H6W7J1zeQbk&usqp=CAU" type="image/icon type">
     <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="description" content="Kairos - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/userAssets/images/icons/apple-touch-icon.png">
@@ -13,8 +15,8 @@
     <link rel="manifest" href="/userAssets/images/icons/site.html">
     <link rel="mask-icon" href="/userAssets/images/icons/safari-pinned-tab.svg" color="#666666">
     <link rel="shortcut icon" href="/userAssets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
+    <meta name="apple-mobile-web-app-title" content="Kairos">
+    <meta name="application-name" content="Kairos">
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="/userAssets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
@@ -70,22 +72,32 @@
                         <div class="wishlist">
                             <a href="/wishlist" title="Wishlist">
                                 <div class="icon">
-                                    <i class="icon-heart-o"></i>
-                                    <span class="wishlist-count badge">3</span>
+                                    <i class="icon-heart-o"></i> 
+                                    {{!-- <span class="wishlist-count badge"></span> --}}
                                 </div>
                                 <p>Wishlist</p>
                             </a>
                         </div><!-- End .compare-dropdown -->
-                        <div class="dropdown cart-dropdown">
-                            <button onclick="cartClick()" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                        {{!-- <div class="dropdown cart-dropdown">
+                            <button onclick="cartClick()" class="dropdown-toggle" role="button" data-toggle=""
                                 aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
+
                                     <i class="icon-shopping-cart"></i>
                                     <span class="cart-count">{{cartCount}}</span>
                                 </div>
                                 <p>Cart</p>
                             </button>
-                        </div><!-- End .cart-dropdown -->
+                        </div><!-- End .cart-dropdown --> --}}
+                        <div class="dropdown cart-dropdown">
+                                <a onclick="cartClick()" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <div class="icon">
+                                     <i class="icon-shopping-cart"></i>
+                                    <span class="cart-count">{{cartCount}}</span>
+                                </div>
+                                <p>Cart</p>
+                            </a>
+                        </div>
                         <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" data-display="static">

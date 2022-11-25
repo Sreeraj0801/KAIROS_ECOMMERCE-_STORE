@@ -118,22 +118,22 @@
                                         </div><!-- End .ratings -->
                                     </div><!-- End .rating-container --> --}}
 
-                                <div class="product-price">
-                                {{#if product.offerPercentage}}
-                                <div class="product-price">
-                                    <span class="new-price">Now <b>₹{{product.price}}</b></span>
-                                    <span class="old-price">Was <s>₹{{product.oldPrice}}</s></span>
-                                </div><!-- End .product-price -->
-                                <br>
-                                {{else}}
-                                <span>₹ &nbsp;<b class="text-danger">{{product.price}}</b></span>
-                                {{/if}}
-                                </div><!-- End .product-price -->
-                                {{#if product.offerPercentage}}
-                                 <div class="col-lg-3">
-                                <h4 class="bg-primary p-2">{{product.offerPercentage}}% Off</h4>
-                                </div>
-                                {{/if}}
+                                    <div class="product-price">
+                                        {{#if product.offerPercentage}}
+                                        <div class="product-price">
+                                            <span class="new-price">Now <b>₹{{product.price}}</b></span>
+                                            <span class="old-price">Was <s>₹{{product.oldPrice}}</s></span>
+                                        </div><!-- End .product-price -->
+                                        <br>
+                                        {{else}}
+                                        <span>₹ &nbsp;<b class="text-danger">{{product.price}}</b></span>
+                                        {{/if}}
+                                    </div><!-- End .product-price -->
+                                    {{#if product.offerPercentage}}
+                                    <div class="col-lg-3">
+                                        <h4 class="bg-primary p-2">{{product.offerPercentage}}% Off</h4>
+                                    </div>
+                                    {{/if}}
                                     <div class="product-content">
                                         <p>{{product.discription}}</small>
                                     </div><!-- End .product-content -->
@@ -156,7 +156,8 @@
                                         {{/if}}
 
                                         <div class="details-action-wrapper">
-                                            <a onclick="addToWishlist('{{product._id}}')" class="btn-product btn-wishlist" title="Wishlist"><span>Add to
+                                            <a onclick="addToWishlist('{{product._id}}')"
+                                                class="btn-product btn-wishlist" title="Wishlist"><span>Add to
                                                     Wishlist</span></a>
                                             {{!-- <a href="#" class="btn-product btn-compare" title="Compare"><span>Add
                                                     to
@@ -302,7 +303,7 @@
                     </div><!-- End .product-details-tab -->
 
                     {{!-- <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center --> --}}
-{{!-- 
+                    {{!--
                     <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
                         data-owl-options='{
                             "nav": false, 
@@ -596,18 +597,18 @@
                 <div class="col-6 justify-content-end">
                     <div class="product-price">
                         <div class="product-price">
-                                {{#if product.offerPercentage}}
-                                <div class="product-price">
-                                    <span class="new-price">Now <b>₹{{product.price}}</b></span>
-                                    <span class="old-price">Was <s>₹{{product.oldPrice}}</s></span>
-                                    <span class="">
-                                        {{product.offerPercentage}}% Off
-                                    </span>
-                                </div><!-- End .product-price -->
-                                {{else}}
-                                <span>₹ &nbsp;<b class="text-danger">{{product.price}}</b></span>
-                                {{/if}}
-                                </div><!-- End .product-price -->
+                            {{#if product.offerPercentage}}
+                            <div class="product-price">
+                                <span class="new-price">Now <b>₹{{product.price}}</b></span>
+                                <span class="old-price">Was <s>₹{{product.oldPrice}}</s></span>
+                                <span class="">
+                                    {{product.offerPercentage}}% Off
+                                </span>
+                            </div><!-- End .product-price -->
+                            {{else}}
+                            <span>₹ &nbsp;<b class="text-danger">{{product.price}}</b></span>
+                            {{/if}}
+                        </div><!-- End .product-price -->
                     </div><!-- End .product-price -->
                     {{!-- <div class="product-details-quantity">
                         <input type="number" id="sticky-cart-qty" class="form-control" value="1" min="1" max="10"
@@ -620,7 +621,8 @@
                         {{else}}
                         <button onclick="addToCart('{{product._id}}')" class="btn-product btn-cart">Add to cart</button>
                         {{/if}}
-                        <a onclick="addToWishlist('{{product._id}}')" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                        <a onclick="addToWishlist('{{product._id}}')" class="btn-product btn-wishlist"
+                            title="Wishlist"><span>Add to Wishlist</span></a>
                     </div><!-- End .product-details-action -->
                 </div><!-- End .col-6 -->
             </div><!-- End .row -->

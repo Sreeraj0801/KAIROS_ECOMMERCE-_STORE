@@ -1,5 +1,6 @@
-    <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/userAssets/css/style.css">
+<link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/userAssets/css/style.css">
+
 <body>
     <div class="page-wrapper">
 
@@ -38,17 +39,19 @@
                                         <div class="product product-7 text-center">
                                             <figure class="product-media">
                                                 {{#if this.offerPercentage}}
-                                                <span class="product-label label-circle label-sale">{{this.offerPercentage}}% Off</span>
+                                                <span
+                                                    class="product-label label-circle label-sale">{{this.offerPercentage}}%
+                                                    Off</span>
                                                 {{/if}}
                                                 {{!-- <span class="product-label label-out">Out of Stock</span> --}}
                                                 <a href="/product/{{this._id}}">
 
-                                <img src="/pictures/productImages/{{this.image.[0]}}" alt="Product image"
-                                    class="product-image">
-                                <img src="/pictures/productImages/{{this.image.[3]}}" alt="Product image"
-                                    class="product-image-hover">
-                            </a>
-                                                
+                                                    <img src="/pictures/productImages/{{this.image.[0]}}"
+                                                        alt="Product image" class="product-image">
+                                                    <img src="/pictures/productImages/{{this.image.[3]}}"
+                                                        alt="Product image" class="product-image-hover">
+                                                </a>
+
 
                                                 <div class="product-action-vertical">
                                                     <a href="#"
@@ -60,8 +63,9 @@
                                                     {{#if (stockOut this.stock)}}
                                                     <button class="btn-product bg-danger">Stock Out</button>
                                                     {{else}}
-                                                    <button  onclick="addToCart('{{this._id}}')"
-                                                    class="btn-product btn-cart" style="border: none;">Add to cart</button>
+                                                    <button onclick="addToCart('{{this._id}}')"
+                                                        class="btn-product btn-cart" style="border: none;">Add to
+                                                        cart</button>
                                                     {{/if}}
                                                 </div><!-- End .product-action -->
                                             </figure><!-- End .product-media -->
@@ -75,15 +79,15 @@
                                                 <!-- End .product-title -->
                                                 <div class="product-price">
                                                     <span class="out-price text-primary">
-                                {{#if this.offerPercentage}}
-                                <div class="product-price">
-                                    <span class="new-price">Now <b>₹{{this.price}}</b></span>
-                                    <span class="old-price">Was <s>₹{{this.oldPrice}}</s></span>
-                                </div><!-- End .product-price -->
-                                <p>{{this.offerPercentage}}% Off</p>
-                                {{else}}
-                                <span>₹ &nbsp;<b class="text-primary">{{this.price}}</b></span>
-                                {{/if}}
+                                                        {{#if this.offerPercentage}}
+                                                        <div class="product-price">
+                                                            <span class="new-price">Now <b>₹{{this.price}}</b></span>
+                                                            <span class="old-price">Was <s>₹{{this.oldPrice}}</s></span>
+                                                        </div><!-- End .product-price -->
+                                                        <p>{{this.offerPercentage}}% Off</p>
+                                                        {{else}}
+                                                        <span>₹ &nbsp;<b class="text-primary">{{this.price}}</b></span>
+                                                        {{/if}}
                                                 </div><!-- End .product-price -->
                                                 <div class="ratings-container">
                                                     {{!-- <div class="ratings">
@@ -143,8 +147,8 @@
                                                 {{#each data.category}}
                                                 <div class="filter-item">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="{{this.category}}"
-                                                            value="{{this.category}}">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="{{this.category}}" value="{{this.category}}">
                                                         <label class="custom-control-label"
                                                             for="{{this.category}}">{{this.category}}</label>
                                                     </div><!-- End .custom-checkbox -->
@@ -272,8 +276,8 @@
                                                             <label class="custom-control-label"
                                                                 for="{{this.brand}}">{{this.brand}}</label>
                                                         </div><!-- End .custom-checkbox -->
-                                                    
-                                                    {{/each}}
+
+                                                        {{/each}}
                                                     </div><!-- End .filter-item -->
 
                                                 </div><!-- End .filter-items -->
@@ -281,7 +285,7 @@
                                         </div><!-- End .collapse -->
                                     </div><!-- End .widget -->
 
-                                    
+
                                 </div><!-- End .sidebar sidebar-shop -->
                         </aside><!-- End .col-lg-3 -->
                     </div><!-- End .row -->
@@ -595,7 +599,22 @@
     <!-- Plugins JS File -->
 
     <!-- Main JS File -->
+    <script src="/userAssets/js/jquery.min.js"></script>
+    <script src="/userAssets/js/bootstrap.bundle.min.js"></script>
+    <script src="/userAssets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/userAssets/js/jquery.waypoints.min.js"></script>
+    <script src="/userAssets/js/superfish.min.js"></script>
+    <script src="/userAssets/js/owl.carousel.min.js"></script>
+    <script src="/userAssets/js/bootstrap-input-spinner.js"></script>
+    <script src="/userAssets/js/jquery.elevateZoom.min.js"></script>
+    <script src="/userAssets/js/bootstrap-input-spinner.js"></script>
+    <script src="/userAssets/js/jquery.magnific-popup.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/userAssets/js/main.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/javascripts/script.js"></script>
+    <script src="/javascripts/wishlist.js"></script>
 </body>
 <!-- molla/category-4cols.html  22 Nov 2019 10:02:55 GMT -->
-</html>
 
+</html>
