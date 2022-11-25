@@ -2,6 +2,7 @@
 const dotenv = require('dotenv').config();
 
 const { log } = require('debug/src/browser');
+const { MobileInstance } = require('twilio/lib/rest/api/v2010/account/availablePhoneNumber/mobile');
 //Helpers
 const userHelpers = require('../services/userHelpers')
 //otp twelio
@@ -135,4 +136,36 @@ module.exports.otpLogin = async  (req, res) => {
           
         }
       });
+  }
+
+  module.exports.mobilNumberPage = async  (req, res) => {
+    res.json({ status: true });
+  }
+
+// <---------------------- Change Password  ------------------------> */
+  module.exports.changePassword =  async (req, res) => {
+    userHelpers.changeForgetPword(req.session.phonenumber, req.body).then((status) => {
+      req.session.phonenumber = null;
+      res.json(status)
+    })
+  }
+// <---------------------- Phone Page  ---------------------> */
+  module.exports.phonePage = async (req, res) => {
+    res.render('users/forgetPhone')
+  }
+
+// <---------------------- OTP page  -------------------------> */
+  module.exports.OTPpage = async (req, res) => {
+    res.render('users/otp')
+  }
+// <---------------------- get Change Password  --------------> */
+  module.exports.changePword = async (req, res) => {
+    res.render('users/changePassword')
+  }
+  
+// <--------------------------- Update Password -----------------------> */
+  module.exports.updatePassword = async  (req, res) => {
+    userHelpers.changeForgetPword(req.session.phonenumber, req.body).then((response) => {
+      res.json(response)
+    })
   }

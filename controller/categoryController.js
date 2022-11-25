@@ -77,3 +77,15 @@ module.exports.deleteCategory = async (req, res) => {
   })
 }
 
+// <-------------------------- Brand Products Page  ----------------------> */
+module.exports.brandProductsSearch = async(req,res)=>{
+  products = await productHelpers.getBrandProducts(req.params.id);
+  if(req.session.userLoggedIn)
+  {
+    userDetails = req.session ;
+    cartCount = req.session.cartCount;
+    res.render("users/categoryProducts",{user:user = true ,userDetails ,cartCount,products})
+  }
+  res.render("users/categoryProducts",{user:user = true,products})
+}
+

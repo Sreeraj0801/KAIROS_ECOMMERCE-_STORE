@@ -1,5 +1,6 @@
 const { log } = require('debug/src/browser')
 const session = require('express-session')
+const async = require('hbs/lib/async')
 const productHelpers = require('../services/productHelpers')
 const userHelpers = require('../services/userHelpers')
 
@@ -64,3 +65,31 @@ module.exports.removeProducts = async (req, res, next) => {
 
     }
 }
+// <------------------------ Wishlist Page   --------------------------> */
+module.exports.wishlistPage = async (req, res) => {
+    {
+      let products = await userHelpers.getWishlistProducts(req.session.user._id);
+      let total = 0;
+      userDetails = req.session;
+      cartCount = req.session.cartCount;
+      res.render('users/wishlist', { user: true, userDetails, cartCount, 'userId': req.session.user._id, products, total: total[0] })
+    }
+  }
+// <------------------------ Add to  Wishlist  --------------------------> */
+module.exports.addToWishlist = async (req, res) => {
+    if (req.session.userLoggedIn) {
+      userHelpers.addToWishlist(req.params.id, req.session.user._id).then((response) => {
+        res.json(response)
+      })
+    }
+    else {
+      const response = false;
+      res.json(response)
+    }
+  }
+
+  module.exports.removeWishlistProducts = async (req, res) => {
+    userHelpers.removeWishlistProduct(req.body).then((response) => {
+      res.json(response)
+    })
+  }

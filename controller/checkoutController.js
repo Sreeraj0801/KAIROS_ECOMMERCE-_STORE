@@ -4,6 +4,13 @@ const session = require('express-session')
 const productHelpers = require('../services/productHelpers')
 const userHelpers = require('../services/userHelpers');
 const { logOut } = require('./userController');
+const paypal = require('paypal-rest-sdk');
+const async = require('hbs/lib/async');
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': process.env.PAYPAL_CLIENT_ID,
+  'client_secret': process.env.PAYPAL_CLIENT_SECRET
+});
 
 
 // <-------------------- Get checkout Page -------------------------> */
@@ -28,7 +35,7 @@ module.exports.checkoutPage = async (req,res,next)=>{
     }
   }
   // <--------------------- post place order -------------------------> */
-module.exports.placeOrder = async(req,res)=>{
+  module.exports.placeOrder = async(req,res)=>{
     try {
     let products = await userHelpers.getCartProductList(req.session.user._id);
     let totalPrice = await userHelpers.getTotalAmount(req.session.user._id);
@@ -108,3 +115,72 @@ module.exports.placeOrder = async(req,res)=>{
         
     }
   }
+
+  // <--------------------- post verify Payment ------------------------> */
+  module.exports.verifyPayment = async (req, res) => {
+    userHelpers.verifyPayment(req.body).then((response) => {
+      transaction = req.body
+      userHelpers.changePaymentStatus(req.body['order[receipt]']).then(() => {
+        res.json({ status: true })
+      })
+    }).catch((err) => {
+      console.log(err);
+      res.json({ staus: false })
+    })
+  }
+
+  // <---------------------Paypal Payment Success ----------------------> */
+  module.exports.paypaySucess = async (req, res) => {
+    const payerId = req.query.PayerID;
+    const paymentId = req.query.paymentId;
+    const execute_payment_json = {
+      "payer_id": payerId,
+      "transactions": [{
+        "amount": {
+          "currency": "USD",
+          "total": "25.00"
+        }
+      }]
+    };
+    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+      if (error) {
+        console.log(error.response);
+        throw error;
+      } else {
+        console.log(JSON.stringify(payment));
+        res.redirect('/sample')
+      }
+    });
+  }
+
+  // <---------------------Sample Page for demo - -------------------------> */
+  module.exports.sample = async (req, res) => {
+    res.render('users/sample', { user: true, loggedIn: req.session.userLoggedIn })
+  }
+  
+// <--------------------------- Apply Coupon  ---------------------------> */
+  module.exports.applyCoupon = async (req, res) => {
+    productHelpers.findCoupon(req.body, req.session.user._id).then((response) => {
+      res.json(response)
+    })
+  }
+
+  // <-----------------Sample Page for demo Purpose - ---------------------> */
+  module.exports.SamplePage = async  (req, res) => {
+    productHelpers.getAllProduct().then((products) => {
+      productHelpers.getAllCategory().then((category)=>{
+        productHelpers.getBanner().then(async(banner) =>{
+          if(req.session.userLoggedIn)
+          { 
+           let cartCount = await userHelpers.getCartCount(req.session.user._id)
+            req.session.cartCount = cartCount;
+            userDetails = req.session ;
+            cartCount = req.session.cartCount;
+            res.render('users/samplePage', {products ,category,banner ,userDetails,cartCount ,user:user = true})
+          }else{
+            res.render('users/samplePage')
+          } 
+        }) 
+      })
+      })
+    }

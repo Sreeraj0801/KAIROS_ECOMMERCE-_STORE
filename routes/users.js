@@ -15,17 +15,19 @@ paypal.configure({
 
 const { userLoginPage, userLogin, signUp, logOut } = require("../controller/userController");
 const { userCheck } = require("../controller/sessionController");
-const { phoneLoginPage, phoneLogin, otpForgetLoginPage, otpLoginPage, resendOtp, otpLogin, forgetOtp, forgetPhone } = require("../controller/otpController");
+const { phoneLoginPage, phoneLogin, otpForgetLoginPage, changePword, updatePassword,
+  phonePage, otpLoginPage, resendOtp, otpLogin, forgetOtp, OTPpage, forgetPhone, mobilNumberPage, changePassword } = require("../controller/otpController");
 const { userHomePage } = require("../controller/userHomeController");
-const { userCategory, userCategoryProducts } = require("../controller/categoryController");
+const { userCategory, userCategoryProducts, brandProductsSearch } = require("../controller/categoryController");
 const { userBrand } = require('../controller/brandController');
-const { userSingleProductsPage, userAllProducts } = require('../controller/productController');
-const { userCartPage, userCart, cartProductsQty, removeProducts } = require('../controller/cartController');
-const { checkoutPage, placeOrder } = require('../controller/checkoutController')
+const { userSingleProductsPage, userAllProducts, serchProduct } = require('../controller/productController');
+const { userCartPage, userCart, cartProductsQty, removeProducts, wishlistPage, addToWishlist, removeWishlistProducts } = require('../controller/cartController');
+const { checkoutPage, placeOrder, verifyPayment, paypaySucess, sample, applyCoupon, SamplePage } = require('../controller/checkoutController')
 const { profilePage, viewOrderProducts, cancelOrder, addAddressPage,              //...start
   addAddress, userChangePassword, updateUserDetails, updateAdressPage,
   updateAddress, deleteUserAddress } = require('../controller/profileController')   //....end
 const productHelpers = require('../services/productHelpers');
+const { requestReturnPage, cancelOrderdProduct, returnOrderProduct, returnRequestPage } = require('../controller/orderController')
 const { response } = require('express');
 
 
@@ -58,7 +60,7 @@ router.get('/otpLogin', otpLoginPage);
 
 // <------------------------ Post Resend OTP code  ----------------> */
 router.post("/resendcode", resendOtp);
- 
+
 // <------------------------ Post Otp Login - Verify  -------------> */
 router.post("/verify", otpLogin);
 
@@ -81,11 +83,11 @@ router.get('/Brand', userBrand);
 router.get('/product/:id', userSingleProductsPage);
 
 // <---------------------- Get All Products Page ------------------> */
-router.get('/product', userAllProducts);   
+router.get('/product', userAllProducts);
 
 // <------------------------ Get Cart Page ------------------------> */
 router.get('/cart', userCheck, userCartPage);
- 
+
 // <------------------------Post Cart Page ------------------------> */
 router.get('/addToCart/:id', userCart);
 
@@ -134,208 +136,78 @@ router.put('/updateAddress', userCheck, updateAddress)
 // <-------------------------- Delete User Address  ----------------> */
 router.delete('/deleteAddress', userCheck, deleteUserAddress)
 
+// <-------------------------- User verify Payment  ----------------> */
+router.post('/verifyPayment', verifyPayment)
 
-router.post('/verifyPayment', (req, res) => {
-  userHelpers.verifyPayment(req.body).then((response) => {
-    transaction = req.body
-    userHelpers.changePaymentStatus(req.body['order[receipt]']).then(() => {
-      res.json({ status: true })
-    })
-  }).catch((err) => {
-    console.log(err);
-    res.json({ staus: false })
-  })
-})
+// <---------------------- User PayPal Payment Success  ------------> */
+router.get('/success', paypaySucess)
 
-router.get('/success', (req, res) => {
-  const payerId = req.query.PayerID;
-  const paymentId = req.query.paymentId;
-  const execute_payment_json = {
-    "payer_id": payerId,
-    "transactions": [{
-      "amount": {
-        "currency": "USD",
-        "total": "25.00"
-      }
-    }]
-  };
-
-  paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-    if (error) {
-      console.log(error.response);
-      throw error;
-    } else {
-      console.log(JSON.stringify(payment));
-      res.redirect('/sample')
-    }
-  });
-})
-
+// <-------------------- User PayPal Payment Cancelled  ------------> */
 router.get('/cancel', (req, res) => res.send('Cancelled'));
 
 
-// <-------------------- Sample for trial  ----------------------> */
-router.get('/sample', userCheck, async (req, res) => {
-  res.render('users/sample', { user: true, loggedIn: req.session.userLoggedIn })
-})
-const client = require('twilio')(process.env.TWELIO_SID_KEY, process.env.TWELIO_SECRET_KEY)
+// <--------------------- Sample for trial  ------------------------> */
+router.get('/sample', userCheck, sample)
 
+// <---------------------- Mobile Number Page  ---------------------> */
+router.post('/mobileNumber', mobilNumberPage)
 
-router.post('/mobileNumber', (req, res) => {
-  res.json({ status: true });
-})
+// <---------------------- Change Password  ------------------------> */
+router.post('/changePword', changePassword)
 
-router.post('/changePword', async (req, res) => {
-  userHelpers.changeForgetPword(req.session.phonenumber, req.body).then((status) => {
-    req.session.phonenumber = null;
-    res.json(status)
-  })
-})
+// <--------------------- Request Retun Page  -----------------------> */
+router.get('/returnOrder/:id', requestReturnPage)
 
-router.get('/returnOrder/:id', (req, res) => {
-  userHelpers.returnProducts(req.params.id)
-  let id = req.params.id;
-  res.render('users/returnForm', { user: true, id })
-})
+// <---------------------- Search Products   -------------------------> */
+router.post("/searchProduct", serchProduct)
 
+// <------------------------ Wishlist Page   --------------------------> */
+router.get('/wishlist', userCheck, wishlistPage)
 
+// <------------------------ Add to  Wishlist  -------------------------> */
+router.get('/addToWishlist/:id', userCheck, addToWishlist)
 
-router.post("/searchProduct", (req, res) => {
-  userHelpers.productSearch(req.body).then((products) => {
-    if(req.session.userLoggedIn)
-  {
-    userDetails = req.session ;
-    cartCount = req.session.cartCount;
-    res.render("users/categoryProducts",{user:user = true ,userDetails ,cartCount,products})
-  }
-  res.render("users/categoryProducts",{user:user = true,products})
-    })
-})
+// <------------------------ Remove Wishlist Products -------------------> */
+router.post('/removeWishlistProduct', userCheck, removeWishlistProducts)
 
+// <--------------------------- Apply Coupon  ---------------------------> */
+router.post('/applycoupon', applyCoupon)
 
-router.get('/wishlist', userCheck, async (req, res) => {
-  {
-    let products = await userHelpers.getWishlistProducts(req.session.user._id);
-    let total = 0;
-    userDetails = req.session;
-    cartCount = req.session.cartCount;
-    res.render('users/wishlist', { user: true, userDetails, cartCount, 'userId': req.session.user._id, products, total: total[0] })
-  }
-})
+// <----------------------- Sample Page For Demo Purpose  ---------------> */
 
+router.get('/samplepage', SamplePage)
 
+// <---------------------------- Phone Number Page   --------------------> */
+router.get('/phoneNumber', phonePage)
 
-router.get('/addToWishlist/:id', userCheck, (req, res) => {
-  if (req.session.userLoggedIn) {
-    userHelpers.addToWishlist(req.params.id, req.session.user._id).then((response) => {
-      res.json(response)
-    })
-  }
-  else {
-    const response = false;
-    res.json(response)
-  }
-})
-
-
-router.post('/removeWishlistProduct', userCheck, (req, res) => {
-  userHelpers.removeWishlistProduct(req.body).then((response) => {
-    res.json(response)
-  })
-})
-
-router.post('/applycoupon', (req, res) => {
-  productHelpers.findCoupon(req.body, req.session.user._id).then((response) => {
-    res.json(response)
-  })
-})
-
-router.get('/samplepage', (req, res) => {
-  productHelpers.getAllProduct().then((products) => {
-    productHelpers.getAllCategory().then((category)=>{
-      productHelpers.getBanner().then(async(banner) =>{
-        if(req.session.userLoggedIn)
-        { 
-         let cartCount = await userHelpers.getCartCount(req.session.user._id)
-          req.session.cartCount = cartCount;
-          userDetails = req.session ;
-          cartCount = req.session.cartCount;
-          res.render('users/samplePage', {products ,category,banner ,userDetails,cartCount ,user:user = true})
-        }else{
-          res.render('users/samplePage')
-        } 
-      }) 
-    })
-    })
-  }
-)
-
-router.get('/phoneNumber', (req, res) => {
-  res.render('users/forgetPhone')
-})
-
-
+// <---------------------------- Forget Phone    --------------------> */
 router.post('/forgetPhone', forgetPhone);
 
-router.get('/otp', (req, res) => {
-  res.render('users/otp')
-})
+// <---------------------------- get OTP page     --------------------> */
+router.get('/otp', OTPpage)
 
+// <------------------------- Forget password OTP --------------------> */
 router.post('/forgetOtp', forgetOtp)
+
+// <------------------------- Change Password Page --------------------> */
+router.get('/changePassword', changePword)
+
+// <--------------------------- Update Password -----------------------> */
+router.post('/updatePassword', updatePassword)
+
+// <--------------------------- get Cancel Order -----------------------> */
+router.get('/cancelOrder/:id', cancelOrder);
+
+// <--------------------------- put  Cancel Order -----------------------> */
+router.put('/cancelOrderProduct', cancelOrderdProduct)
+
+// <-------------------------- Return Ordered Product --------------------> */
+router.put('/returnOrderProduct', returnOrderProduct)
+
+// <-------------------------- Return Request Page  ----------------------> */
+router.get('/returnOrder/:prodId/:orderId', returnRequestPage)
+
+// <-------------------------- Brand Products Page  ----------------------> */
+router.get('/brandProducts/:id', brandProductsSearch)
+
 module.exports = router;
-
-router.get('/changePassword', (req, res) => {
-  res.render('users/changePassword')
-})
-
-router.post('/updatePassword', (req, res) => {
-  userHelpers.changeForgetPword(req.session.phonenumber, req.body).then((response) => {
-    res.json(response)
-  })
-})
-
-
-router.get('/cancelOrder/:id', cancelOrder)
-router.put('/cancelOrderProduct', (req, res) => {
-  let orderId = req.body.orderId;
-  let prodId = req.body.prodId;
-  let status = "canceled";
-  userHelpers.updateTrackOrder(orderId, prodId, status).then((response) => {
-    res.json(response)
-  })
-})
-
-router.put('/returnOrderProduct', (req, res) => {
-  let orderId = req.body.orderId;
-  let prodId = req.body.prodId;
-  let status = "return requested";
-  message = {
-    reason: req.body.reason,
-    discription: req.body.freeform
-  }
-  userHelpers.updateTrackOrder(orderId, prodId, status, message).then((response) => {
-    res.json(response)
-  })
-})
-
-
-router.get('/returnOrder/:prodId/:orderId', async (req, res) => {
-  cartCount = req.session.cartCount;
-  userDetails = req.session;
-  prodId = req.params.prodId;
-  orderId = req.params.orderId;
-  let product = await userHelpers.findSigleProduct(prodId, orderId);
-  product = product[0];
-  res.render('users/returnOrder', { user: true, cartCount, userDetails, product })
-})
-
-router.get('/brandProducts/:id',async(req,res)=>{
-  products = await productHelpers.getBrandProducts(req.params.id);
-  if(req.session.userLoggedIn)
-  {
-    userDetails = req.session ;
-    cartCount = req.session.cartCount;
-    res.render("users/categoryProducts",{user:user = true ,userDetails ,cartCount,products})
-  }
-  res.render("users/categoryProducts",{user:user = true,products})
-})

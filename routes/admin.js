@@ -6,22 +6,23 @@ var router = express.Router();
 
 /* <----------------- Requiring Controllers -------------------> */
 
-const {sessionCheck} = require("../controller/sessionController");
-const {adminLoginPage ,postAdminLogin,signout} = require("../controller/adminController");
-const {adminHome} = require("../controller/adminHomeController");
-const {adminViewUsers ,blockUser ,unBlockUser} = require("../controller/adminUsersController")
-const {addCategoryPage ,postAddCategoryPage ,viewCategoryPage ,editCategory ,postEditCategory
-,deleteCategory} = require("../controller/categoryController") //------------end
-const {addBrandsPage ,addBrand ,viewBrand ,editbrandPage
-,editBrand,deleteBrand} =require("../controller/brandController") //---------end
-const {viewProdutsPage,addProductsPage ,addProducts ,editProductsPage , editProducts,deleteProducts ,stockUpdate} = require("../controller/productController")
-const {viewBannerPage,addBannerPage ,addBanner ,editBannerPage 
-,editBanner ,deleteBanner} = require("../controller/bannerController"); //-----end
-const {adminViewOrdersPage,UpdateTrackOrder} = require('../controller/orderController.js')
+const { sessionCheck } = require("../controller/sessionController");
+const { adminLoginPage, postAdminLogin, signout } = require("../controller/adminController");
+const { adminHome } = require("../controller/adminHomeController");
+const { adminViewUsers, blockUser, unBlockUser } = require("../controller/adminUsersController")
+const { addCategoryPage, postAddCategoryPage, viewCategoryPage, editCategory, postEditCategory
+  , deleteCategory } = require("../controller/categoryController") //------------end
+const { addBrandsPage, addBrand, viewBrand, editbrandPage
+  , editBrand, deleteBrand } = require("../controller/brandController") //---------end
+const { viewProdutsPage, addProductsPage, addProducts, editProductsPage, editProducts, deleteProducts, couponPage, addCouponPage,
+  removeCoupon, addCoupon, stockUpdate, productOffer, addProductOffer, removeProductOffer } = require("../controller/productController")
+const { viewBannerPage, addBannerPage, addBanner, editBannerPage
+  , editBanner, deleteBanner } = require("../controller/bannerController"); //-----end
+const { adminViewOrdersPage, UpdateTrackOrder, returnOrderPageAdmin, salesReport, returnOrderedProduct } = require('../controller/orderController.js')
 const productHelpers = require('../services/productHelpers');
 const { Db, Admin } = require('mongodb');
 const userHelpers = require('../services/userHelpers');
-const { upload, uploadBrand, uploadCategory ,uploadBanner} = require('../public/javascripts/fileUpload');
+const { upload, uploadBrand, uploadCategory, uploadBanner } = require('../public/javascripts/fileUpload');
 const { logOut } = require('../controller/userController');
 const { response } = require('express');
 const async = require('hbs/lib/async');
@@ -36,169 +37,133 @@ const { log } = require('debug/src/browser');
 router.get('/', adminLoginPage);
 
 /* <----------------- Post login  page-------------------> */
-router.post('/',postAdminLogin)
+router.post('/', postAdminLogin)
 
 /* <------------------ signout root ---------------------> */
-router.get('/signout',signout);
+router.get('/signout', signout);
 
 /* <------------------  GET home page -------------------> */
-router.get('/home', sessionCheck,adminHome);
+router.get('/home', sessionCheck, adminHome);
 
 /* <-----------------  view Users page ------------------> */
-router.get('/viewUsers',sessionCheck,adminViewUsers);
+router.get('/viewUsers', sessionCheck, adminViewUsers);
 
 /* <-----------------  user Block button ----------------> */
-router.get('/userBlock/:id', sessionCheck,blockUser)
+router.get('/userBlock/:id', sessionCheck, blockUser)
 
 /* <-----------------  user Unblock button --------------> */
-router.get('/userUnBlock/:id',sessionCheck,unBlockUser)
+router.get('/userUnBlock/:id', sessionCheck, unBlockUser)
 
 /* <-----------------  Add Category page ----------------> */
 router.get('/addCategory', sessionCheck, addCategoryPage);
 
 /* <-----------------  Post Category page ---------------> */
-router.post('/addCategory',sessionCheck, uploadCategory.any('image'),postAddCategoryPage);
+router.post('/addCategory', sessionCheck, uploadCategory.any('image'), postAddCategoryPage);
 
 /* <---------------  Get View Category Page -------------> */
-router.get('/viewCategory', sessionCheck,viewCategoryPage);
+router.get('/viewCategory', sessionCheck, viewCategoryPage);
 
 /* <---------------  Get Edit Category Page --------------> */
-router.get('/editCategory/:id', sessionCheck,editCategory)
+router.get('/editCategory/:id', sessionCheck, editCategory)
 
 /* <---------------  Post Edit Category Page -------------> */
-router.post('/editCategory/:id',uploadCategory.any('image'),sessionCheck,postEditCategory)
+router.post('/editCategory/:id', uploadCategory.any('image'), sessionCheck, postEditCategory)
 
 /* <---------------  Post Delete Category Page -----------> */
-router.get('/deleteCategory/:id',sessionCheck,deleteCategory)
+router.get('/deleteCategory/:id', sessionCheck, deleteCategory)
 
 /* <---------------  Add Brand Category page -------------> */
-router.get('/addBrand', sessionCheck,addBrandsPage);
+router.get('/addBrand', sessionCheck, addBrandsPage);
 
 /* <----------------  Add Brand Category -----------------> */
-router.post('/addBrand',sessionCheck,uploadBrand.any('image'),addBrand)
+router.post('/addBrand', sessionCheck, uploadBrand.any('image'), addBrand)
 
 /* <----------------  View Brand Category ----------------> */
-router.get('/viewBrand', sessionCheck,viewBrand);
+router.get('/viewBrand', sessionCheck, viewBrand);
 
 /* <-----------------  Get Edit Brand --------------------> */
-router.get('/editBrand/:id', sessionCheck, uploadBrand.any('image') ,editbrandPage)
- 
+router.get('/editBrand/:id', sessionCheck, uploadBrand.any('image'), editbrandPage)
+
 /* <-----------------  Post Edit Brand -------------------> */
-router.post('/editBrand/:id',sessionCheck,uploadBrand.any('image'),editBrand)
+router.post('/editBrand/:id', sessionCheck, uploadBrand.any('image'), editBrand)
 
 /* <-------------------  Delete Brand --------------------> */
-router.get('/deleteBrand/:id',deleteBrand)
+router.get('/deleteBrand/:id', deleteBrand)
 
 /* <----------------  View Products page -----------------> */
-router.get('/viewProducts', sessionCheck,viewProdutsPage);
+router.get('/viewProducts', sessionCheck, viewProdutsPage);
 
 /* <----------------  Add Products page ------------------> */
-router.get('/addProducts', sessionCheck,addProductsPage)
+router.get('/addProducts', sessionCheck, addProductsPage)
 
 /* <---------------- Post Add Products page --------------> */
-router.post('/addProduct',sessionCheck,upload.array('image'), addProducts)
+router.post('/addProduct', sessionCheck, upload.array('image'), addProducts)
 
 /* <------------------ Edit Products page ----------------> */
-router.get('/editProducts/:id', sessionCheck,editProductsPage);
+router.get('/editProducts/:id', sessionCheck, editProductsPage);
 
 /* <--------------------Put Edit Products  ---------------> */
-router.post('/editProducts/:id',upload.array('image'),editProducts)
+router.post('/editProducts/:id', upload.array('image'), editProducts)
 
 /* <--------------------Delete  Products  -----------------> */
-router.get('/deleteProduct/:id',sessionCheck,deleteProducts)
+router.get('/deleteProduct/:id', sessionCheck, deleteProducts)
 
 /* <--------------------View Banner Page  -----------------> */
-router.get('/viewBanner', sessionCheck,viewBannerPage );
+router.get('/viewBanner', sessionCheck, viewBannerPage);
 /* <--------------------Add Banner Page  ------------------> */
 router.get('/addBanner', sessionCheck, addBannerPage);
 
 /* <-------------------- Post Add Banner -------------------> */
-router.post('/addBanner',uploadBanner.any('image'),addBanner)
+router.post('/addBanner', uploadBanner.any('image'), addBanner)
 
 /* <--------------------  Edit Banner Page -----------------> */
 router.get('/editBanner/:id', sessionCheck, editBannerPage);
 
 /* <--------------------Put   Edit Banner  -----------------> */
-router.post('/editBanner/:id',uploadBanner.any('image'), sessionCheck,editBanner)
+router.post('/editBanner/:id', uploadBanner.any('image'), sessionCheck, editBanner)
 /* <--------------------Put   Edit Banner  -----------------> */
 
 /* <------------------- Get Delete Banner  -----------------> */
-router.get('/deleteBanner/:id', sessionCheck,deleteBanner )
+router.get('/deleteBanner/:id', sessionCheck, deleteBanner)
 
 /* <------------------- Post Update Stock ------------------> */
-router.post('/stockUpdate/:id', sessionCheck,stockUpdate )
+router.post('/stockUpdate/:id', sessionCheck, stockUpdate)
 
 /* <----------------- Admin View Order Page ----------------> */
-router.get('/viewOrders', sessionCheck,adminViewOrdersPage)
+router.get('/viewOrders', sessionCheck, adminViewOrdersPage)
 
 /* <---------------- Admin Update Track Order --------------> */
-router.put('/updateTrackOrder', sessionCheck,UpdateTrackOrder)
+router.put('/updateTrackOrder', sessionCheck, UpdateTrackOrder);
 
-router.get('/returnOrder',async (req,res)=>{
-let orders = await userHelpers.getReturnOrder()
-console.log(orders);
-res.render('admin/returnOrders',{admin:true,orders})
-})
+/* <---------------- Admin Return Requests Page ------------> */
+router.get('/returnOrder', returnOrderPageAdmin);
 
-router.get('/salesReport',async (req,res)=>{
-  let DailySalesforDownload = await productHelpers.getDailysSales();
-  let MonthlySalesforDownload = await productHelpers.getMonthlySales(); 
-  let YearlySalesforDownload = await productHelpers.getYearlySales(); 
-  res.render('admin/salesReport',{admin:true,DailySalesforDownload,MonthlySalesforDownload,YearlySalesforDownload})
-})
+/* <---------------- Admin Sales Report Page  ---------------> */
+router.get('/salesReport', salesReport);
 
-router.get('/productOffers',async (req,res)=>{
-  products = await productHelpers.getAllProduct();
-  res.render('admin/productOffers',{admin:true,products})})
+/* <--------------- Admin add Product Offers Page ------------> */
+router.get('/productOffers', productOffer);
+/* <--------------- Admin add Product Offers  ----------------> */
+router.post('/addProductOffer', addProductOffer)
 
-  router.post('/addProductOffer',(req,res)=>{
-    productHelpers.addproductOffer(req.body).then((response)=>{
-      res.json(response)
-    }).catch((err)=>{
-      console.log(err);
-    })
-  })
+/* <--------------- Admin Remove Product Offers  -----------> */
+router.delete('/removeProductOffer', removeProductOffer)
 
-  router.delete('/removeProductOffer',async (req,res)=>{
-    console.log(req.body.id);
-    productHelpers.removeProductOffer(req.body.id).then((response)=>{
-      res.json(response)
-    })
-  })
+/* <--------------- Admin  Coupon Page -------------------> */
+router.get('/coupon', sessionCheck, couponPage)
 
-  router.get('/coupon',sessionCheck, async(req,res)=>{
-    productHelpers.checkCoupon();
-    coupons =  await productHelpers.getAllCoupons();
-    res.render('admin/viewCoupon',{admin:true,coupons})
-  })
+/* <--------------- Admin Add Coupon Page ------------------> */
+router.get('/addCoupoun', addCouponPage)
 
-  router.get('/addCoupoun',(req,res)=>{
-    res.render('admin/addCoupoun',{admin:true});
-  })
-  router.post('/addCoupon',(req,res)=>{
-    productHelpers.addCoupon(req.body).then((response)=>{
-      res.json(response)
-    })
-  })
+/* <---------------- Admin Post Coupon  -------------------> */
+router.post('/addCoupon', addCoupon)
 
-  router.delete('/removeCoupon',async (req,res)=>{
-    productHelpers.removeCoupon(req.body.id).then((response)=>{
-      res.json(response)
-    })
-  })
+/* <---------------- Admin Remove  Coupon  -------------------> */
+router.delete('/removeCoupon', removeCoupon)
 
-  router.put('/returnOrderProduct',(req,res)=>{
-    let orderId = req.body.orderId;
-    let prodId = req.body.prodId;
-    let status = "return approved";
-    let refund = req.body.refund;
-    let userId = req.body.userId;
-    let message = null;
-    userHelpers.updateTrackOrder (orderId,prodId,status,message,refund,userId).then((response)=>{
-     res.json(response)
-   })
-})
+/* <-------------- put Return Order Product  -----------------> */
+router.put('/returnOrderProduct', returnOrderedProduct)
 
- 
-  
+
+
 module.exports = router;

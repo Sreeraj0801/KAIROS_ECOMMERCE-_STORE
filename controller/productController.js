@@ -1,4 +1,5 @@
 const { log } = require('debug/src/browser');
+const async = require('hbs/lib/async');
 const productHelpers = require('../services/productHelpers')
 
 
@@ -112,3 +113,61 @@ module.exports.stockUpdate = async function(req,res) {
     res.redirect('/admin/viewProducts')
   })  
 }
+
+// <---------------------- Search Products   -------------------------> */
+module.exports.serchProduct = async (req, res) => {
+  userHelpers.productSearch(req.body).then((products) => {
+    if(req.session.userLoggedIn)
+  {
+    userDetails = req.session ;
+    cartCount = req.session.cartCount;
+    res.render("users/categoryProducts",{user:user = true ,userDetails ,cartCount,products})
+  }
+  res.render("users/categoryProducts",{user:user = true,products})
+    })
+}
+
+/* <--------------- Admin add Product Offers Page ------------> */
+module.exports.productOffer = async (req,res)=>{
+  products = await productHelpers.getAllProduct();
+  res.render('admin/productOffers',{admin:true,products})}
+
+  /* <--------------- Admin add Product Offers Page ------------> */
+  module.exports.addProductOffer = (req,res)=>{
+    productHelpers.addproductOffer(req.body).then((response)=>{
+      res.json(response)
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
+
+  /* <--------------- Admin Remove Product Offers  ----------------> */
+  module.exports.removeProductOffer = async (req,res)=>{
+    console.log(req.body.id);
+    productHelpers.removeProductOffer(req.body.id).then((response)=>{
+      res.json(response)
+    })
+  }
+
+  /* <--------------- Admin  Coupon Page -------------------> */
+  module.exports.couponPage = async(req,res)=>{
+    productHelpers.checkCoupon();
+    coupons =  await productHelpers.getAllCoupons();
+    res.render('admin/viewCoupon',{admin:true,coupons})
+  }
+
+  module.exports.addCouponPage = async (req,res)=>{
+    res.render('admin/addCoupoun',{admin:true});
+  }
+
+  module.exports.addCoupon = async (req,res)=>{
+    productHelpers.addCoupon(req.body).then((response)=>{
+      res.json(response)
+    })
+  }
+
+  module.exports.removeCoupon = async (req,res)=>{
+    productHelpers.removeCoupon(req.body.id).then((response)=>{
+      res.json(response)
+    })
+  }
