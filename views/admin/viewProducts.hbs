@@ -1,8 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
   integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
   crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 <main id="main" class="main">
   <section>
     <div class="container">
@@ -10,14 +9,13 @@
 
       <head></head>
       <div class="text-end m-5">
-
         <p>click here to add new product</p>
-        <a class=" text-primary" href="/admin/addProducts"> Add Products &nbsp; 
-        <i class="fa-solid fa-circle-plus fs-"></i></a>
+        <a class=" text-primary" href="/admin/addProducts"> Add Products &nbsp;
+          <i class="fa-solid fa-circle-plus fs-"></i></a>
         <hr>
         <br>
 
-        <table class="table">
+        <table id="productTable" class="table mt-3 table-hover  rounded-2">
           <thead>
             <tr>
               <th scope="col">SI NO</th>
@@ -42,13 +40,14 @@
               <td>₹ {{this.price}}</td>
               <td>
                 {{#if (stockOut this.stock)}}
-                <a  class="text-danger" data-toggle="modal"  data-target='#Modal{{this._id}}'>Add Stock</a>
+                <a class="text-danger" data-toggle="modal" data-target='#Modal{{this._id}}'>Add Stock</a>
                 {{else}}
                 <p class="">{{this.stock}}</p>
                 {{/if}}
-               
+
               </td>
-              <td><img style="height:50px ;width:50px ;" src="/pictures/productImages/{{this.image.[0]}}" alt="Image"></td>
+              <td><img style="height:50px ;width:50px ;" src="/pictures/productImages/{{this.image.[0]}}" alt="Image">
+              </td>
               <td class="p-3"><a class="fa-solid fa-pen-to-square fs-5" href="/admin/editProducts/{{this._id}}"></a>
                 &nbsp;
                 &nbsp;
@@ -56,47 +55,44 @@
                   onclick="return confirm('Are you sure you want to delete {{this.name}} ?')"></a>
               </td>
             </tr>
-
-
             <!-- Modal -->
-<div class="modal fade" id='Modal{{this._id}}' tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="exampleModalLongTitle">Add Stock</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        
-        <form action="/admin/stockUpdate/{{this._id}}" method="post">
-          <input type="number" placeholder="Quantity" class="form-control" name="stock" id="">
-          <input type="submit" class="btn btn-success">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </form>
-      </div>
-      
-    </div>
-  </div>
-</div>
+            <div class="modal fade" id='Modal{{this._id}}' tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLongTitle">Add Stock</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    <form action="/admin/stockUpdate/{{this._id}}" method="post">
+                      <input type="number" placeholder="Quantity" class="form-control" name="stock" id="">
+                      <input type="submit" class="btn btn-success">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </form>
+                  </div>
+
+                </div>
+              </div>
+            </div>
             {{/each}}
           </tbody>
         </table>
       </div>
   </section>
-
-
-  {{!-- <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Launch demo modal
-</button> --}}
-
-
+  {{!--
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Launch demo modal
+  </button> --}}
 </main>
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+   <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+   <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready( function () {
+    $('#productTable').DataTable();
+} );
+</script>

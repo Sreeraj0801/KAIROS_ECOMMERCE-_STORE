@@ -1,15 +1,13 @@
 <main class="main" id="main">
+<link rel="stylesheet" href="/stylesheets/dataTable.css">
   <section>
   <div class="container">
     <h3 class="text-primary mt-5 mb-5 fw-bold">View Brand</h3>
-
     <head></head>
     <div class="text-end m-5">
       <a class="btn btn-success" href="/admin/addBrand">Add brand</a>
-
     </div>
-
-    <table class="table">
+    <table class="table mt-3 table-hover  rounded-2"id="brandTable">
       <thead>
         <tr>
           <th scope="col">SI NO</th>
@@ -38,3 +36,10 @@
   </div>
 </section>
 </main>
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+   <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready( function () {
+    $('#brandTable').DataTable();
+} );
+</script>

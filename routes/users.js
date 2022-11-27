@@ -25,7 +25,7 @@ const { userCartPage, userCart, cartProductsQty, removeProducts, wishlistPage, a
 const { checkoutPage, placeOrder, verifyPayment, paypaySucess, sample, applyCoupon, SamplePage } = require('../controller/checkoutController')
 const { profilePage, viewOrderProducts, cancelOrder, addAddressPage,              //...start
   addAddress, userChangePassword, updateUserDetails, updateAdressPage,
-  updateAddress, deleteUserAddress } = require('../controller/profileController')   //....end
+  updateAddress, deleteUserAddress ,profileAddAddress} = require('../controller/profileController')   //....end
 const productHelpers = require('../services/productHelpers');
 const { requestReturnPage, cancelOrderdProduct, returnOrderProduct, returnRequestPage } = require('../controller/orderController')
 const { response } = require('express');
@@ -119,7 +119,7 @@ router.get('/cancelOrder/:id', cancelOrder)
 router.get('/addAddress', userCheck, addAddressPage)
 
 // <----------------------------Post Add Address -------------------> */
-router.post('/addAddress', userCheck, addAddress)
+router.post('/addAddress', addAddress)
 
 // <----------------------------Post Change Password ---------------> */
 router.post('/changePassword', userCheck, userChangePassword)
@@ -144,7 +144,6 @@ router.get('/success', paypaySucess)
 
 // <-------------------- User PayPal Payment Cancelled  ------------> */
 router.get('/cancel', (req, res) => res.send('Cancelled'));
-
 
 // <--------------------- Sample for trial  ------------------------> */
 router.get('/sample', userCheck, sample)
@@ -210,4 +209,11 @@ router.get('/returnOrder/:prodId/:orderId', returnRequestPage)
 // <-------------------------- Brand Products Page  ----------------------> */
 router.get('/brandProducts/:id', brandProductsSearch)
 
+router.post('/addAdd',profileAddAddress)
+
+router.post('/cartCount',async(req,res)=>{
+  let cartCount = await userHelpers.getCartCount(req.session.user._id);
+  req.session.cartCount = cartCount;
+  res.json({status:true})
+})
 module.exports = router;

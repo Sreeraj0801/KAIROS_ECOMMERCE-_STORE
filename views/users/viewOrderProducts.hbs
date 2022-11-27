@@ -13,7 +13,6 @@
     <div class="container">
         <div class="row">
             {{#each products}}
-
             <div class="card col-md-12 mb-5 mt-4">
                 <div class="card-body rounded">
                     <div class="row">
@@ -31,6 +30,7 @@
                         </div>
                         <div class="col-md-3">
                             <h6 class="mt-5">Quantity:&nbsp;{{this.quantity}}</h6>
+                            <input type="text" name="" id="quantityIn" value="{{this.quantity}}" hidden>
                             {{#if this.product.offerPercentage}}
                             <span>
                                 <s>₹ {{this.product.oldPrice}}</s>
@@ -43,6 +43,17 @@
                             <h6 class="text-danger">{{this.trackOrder}}</h6>
                         </div>
                         <div class="col-md-3">
+                            {{#if this.couponDetails}}
+                             <div class="card border border-primary mt-4">
+                             <div class="card-body">
+                            <h6 class="mt-2">Coupon : <span><b>{{this.couponDetails.coupon}}</b></span></h6>
+                             <h6 class="mt-2">offerPercentage : <span><b>{{this.couponDetails.offerPercentage}}</b></span></h6>
+                             <h6 class="mt-2">offerPrice : <span >₹  <b class="text-danger">{{this.couponDetails.offerPrice}}</b></span></h6>
+
+                        </div>
+                    </div>
+                    {{else}}
+                    {{/if}}
                             {{#if (cancel this.trackOrder)}}
 
                             {{else if (delivered this.trackOrder)}}
@@ -126,12 +137,14 @@
     <!-- JavaScript Bundle with Popper -->
     <script>
         function cancelProduct(prodId, orderId) {
+            quantity = document.getElementById('quantityIn').value;
             $.ajax({
                 url: '/cancelOrderProduct',
                 method: 'put',
                 data: {
                     prodId: prodId,
-                    orderId: orderId
+                    orderId: orderId,
+                    quantity:quantity
                 },
                 success: (response) => {
                     if (response.refund) {
@@ -151,11 +164,9 @@
         }
     </script>
 
-
-
-
     <script>
         function returnRequest(prodId, orderId) {
+            quantity = document.getElementById('quantityIn').value;
             swal("Reason for Returning:", {
                 content: "input",
             }).then((value) => {
@@ -167,7 +178,8 @@
                             data: {
                                 prodId: prodId,
                                 orderId: orderId,
-                                message: value
+                                message: value,
+                                quantity:quantity
                             },
                             success: (response) => {
                                 if (response.refund) {

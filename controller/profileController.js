@@ -54,10 +54,10 @@ module.exports.addAddressPage = async (req, res) => {
 }
 
 // <----------------------------Post Add Address -------------------> */
-module.exports.addAddress = (req, res) => {
+module.exports.addAddress = async (req, res) => {
     try {
-        userHelpers.addAddress(req.body)
-        res.json({})
+       await userHelpers.addAddress(req.body);
+        res.json({status:true})
     } catch (error) {
 
     }
@@ -123,4 +123,10 @@ module.exports.deleteUserAddress = async(req,res)=>{
     } catch (error) {
         
     }
+  }
+
+  module.exports.profileAddAddress = async(req,res)=>{
+    req.body.userId = req.session.user._id
+   await userHelpers.addAddress(req.body);
+    res.json({status:true});
   }

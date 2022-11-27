@@ -25,7 +25,6 @@ try {
     
   if (check.name == req.body.adminName && check.password == req.body.password) {
     req.session.adminLoggedIn = true
-
     res.redirect('/admin/home')
   }
   else {

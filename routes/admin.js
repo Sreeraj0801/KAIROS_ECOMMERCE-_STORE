@@ -137,7 +137,7 @@ router.put('/updateTrackOrder', sessionCheck, UpdateTrackOrder);
 
 /* <---------------- Admin Return Requests Page ------------> */
 router.get('/returnOrder', returnOrderPageAdmin);
-
+ 
 /* <---------------- Admin Sales Report Page  ---------------> */
 router.get('/salesReport', salesReport);
 
@@ -164,6 +164,17 @@ router.delete('/removeCoupon', removeCoupon)
 /* <-------------- put Return Order Product  -----------------> */
 router.put('/returnOrderProduct', returnOrderedProduct)
 
+router.get('/',async (req,res)=>{
+  
+  
+})
 
+router.get('/viewOrderProducts/:id',async(req,res)=>{
+  let products = await userHelpers.getOrderProducts(req.params.id);
+  console.log("{{{{{{{{{{{{{{{");
+  console.log(products);
+  res.render('admin/viewOrderProduct',{admin:true,products})
+  
+})
 
 module.exports = router;

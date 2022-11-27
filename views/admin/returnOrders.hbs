@@ -1,101 +1,134 @@
 <main id="main" class="main">
 
-    <div class="pagetitle">
-      <h1>Return Orders</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Components</li>
-          <li class="breadcrumb-item active">Return Orders</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+  <div class="pagetitle">
+    <h1>Return Orders</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item">Components</li>
+        <li class="breadcrumb-item active">Return Orders</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
 
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-10">
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-10">
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Return orders notifications</h5>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Return orders notifications</h5>
 
-              <!-- Accordion without outline borders -->
-              <div class="accordion accordion-flush" id="accordionFlushExample">
-                {{#each orders}}
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne{{this.products.item}}" aria-expanded="false" aria-controls="flush-collapseOne">
-                       Order Id : &nbsp;&nbsp;{{this._id}}  
-                    </button>
-                  </h2>
-                  <div id="flush-collapseOne{{this.products.item}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div>
-                      <div class="row">
+            <!-- Accordion without outline borders -->
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              {{#each orders}}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne{{this.products.item}}" aria-expanded="false"
+                    aria-controls="flush-collapseOne">
+                    Order Id : &nbsp;&nbsp;{{this._id}}
+                  </button>
+                </h2>
+                <div id="flush-collapseOne{{this.products.item}}" class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <div>
+                    <div class="row">
                       <div class="col-md-3">
-                      <img src="/pictures/productImages/{{this.productDetails.image.[0]}}" alt="" class="m-5" style="height:140px;" >
+                        <img src="/pictures/productImages/{{this.productDetails.image.[0]}}" alt="" class="m-5"
+                          style="height:140px;">
                       </div>
                       <div class="col-md-3 mt-5">
                         <p>{{this.productDetails.model}}</p>
                         <p>{{this.productDetails.title}}</p>
                         <p class="text-danger"> Rs {{this.productDetails.price}}</p>
+                        <h6>quantity: <span><b>{{this.products.quantity}}</b></span></h6>
+                        <input type="text" name="" id="quantityIn" value="{{this.products.quantity}}" hidden>
                         <small>{{this.products.item}}</small>
+
                       </div>
                       <div class="col-md-3 mt-5">
                         <h5>{{this.name}}</h6>
-                        <p>payment Method : <span class="text-danger">{{this.paymentMethod}}</span></p>
-                        <p>Ordered On : <span class="text-warning">{{this.date}}</span></p>
-                        <p>Amount To be refunded : <span id="refundAmount"></span></p>
-                        {{#if this.products.priceOffer}}
-                        <h3 class="text-danger"> Rs {{this.products.priceOffer}}</h3>
-                        {{else}}
-                        <h3 class="text-danger"> Rs {{this.products.totalPrice}}</h3>
-                        {{/if}}
+                          <p>payment Method : <span class="text-danger">{{this.paymentMethod}}</span></p>
+                          <p>Ordered On : <span class="text-warning">{{this.date}}</span></p>
+                          <p>Amount To be refunded : <span id="refundAmount"></span></p>
+                          {{#if this.products.priceOffer}}
+                          <h3 class="text-danger"> Rs {{this.products.priceOffer}}</h3>
+                          {{else}}
+                          <h3 class="text-danger"> Rs {{this.products.totalPrice}}</h3>
+                          {{/if}}
                       </div>
                       <div class="col-md-3 mt-5">
                         <div>
-                       <h5 class="text-danger">Reason  for Returning</h5>
-                        <p>{{this.products.message.reason}}</small>
+                          <h5 class="text-danger">Reason for Returning</h5>
+                          <p>{{this.products.message.reason}}</small>
                         </div>
                         <div>
-                          <h5  class="text-primary">Discription</h5>
+                          <h5 class="text-primary">Discription</h5>
                           <p>{{this.products.message.discription}}</p>
                         </div>
                         {{#if this.products.priceOffer}}
-                         <a onclick="returnApprove('{{this._id}}','{{this.products.item}}','{{this.products.priceOffer}}','{{this.userId}}')" class="btn btn-success">Approve Return</a>
+                        <a onclick="hello('{{this._id}}','{{this.products.item}}','{{this.products.priceOffer}}','{{this.userId}}')"
+                          class="btn btn-success">Approve Return</a>
                         {{else}}
-                           <a onclick="returnApprove('{{this._id}}','{{this.products.item}}','{{this.products.totalPrice}}','{{this.userId}}')" class="btn btn-success">Approve Return</a>
+                        <a onclick="hello('{{this._id}}','{{this.products.item}}','{{this.products.totalPrice}}','{{this.userId}}')"
+                          class="btn btn-success">Approve Return</a>
                         {{/if}}
                       </div>
-                      </div>
                     </div>
-                    </div>
+                  </div>
                 </div>
-                {{/each}}
-              </div><!-- End Accordion without outline borders -->
-            </div>
+              </div>
+              {{/each}}
+            </div><!-- End Accordion without outline borders -->
           </div>
         </div>
       </div>
-    </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-<script>
-  function returnApprove(orderId,prodId,refund,userId)
-  {
-    $.ajax({
-      url:'/admin/returnOrderProduct',
-      method:'put',
-      data:{
-        orderId:orderId,
-        prodId:prodId,
-        refund:refund,
-        userId:userId
-      },
-      success:(response)=>{
-        alert(response)
+    </div>
+  </section>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+    function hello(orderId, prodId, refund, userId) {
+      quantity = document.getElementById('quantityIn').value;
+      {
+        $.ajax({
+          url: '/admin/returnOrderProduct',
+          method: 'put',
+          data: {
+            orderId: orderId,
+            prodId: prodId,
+            refund: refund,
+            userId: userId,
+            quantity, quantity
+          },
+          success: (response) => {
+            swal("Order Returned!", "order returned and amount refunded to wallet!", "success").then(()=>{
+              location.reload()
+            })
+          }
+        })
       }
-    })
-  } 
-</script>
-  </main><!-- End #main -->
+    }
+  </script>
+  <script>
+    function returnApprove(orderId, prodId, refund, userId)
+    let quantity = 1
+    {
+      $.ajax({
+        url: '/admin/returnOrderProduct',
+        method: 'put',
+        data: {
+          orderId: orderId,
+          prodId: prodId,
+          refund: refund,
+          userId: userId,
+          quantity, quantity
+        },
+        success: (response) => {
+          alert(response)
+        }
+      })
+    } 
+  </script>
+</main><!-- End #main -->

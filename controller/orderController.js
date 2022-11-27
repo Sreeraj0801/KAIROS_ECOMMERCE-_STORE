@@ -7,7 +7,7 @@ const userHelpers = require('../services/userHelpers')
 /* <----------------- Admin View Order Page ---------------> */
 module.exports.adminViewOrdersPage =  async (req,res)=>{
     try {
-    let orders = await productHelpers.getOrders();
+    orders = await productHelpers.getAllOrders();
     res.render('admin/viewOrders',{ admin: true ,orders})
     } catch (error) {
         
@@ -27,7 +27,9 @@ module.exports.adminViewOrdersPage =  async (req,res)=>{
 
   module.exports.UpdateTrackOrder = (req,res)=>{
     try {
-      userHelpers.updateTrackOrder (req.body.orderId,req.body.prodId,req.body.status).then((response)=>{
+      console.log("hai bro");
+      console.log(req.body.quantity);
+      userHelpers.updateTrackOrder (req.body.quantity,req.body.orderId,req.body.prodId,req.body.status).then((response)=>{
       res.json(response)
       }) 
     } catch (error) {
@@ -47,7 +49,8 @@ module.exports.adminViewOrdersPage =  async (req,res)=>{
       let orderId = req.body.orderId;
       let prodId = req.body.prodId;
       let status = "canceled";
-      userHelpers.updateTrackOrder(orderId, prodId, status).then((response) => {
+      let quantity = req.body.quantity;
+      userHelpers.updateTrackOrder(quantity,orderId, prodId, status).then((response) => {
         res.json(response)
       })
     }
@@ -56,12 +59,13 @@ module.exports.adminViewOrdersPage =  async (req,res)=>{
     module.exports.returnOrderProduct = async (req, res) => {
       let orderId = req.body.orderId;
       let prodId = req.body.prodId;
+      let quantity = req.body.quantity;
       let status = "return requested";
       message = {
         reason: req.body.reason,
         discription: req.body.freeform
       }
-      userHelpers.updateTrackOrder(orderId, prodId, status, message).then((response) => {
+      userHelpers.updateTrackOrder(quantity,orderId, prodId, status, message).then((response) => {
         res.json(response)
       })
     }
@@ -79,6 +83,7 @@ module.exports.adminViewOrdersPage =  async (req,res)=>{
 /* <---------------- Admin Return Requests Page  ---------------> */
     module.exports.returnOrderPageAdmin = async (req,res)=>{
       let orders = await userHelpers.getReturnOrder()
+      console.log("[[[[[[[[[[[[[[");
       console.log(orders);
       res.render('admin/returnOrders',{admin:true,orders})
       }
@@ -97,8 +102,9 @@ module.exports.adminViewOrdersPage =  async (req,res)=>{
         let status = "return approved";
         let refund = req.body.refund;
         let userId = req.body.userId;
+        let quantity = req.body.quantity;
         let message = null;
-        userHelpers.updateTrackOrder (orderId,prodId,status,message,refund,userId).then((response)=>{
+        userHelpers.updateTrackOrder (quantity,orderId,prodId,status,message,refund,userId).then((response)=>{
          res.json(response)
        })
     }

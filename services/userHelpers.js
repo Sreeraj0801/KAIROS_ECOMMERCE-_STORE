@@ -375,6 +375,11 @@ module.exports = {
             }
             db.get().collection(collections.ORDER).insertOne(orderObj)
                 .then((response) => {   
+                    products.forEach(element => {
+                        let quantity = -element.quantity;
+                        db.get().collection(collections.PRODUCT).updateOne(
+                            { _id:objectId(element.item)},{$inc:{stock:quantity}})
+                    });
                      db.get().collection(collections.CART).deleteOne({ user: objectId(order.userId)});   
                     resolve(response.insertedId);
                 }).catch((err)=>{
@@ -403,7 +408,8 @@ module.exports = {
                         item: '$products.item',
                         quantity: '$products.quantity',
                         totalPrice:'$products.totalPrice',
-                        trackOrder:'$products.trackOrder'
+                        trackOrder:'$products.trackOrder',
+                        couponDetails:1
                     }
                 },
                 {
@@ -446,9 +452,10 @@ module.exports = {
                         oldPrice:1,
                         date:1,
                         item:1,
-                        quantity: 1,
+                        quantity: 1, 
                         totalPrice:1,
                         trackOrder:1,
+                        couponDetails:1,
                         product: { $arrayElemAt: ['$product', 0] },
                         categoryDetails: { $arrayElemAt: ['$categoryDetails', 0] },
                         brandDetails: { $arrayElemAt: ['$brandDetails', 0] },
@@ -460,10 +467,13 @@ module.exports = {
 
         })
     },
-    updateTrackOrder: (orderId,prodId, status,message,refundAmount,userId) => {
+    
+    updateTrackOrder: (quantity,orderId,prodId, status,message,refundAmount,userId) => {
+        console.log("[[[[[[[[[[[[[[[");
+        console.log(quantity);
         return new Promise(async(resolve, reject) => {
         db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.trackOrder': status }})
-       if(status == 'canceled')
+       if(status =='canceled')
        {
         products = await db.get().collection(collections.ORDER).aggregate([
             {
@@ -476,6 +486,13 @@ module.exports = {
                 $match:{'products.item':objectId(prodId)}
             }
         ]).toArray()
+
+        await db.get().collection(collection.PRODUCT).updateOne(
+            { _id:objectId(prodId)},
+            {
+              $inc:{stock:parseInt(quantity)},
+            }
+          )
         userId = products[0].userId
         price = products[0].products.price;
         paymentMethod = products[0].paymentMethod
@@ -501,7 +518,7 @@ module.exports = {
                     $push:{
                         Transaction :refferalData
                     }
-                })
+                });
                 detail={
                     refund:true,
                     amount:price
@@ -542,6 +559,13 @@ module.exports = {
        }
        else if(status == "return approved" && refundAmount)
        {
+        await db.get().collection(collection.PRODUCT).updateOne(
+            { _id:objectId(prodId)},
+            {
+              $inc:{stock:parseInt(quantity)},
+            }
+          )
+          
         refundAmount = parseInt(refundAmount)
         userId = objectId(userId)
         db.get().collection(collections.ORDER).updateOne({ _id: objectId(orderId),'products.item':objectId(prodId)}, { $set: {'products.$.message': message}}).then(()=>{
@@ -574,7 +598,8 @@ module.exports = {
 
     addAddress: (details) => {
         details.userId = objectId(details.userId)
-        db.get().collection(collections.ADDRESS).insert(details)
+        db.get().collection(collections.ADDRESS).insertOne(details);
+        resolve({status:true})
     },
 
     getAddress: (userId) => {
@@ -964,9 +989,9 @@ module.exports = {
     },
     getUserWallet:(userId)=>{
         return new Promise(async(resolve,reject)=>{
-            userWallet = await db.get().collection(collections.WALLET).findOne({userId:objectId(userId)})
+            userWallet = await db.get().collection(collections.WALLET).findOne({userId:objectId(userId)});
             resolve(userWallet)
-        })
+            })
     },
     inventory:(products)=>{
         return new Promise(async(resolve,reject)=>{

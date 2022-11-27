@@ -1,7 +1,7 @@
 function cartClick() {
     location.href = "/cart"
  }
- 
+
 function addToCart(prodId) {
     $.ajax({
         url: '/addToCart/' + prodId, 
@@ -13,9 +13,9 @@ function addToCart(prodId) {
                 })
             }
             else if (response.status) {
-                let count = $("#cart-count").html()
-                count = parseInt(count) + 1
-                $("#cart-count").html(count)
+                let count = $("#cartCount").html();
+                count = response.cartCount;
+                $("#cartCount").html(count);
                 swal("wow!", "The Product Added to Cart!", "success")
             }
         }
@@ -35,8 +35,7 @@ function moveToCart(prodId,wishId) {
                 }, 2000);
             }
             else if (response.status) {
-                let count = $("#cart-count").html()
-                count = parseInt(count) + 1
+          
                 $("#cart-count").html(count)
                 swal("wow!", "The Product Added to Cart!", "success").then(()=>{
                     $.ajax({

@@ -698,6 +698,12 @@ module.exports = {
             resolve(walletBalance.Total)
         })
     },
+    getUsers :()=>{
+        return new Promise(async(resolve,reject)=>{
+            users = await db.get().collection(collections.USER_COLLECTION).count();
+            resolve(users)
+        })
+    },
     getCustomers: () => {
         return new Promise(async (resolve, reject) => {
             customer = await db.get().collection(collections.ORDER).aggregate([
@@ -739,6 +745,13 @@ module.exports = {
             ]).toArray().then((response) => {
                 resolve(response)
             })
+        })
+    },
+    getAllOrders:()=>{
+        return new Promise(async(resolve,reject)=>{
+           orders = await db.get().collection(collections.ORDER).find({}).sort({timestamp:-1}).toArray();
+           
+           resolve(orders)
         })
     }
 }

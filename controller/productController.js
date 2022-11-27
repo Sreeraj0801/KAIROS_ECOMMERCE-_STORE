@@ -1,13 +1,12 @@
 const { log } = require('debug/src/browser');
 const async = require('hbs/lib/async');
 const productHelpers = require('../services/productHelpers')
+const userHelpers = require('../services/userHelpers')
 
 
 // <---------------------------- Get singleProduct page ------------------->
 module.exports.userSingleProductsPage = async function (req, res, next) {
     productHelpers.getProductDetails(req.params.id).then((product)=>{ 
-      console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
-      console.log(product);
       if(req.session.userLoggedIn)
       {
         userDetails = req.session ;

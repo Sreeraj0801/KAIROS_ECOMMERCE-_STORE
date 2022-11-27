@@ -17,7 +17,7 @@ module.exports.userHomePage = async function (req, res, next) {
         { 
          let cartCount = await userHelpers.getCartCount(req.session.user._id)
           req.session.cartCount = cartCount;
-          userDetails = req.session ;
+          userDetails = req.session;
           cartCount = req.session.cartCount;
           res.render('users/home', {products ,category,banner,brands ,userDetails,cartCount,topSellingProducts ,user:user = true})
         }else{

@@ -14,8 +14,7 @@ module.exports.userCartPage = async (req, res, next) => {
         }
         userDetails = req.session ;
         cartCount = req.session.cartCount;
-        console.log("]]]]]]]]]]]]]]");
-        console.log(products);
+        console.log("ppppppppppppppppppppppppp"+cartCount);
         res.render('users/cart', { user: true,userDetails,cartCount, 'userId': req.session.user._id, products, total: total[0] })
     } catch (error) {
         console.log(error);
@@ -26,11 +25,15 @@ module.exports.userCart = async (req, res) => {
 
     try {
         if (req.session.userLoggedIn) {
-       
- 
-            userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
+            userHelpers.addToCart(req.params.id, req.session.user._id).then(async() => {
+                let cartCount = await userHelpers.getCartCount(req.session.user._id);
+                req.session.cartCount = cartCount;
                 userHelpers.deleteWishlistProduct(req.params.id)
-                res.json({ status: true })
+                value = {
+                    status:true,
+                    cartCount:cartCount
+                }          
+                res.json(value)
             })
         }
         else {
@@ -58,7 +61,9 @@ module.exports.cartProductsQty = async (req, res, next) => {
 // <----------------- Post Remove Products ------------------------> */
 module.exports.removeProducts = async (req, res, next) => {
     try {
-        userHelpers.removeProduct(req.body).then((response) => {
+        userHelpers.removeProduct(req.body).then(async(response) => {
+            let cartCount = await userHelpers.getCartCount(req.session.user._id);
+            req.session.cartCount = cartCount;
             res.json(response)
         })
     } catch (error) {

@@ -1,10 +1,11 @@
 <main id="main" class="main">
+  <link rel="stylesheet" href="/stylesheets/dataTable.css">
     <div>
         <h3 class="text-primary">Add Product Offer</h3>
         <hr>
     </div>
     <div class="container">
-        <table class="table">
+        <table class="table table-hover  rounded-2" id="offerTable">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -123,4 +124,11 @@
   }
 });       
     }
+</script>
+   <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+   <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready( function () {
+    $('#offerTable').DataTable();
+} );
 </script>

@@ -1,0 +1,123 @@
+<main id="main" class="main">
+    <H3 class="text-center text-primary">Order Products</H3>
+    <hr>
+    {{#each products}}
+    <div class="card">
+        <div class="card-body">
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <img src="/pictures/productImages/{{this.product.image.[0]}}" alt="" style="height: 200px;"><br>
+                </div>
+                <div class="col-md-3">
+                    <h5>{{this.categoryDetails.category}}</h5>
+                    <h3 class="text-danger"><b>{{this.brandDetails.brand}}</b></h3>
+                    <b>{{this.product.title}}</b><br>
+                    {{#if product.offerPercentage}}
+                    <strike class="text-danger">₹ <span>{{this.product.oldPrice}}</span></strike>
+                    <b class="text-success">₹{{this.product.price}}</b>
+                    {{else}}
+                    <b class="text-success">₹{{this.product.price}}</b>
+                    {{/if}}
+                    <p>Quantity : <span>{{this.quantity}}</span></p>
+                    <input type="text" value="{{this.quantity}}" id="quantityIn" hidden>
+                    {{#if this.couponDetails}}
+                    <div class="card border border-primary mt-4">
+                        <div class="card-body">
+                            <h6 class="mt-2">Coupon : <span><b>{{this.couponDetails.coupon}}</b></span></h6>
+                             <h6 class="mt-2">offerPercentage : <span><b>{{this.couponDetails.offerPercentage}}</b></span></h6>
+                             <h6 class="mt-2">offerPrice : <span >₹  <b class="text-danger">{{this.couponDetails.offerPrice}}</b></span></h6>
+
+                        </div>
+                    </div>
+                    {{else}}
+                    {{/if}}
+                </div>
+                <div class="col-md-4 ms-5">
+                    <h4><span><b>Track Order</b>: &nbsp; <b class="text-warning">{{this.trackOrder}}</b></span></h4>
+                    <br>
+
+                    <h6>Change Order Status</h6>
+
+
+                    {{#if (cancel this.trackOrder)}}
+                    <select class="form-select" aria-label="Default select example" id="{{this._id}}">
+                        <option selected name="status" value="Orderd" class="text-danger" disabled>{{this.trackOrder}}
+                        </option>
+                        <option name="status" value="Dispached" disabled>Dispached</option>
+                        <option name="Shipped" value="Shipped" disabled>Shipped</option>
+                        <option name="Delivered" value="Deliverd" disabled>Deliverd</option>
+                        <option name="canceled" value="canceled" disabled>Canceled</option>
+                    </select>
+                    {{else if (delivered this.trackOrder)}}
+                    <select class="form-select" aria-label="Default select example" id="{{this._id}}"
+                        onchange="changeStatus(event,'{{this._id}}','{{this.item}}')">
+                        <option selected name="status" value="Orderd" disabled>{{this.trackOrder}}</option>
+                        <option name="status" value="Dispached" disabled>Dispached</option>
+                        <option name="Shipped" value="Shipped" disabled>Shipped</option>
+                        <option name="Delivered" value="Deliverd" disabled>Deliverd</option>
+                        <option name="canceled" value="canceled" disabled>Canceled</option>
+                    </select>
+                    {{else if (returnRequest this.trackOrder)}}
+                    <select class="form-select" aria-label="Default select example" id="{{this._id}}"
+                        onchange="changeStatus(event,'{{this._id}}','{{this.item}}')">
+                        <option selected name="status" value="Orderd" disabled>{{this.trackOrder}}</option>
+                        {{else if (returnApproved this.trackOrder)}}
+                        <select class="form-select" aria-label="Default select example" id="{{this._id}}"
+                            onchange="changeStatus(event,'{{this._id}}','{{this.item}}')">
+                            <option selected name="status" value="Orderd" disabled>{{this.trackOrder}}</option>
+                            {{else}}
+                            <select class="form-select" aria-label="Default select example" id="{{this._id}}"
+                                onchange="changeStatus(event,'{{this._id}}','{{this.item}}')">
+                                <option selected name="status" value="Orderd" disabled>{{this.trackOrder}}</option>
+                                <option name="status" value="Dispached">Dispached</option>
+                                <option name="Shipped" value="Shipped">Shipped</option>
+                                <option name="Delivered" value="Deliverd">Deliverd</option>
+                                <option name="canceled" value="canceled">Canceled</option>
+                            </select>
+                            {{/if}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+
+</main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+    function changeStatus(e, orderId, prodId) {
+        quantity = document.getElementById('quantityIn').value
+        let status = e.target.value;
+        $.ajax({
+            url: '/admin/updateTrackOrder',
+            data: {
+                orderId: orderId,
+                prodId: prodId,
+                status: status,
+                quantity:quantity
+            },
+            method: 'put',
+            success: (response) => {
+                if (response.status) {
+                    swal("Status Changed!").then(() => {
+                        location.reload();
+                    })
+                }
+                else if (response.refund) {
+                    amount = response.amount
+                    swal("Amount Refunded!", "An Amount of RS " + amount + "  is refunded", "success").then(() => {
+                        location.reload();
+                    })
+                }
+                else if (response.COD) {
+                    amount = response.amount
+                    swal("Status Changed!").then(() => {
+                        location.reload();
+                    })
+                }
+            }
+        })
+    }
+</script>

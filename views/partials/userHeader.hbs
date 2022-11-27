@@ -4,7 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Kairos - Ecommerse
     </title>
-    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUihJ0eCr-XUEWPYYiinzZp_deHNrq1yfUz9QOLycxAZcnI3Id3amXsDu4H6W7J1zeQbk&usqp=CAU" type="image/icon type">
+    <link rel="icon"
+        href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUihJ0eCr-XUEWPYYiinzZp_deHNrq1yfUz9QOLycxAZcnI3Id3amXsDu4H6W7J1zeQbk&usqp=CAU"
+        type="image/icon type">
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Kairos - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
@@ -33,6 +35,7 @@
     <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/userAssets/css/style.css">
 </head>
+
 <body>
     <div class="page-wrapper">
         <header class="header header-intro-clearance header-3">
@@ -52,7 +55,7 @@
                             <i class="icon-bars"></i>
                         </button>
 
-                        <h3 class="text-light">KAIROS</h>
+                        <h5 class="text-light">KAIROS</h5>
                     </div><!-- End .header-left -->
                     <div class="header-center">
                         <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
@@ -72,7 +75,7 @@
                         <div class="wishlist">
                             <a href="/wishlist" title="Wishlist">
                                 <div class="icon">
-                                    <i class="icon-heart-o"></i> 
+                                    <i class="icon-heart-o"></i>
                                     {{!-- <span class="wishlist-count badge"></span> --}}
                                 </div>
                                 <p>Wishlist</p>
@@ -90,10 +93,11 @@
                             </button>
                         </div><!-- End .cart-dropdown --> --}}
                         <div class="dropdown cart-dropdown">
-                                <a onclick="cartClick()" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a onclick="cartClick()" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
-                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">{{cartCount}}</span>
+                                    <i class="icon-shopping-cart"></i>
+                                    <span class="cart-count" id="cartCount">{{cartCount}}</span>
                                 </div>
                                 <p>Cart</p>
                             </a>
@@ -174,7 +178,6 @@
                                 {{userDetails.user.Rname}}</span></p>
                         {{/if}}
                     </div>
-
                 </div><!-- End .container -->
             </div><!-- End .header-bottom -->
         </header>
