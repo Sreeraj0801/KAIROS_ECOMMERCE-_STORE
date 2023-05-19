@@ -27,7 +27,6 @@ module.exports.adminViewOrdersPage =  async (req,res)=>{
 
   module.exports.UpdateTrackOrder = (req,res)=>{
     try {
-      console.log("hai bro");
       console.log(req.body.quantity);
       userHelpers.updateTrackOrder (req.body.quantity,req.body.orderId,req.body.prodId,req.body.status).then((response)=>{
       res.json(response)
@@ -83,8 +82,6 @@ module.exports.adminViewOrdersPage =  async (req,res)=>{
 /* <---------------- Admin Return Requests Page  ---------------> */
     module.exports.returnOrderPageAdmin = async (req,res)=>{
       let orders = await userHelpers.getReturnOrder()
-      console.log("[[[[[[[[[[[[[[");
-      console.log(orders);
       res.render('admin/returnOrders',{admin:true,orders})
       }
 

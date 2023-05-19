@@ -109,7 +109,8 @@ router.post('/editProducts/:id', upload.array('image'), editProducts)
 router.get('/deleteProduct/:id', sessionCheck, deleteProducts)
 
 /* <--------------------View Banner Page  -----------------> */
-router.get('/viewBanner', sessionCheck, viewBannerPage);
+router.get('/viewBanner', sessionCheck, viewBannerPage)
+
 /* <--------------------Add Banner Page  ------------------> */
 router.get('/addBanner', sessionCheck, addBannerPage);
 
@@ -163,7 +164,6 @@ router.delete('/removeCoupon', removeCoupon)
 
 /* <-------------- put Return Order Product  -----------------> */
 router.put('/returnOrderProduct', returnOrderedProduct)
-
 router.get('/',async (req,res)=>{
   
   
@@ -171,8 +171,6 @@ router.get('/',async (req,res)=>{
 
 router.get('/viewOrderProducts/:id',async(req,res)=>{
   let products = await userHelpers.getOrderProducts(req.params.id);
-  console.log("{{{{{{{{{{{{{{{");
-  console.log(products);
   res.render('admin/viewOrderProduct',{admin:true,products})
   
 })
